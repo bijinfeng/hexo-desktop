@@ -15,7 +15,7 @@
 🌱 结构清晰，可塑性强  
 💪 支持在渲染进程中使用 Electron、Node.js API  
 🔩 支持 C/C++ 模块  
-🖥 很容易实现多窗口  
+🖥 很容易实现多窗口
 
 ## 快速开始
 
@@ -31,7 +31,7 @@ npm create electron-vite
 
 ## 目录
 
-*🚨 默认情况下, `electron` 文件夹下的文件将会被构建到 `dist/electron`*
+_🚨 默认情况下, `electron` 文件夹下的文件将会被构建到 `dist/electron`_
 
 ```tree
 ├── electron                  Electron 源码文件夹
@@ -51,7 +51,6 @@ npm create electron-vite
 ├── public                    同 Vite 模板的 public
 └── src                       渲染进程源码、React代码
 ```
-
 
 ## 🚨 这需要留神
 
