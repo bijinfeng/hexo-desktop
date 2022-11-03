@@ -1,7 +1,9 @@
-import React from 'react';
 import { Layout, Menu, Typography } from '@arco-design/web-react';
+import React from 'react';
 import { Outlet } from 'react-router-dom';
+
 import IconConfig from '@/assets/icons/config.svg';
+
 import styles from './style.module.less';
 
 const MenuItem = Menu.Item;

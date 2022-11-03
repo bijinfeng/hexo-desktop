@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
-import cls from 'classnames';
-import { Menu, Layout, ResizeBoxProps } from '@arco-design/web-react';
+import { Layout, Menu, ResizeBoxProps } from '@arco-design/web-react';
 import {
+  IconDelete,
   IconDriveFile,
   IconFolder,
-  IconStar,
-  IconDelete,
   IconSettings,
+  IconStar,
 } from '@arco-design/web-react/icon';
+import cls from 'classnames';
+import React, { useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
+
 import styles from './style.module.less';
 
 const MenuItem = Menu.Item;
