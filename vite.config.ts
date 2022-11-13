@@ -1,12 +1,13 @@
+import vitePluginForArco from '@arco-plugins/vite-react';
+import react from '@vitejs/plugin-react';
 import { rmSync } from 'fs';
 import path from 'path';
 import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
 import electron from 'vite-electron-plugin';
 import { customStart } from 'vite-electron-plugin/plugin';
 import renderer from 'vite-plugin-electron-renderer';
-import vitePluginForArco from '@arco-plugins/vite-react';
 import svgr from 'vite-plugin-svgr';
+
 import pkg from './package.json';
 
 rmSync(path.join(__dirname, 'dist-electron'), { recursive: true, force: true });
@@ -18,6 +19,9 @@ export default defineConfig({
       '@': path.join(__dirname, 'src'),
       styles: path.join(__dirname, 'src/assets/styles'),
     },
+  },
+  optimizeDeps: {
+    exclude: ['diary'],
   },
   plugins: [
     react(),

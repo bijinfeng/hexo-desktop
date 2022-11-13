@@ -1,4 +1,4 @@
-import { Layout, Menu, Typography } from '@arco-design/web-react';
+import { Layout, Menu } from '@arco-design/web-react';
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 
@@ -20,7 +20,7 @@ const settingMenu = [
 
 const Setting: React.FC = () => {
   return (
-    <Layout>
+    <Layout className={styles.container}>
       <Sider>
         <Menu>
           {settingMenu.map((it) => (

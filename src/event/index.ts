@@ -1,17 +1,7 @@
-import Eventemitter from 'eventemitter3';
+import EventManager from '@/utils/event-manager';
 
 export enum EventType {
   OPEN_SETTING_MODAL = 'OPEN_SETTING_MODAL',
 }
 
-type EventTypes = {
-  // 打开设置编辑弹窗
-  [EventType.OPEN_SETTING_MODAL]: () => void;
-};
-
-/**
- * 发布订阅
- */
-const pubsub = new Eventemitter<EventTypes>();
-
-export default pubsub;
+export const AppEventManager = new EventManager();
