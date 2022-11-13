@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
 const errorMessage =
-  "matchMedia is not supported, this could happen both because window.matchMedia is not supported by" +
+  'matchMedia is not supported, this could happen both because window.matchMedia is not supported by' +
   " your current browser or you're using the useMediaQuery hook whilst server side rendering.";
 
 /**
@@ -19,22 +19,20 @@ const useMediaQuery = (mediaQuery) => {
     return null;
   }
 
-  const [isVerified, setIsVerified] = useState(
-    !!window.matchMedia(mediaQuery).matches
-  );
+  const [isVerified, setIsVerified] = useState(!!window.matchMedia(mediaQuery).matches);
 
   useEffect(() => {
     const mediaQueryList = window.matchMedia(mediaQuery);
     const documentChangeHandler = () => setIsVerified(!!mediaQueryList.matches);
 
     if (mediaQueryList.addEventListener)
-      mediaQueryList.addEventListener("change", documentChangeHandler);
+      mediaQueryList.addEventListener('change', documentChangeHandler);
     else mediaQueryList.addListener(documentChangeHandler);
 
     documentChangeHandler();
     return () => {
       if (mediaQueryList.removeEventListener)
-        mediaQueryList.removeEventListener("change", documentChangeHandler);
+        mediaQueryList.removeEventListener('change', documentChangeHandler);
       else mediaQueryList.removeListener(documentChangeHandler);
     };
   }, [mediaQuery]);

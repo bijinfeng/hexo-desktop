@@ -14,13 +14,13 @@ class EventManager {
   }
 
   subscribe(name, handler, once = false) {
-    if (!name || !handler) throw new Error("name and handler are required.");
+    if (!name || !handler) throw new Error('name and handler are required.');
     this._registry.set(handler, { name, once });
     return { unsubscribe: () => this.unsubscribe(name, handler) };
   }
 
   subscribeSingle(name, handler) {
-    if (!name || !handler) throw new Error("name and handler are required.");
+    if (!name || !handler) throw new Error('name and handler are required.');
     this._registry.forEach((props, handler) => {
       if (props.name === name) this._registry.delete(handler);
     });
