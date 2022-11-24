@@ -20,10 +20,11 @@
   },
   "dependencies": {
     "@arco-design/web-react": "^2.41.0",
-    "hexo-desktop": "file:electron",
     "ahooks": "^3.7.2",
     "classnames": "^2.3.2",
     "diary": "^0.4.3",
+    "electron-log": "^4.4.8",
+    "electron-store": "^8.1.0",
     "eventemitter3": "^4.0.7",
     "less": "^4.1.3",
     "react-router-dom": "^6.4.2",

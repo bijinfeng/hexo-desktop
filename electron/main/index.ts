@@ -14,13 +14,13 @@ process.env.PUBLIC = app.isPackaged
   ? process.env.DIST
   : join(process.env.DIST_ELECTRON, '../public');
 
-import { app, BrowserWindow, ipcMain, nativeTheme, shell } from 'electron';
+import '../ipc/index';
+
+import { app, BrowserWindow, ipcMain, shell } from 'electron';
 import { release } from 'os';
 import { join } from 'path';
 
-import { getTheme, setTheme } from '../config/theme';
-import { EVENTS } from '../ipc/events';
-import { sendMessageToRenderer } from '../ipc/utils';
+import { listenerThemeChange } from '../ipc/actions/changeAppTheme';
 
 // Disable GPU Acceleration for Windows 7
 if (release().startsWith('6.1')) app.disableHardwareAcceleration();
@@ -40,17 +40,19 @@ const url = process.env.VITE_DEV_SERVER_URL;
 const indexHtml = join(process.env.DIST, 'index.html');
 
 async function createWindow() {
-  setTheme(getTheme());
-
   win = new BrowserWindow({
     title: 'Main window',
+    width: 1024,
+    height: 728,
     icon: join(process.env.PUBLIC, 'favicon.svg'),
     webPreferences: {
       preload,
-      nodeIntegration: true,
-      contextIsolation: false,
+      nodeIntegration: false,
+      contextIsolation: true,
     },
   });
+
+  global.win = win;
 
   if (app.isPackaged) {
     win.loadFile(indexHtml);
@@ -70,20 +72,14 @@ async function createWindow() {
     return { action: 'deny' };
   });
 
-  // theme
-  nativeTheme.on('updated', () => {
-    if (getTheme() === 'system') {
-      sendMessageToRenderer(EVENTS.themeChanged, {
-        theme: nativeTheme.shouldUseDarkColors ? 'dark' : 'light',
-      });
-    }
-  });
+  listenerThemeChange();
 }
 
 app.whenReady().then(createWindow);
 
 app.on('window-all-closed', () => {
   win = null;
+  global.win = null;
   if (process.platform !== 'darwin') app.quit();
 });
 

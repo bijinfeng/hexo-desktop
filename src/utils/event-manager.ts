@@ -1,4 +1,6 @@
 class EventManager {
+  private _registry: Map<any, any>;
+
   constructor() {
     this._registry = new Map();
   }

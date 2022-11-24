@@ -1,11 +1,12 @@
 import { app } from 'electron';
+import logger from 'electron-log';
 import { isAbsolute, join } from 'path';
-
-import { logger } from '../logger';
 
 function sendMessageToRenderer(type, payload = {}) {
   const message = { type, ...payload };
+
   logger.info('Sending message to renderer', message);
+
   if (global.win) global.win.webContents.send('fromMain', message);
 }
 

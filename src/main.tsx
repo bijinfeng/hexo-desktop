@@ -1,5 +1,4 @@
-import './samples/node-api';
-import 'styles/index.css';
+import './commands/index';
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';

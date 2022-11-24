@@ -1,20 +1,16 @@
 import { Card, Checkbox, Radio, Space, Typography } from '@arco-design/web-react';
-import { useMount } from 'ahooks';
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 
 import RadioCard from '@/components/radio-card';
 import ThemeIllus from '@/components/theme-illus';
-
-type Theme = 'light' | 'dark';
+import { GlobalContext } from '@/context/GlobalContext';
 
 const Basic: React.FC = () => {
-  const [theme, setTheme] = useState<Theme>('light');
+  const { theme, isSystemTheme, updateTheme } = useContext(GlobalContext);
 
-  useMount(async () => {
-    const isDarkMode = await window.darkMode.toggle();
-    console.log(isDarkMode);
-    setTheme(isDarkMode ? 'dark' : 'light');
-  });
+  const systemThemeChange = (bol: boolean) => {
+    updateTheme(bol ? 'system' : theme);
+  };
 
   return (
     <>
@@ -25,7 +21,7 @@ const Basic: React.FC = () => {
       </Card>
       <Card title="设置主题" bordered={false}>
         <Space direction="vertical" size="medium">
-          <Checkbox>
+          <Checkbox checked={isSystemTheme} onChange={systemThemeChange}>
             <Space direction="vertical" size="mini">
               <Typography.Text bold>跟随系统</Typography.Text>
               <Typography.Text type="secondary">
@@ -33,7 +29,7 @@ const Basic: React.FC = () => {
               </Typography.Text>
             </Space>
           </Checkbox>
-          <Radio.Group value={theme} onChange={setTheme}>
+          <Radio.Group value={theme} onChange={updateTheme}>
             <RadioCard label="浅色" value="light">
               <ThemeIllus.LightTheme />
             </RadioCard>
