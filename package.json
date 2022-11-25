@@ -20,6 +20,8 @@
   },
   "dependencies": {
     "@arco-design/web-react": "^2.41.0",
+    "@bytemd/plugin-gfm": "^1.17.4",
+    "@bytemd/react": "^1.17.4",
     "ahooks": "^3.7.2",
     "classnames": "^2.3.2",
     "diary": "^0.4.3",

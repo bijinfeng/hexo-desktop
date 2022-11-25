@@ -1,4 +1,5 @@
 import './commands/index';
+import './assets/styles/index.css';
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';

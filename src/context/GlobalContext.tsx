@@ -3,6 +3,7 @@ import { createContext, useCallback, useEffect, useState } from 'react';
 
 import { invokeCommand } from '@/commands/index';
 import { AppEventManager } from '@/event';
+import changeTheme from '@/utils/changeTheme';
 
 export type Theme = 'light' | 'dark';
 export type ThemeEnum = 'light' | 'dark' | 'system';
@@ -17,7 +18,12 @@ export const GlobalContext = createContext<GlobalContextState>({} as GlobalConte
 
 export const GlobalContextProvider = ({ children }: PropsWithChildren) => {
   const [isSystemTheme, setIsSystemTheme] = useState(false);
-  const [theme, setTheme] = useState<Theme>('light');
+  const [theme, _setTheme] = useState<Theme>('light');
+
+  const setTheme = useCallback((t: Theme) => {
+    changeTheme(t);
+    _setTheme(t);
+  }, []);
 
   useEffect(() => {
     function onThemeChanged({ theme, system }: { theme: Theme; system: boolean }) {
