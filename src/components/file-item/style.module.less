@@ -1,0 +1,35 @@
+.file-item {
+  padding: 15px 8px !important;
+
+  &:hover {
+    .more {
+      display: inline-flex;
+    }
+  }
+
+  .top {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .title {
+    color: var(--color-text-2);
+    line-height: 20px;
+    font-size: 14px;
+    margin: 0;
+    flex: 1;
+  }
+
+  .more {
+    display: none;
+  }
+
+  .bottom {
+    color: var(--color-text-3);
+    font-size: 12px;
+    margin-top: 4px;
+    display: flex;
+    gap: 15px;
+  }
+}

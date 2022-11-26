@@ -10,6 +10,8 @@ import cls from 'classnames';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import ResizeTrigger from '@/components/resize-trigger';
+
 import styles from './style.module.less';
 
 const MenuItem = Menu.Item;
@@ -42,15 +44,6 @@ const Slider: React.FC = () => {
     navigate(`/${key}`);
   };
 
-  const TriggerContent = () => (
-    <div className={styles['resizebox-custom-trigger']}>
-      <div
-        className={cls(styles['resizebox-custom-trigger-line'], {
-          [styles['resizebox-custom-trigger-line-active']]: isMoving,
-        })}
-      />
-    </div>
-  );
   return (
     <Layout.Sider
       className={styles['layout-sider']}
@@ -64,7 +57,7 @@ const Slider: React.FC = () => {
         onMoving: handleMoving,
         onMovingStart: () => setIsMoving(true),
         onMovingEnd: () => setIsMoving(false),
-        resizeTriggers: { right: <TriggerContent /> },
+        resizeTriggers: { right: <ResizeTrigger isMoving={isMoving} /> },
       }}
     >
       <Menu onClickMenuItem={onClickMenuItem}>

@@ -1,6 +1,8 @@
 import { ConfigProvider } from '@arco-design/web-react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
+import FileMove from '@/components/file-move';
+
 import { GlobalContextProvider } from './context/GlobalContext';
 import Favorites from './pages/favorites';
 import Layout from './pages/layout';
@@ -26,6 +28,8 @@ const App: React.FC = () => {
             <Route path="/" element={<Navigate to="/notes" replace />} />
           </Route>
         </Routes>
+
+        <FileMove />
       </GlobalContextProvider>
     </ConfigProvider>
   );
