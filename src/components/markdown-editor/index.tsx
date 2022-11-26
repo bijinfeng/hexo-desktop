@@ -1,11 +1,15 @@
 import 'bytemd/dist/index.css';
 
 import { Input } from '@arco-design/web-react';
-import { IconFindReplace, IconMore, IconSwap } from '@arco-design/web-react/icon';
+import { IconFindReplace, IconMore } from '@arco-design/web-react/icon';
 import gfm from '@bytemd/plugin-gfm';
 import { Editor } from '@bytemd/react';
+import cls from 'classnames';
 import React, { useState } from 'react';
 
+import MdSwitch from '@/assets/icons/md-switch.svg';
+import ActionDropdown, { DropItem } from '@/components/action-dropdown';
+import FileTag from '@/components/file-tag';
 import IconButton from '@/components/icon-button';
 
 import styles from './styles.module.less';
@@ -15,6 +19,12 @@ const plugins = [
   // Add more plugins here
 ];
 
+const actions: DropItem[] = [
+  { key: '1', title: '分屏编辑' },
+  { key: '2', title: '所见即所得' },
+  { key: '3', title: '预览模式' },
+];
+
 const MarkdownEditor: React.FC = () => {
   const [value, setValue] = useState('');
 
@@ -22,9 +32,9 @@ const MarkdownEditor: React.FC = () => {
     <div className={styles.wrapper}>
       <div className={styles.header}>
         <Input className={styles.title} />
-        <IconButton>
-          <IconSwap className={styles.icon} />
-        </IconButton>
+        <ActionDropdown drops={actions}>
+          <MdSwitch className={cls('arco-icon', styles.icon)} />
+        </ActionDropdown>
         <IconButton>
           <IconFindReplace className={styles.icon} />
         </IconButton>
@@ -32,7 +42,10 @@ const MarkdownEditor: React.FC = () => {
           <IconMore className={styles.icon} />
         </IconButton>
       </div>
-      <Editor mode={'split'} value={value} plugins={plugins} onChange={setValue} />
+      <FileTag />
+      <div className={styles.editor}>
+        <Editor mode={'split'} value={value} plugins={plugins} onChange={setValue} />
+      </div>
     </div>
   );
 };

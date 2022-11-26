@@ -1,7 +1,8 @@
-import { List, Typography } from '@arco-design/web-react';
+import { List } from '@arco-design/web-react';
 import React from 'react';
 
 import FileAction from '@/components/file-action';
+import FileName from '@/components/file-name';
 
 import styles from './style.module.less';
 
@@ -17,9 +18,7 @@ const FileItem: React.FC<ItemData> = (props) => {
   return (
     <List.Item className={styles['file-item']}>
       <div className={styles.top}>
-        <Typography.Title ellipsis bold heading={6} className={styles.title}>
-          {title}
-        </Typography.Title>
+        <FileName name={title} />
         <FileAction className={styles.more} />
       </div>
       <div className={styles.bottom}>
