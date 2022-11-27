@@ -24,7 +24,6 @@
     "@bytemd/react": "^1.17.4",
     "ahooks": "^3.7.2",
     "classnames": "^2.3.2",
-    "diary": "^0.4.3",
     "electron-log": "^4.4.8",
     "electron-store": "^8.1.0",
     "eventemitter3": "^4.0.7",

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import IconMd from '@/assets/icons/file-md.svg';
+import { ReactComponent as IconMd } from '@/assets/icons/file-md.svg';
 
 import styles from './style.module.less';
 

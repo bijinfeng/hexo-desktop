@@ -32,8 +32,6 @@ const FileTag: React.FC = () => {
         ))}
       </div>
       <Input
-        // eslint-disable-next-line jsx-a11y/no-autofocus
-        autoFocus
         size="mini"
         placeholder="输入后按回车键"
         value={inputValue}

@@ -7,7 +7,7 @@ import { Editor } from '@bytemd/react';
 import cls from 'classnames';
 import React, { useState } from 'react';
 
-import MdSwitch from '@/assets/icons/md-switch.svg';
+import { ReactComponent as MdSwitch } from '@/assets/icons/md-switch.svg';
 import ActionDropdown, { DropItem } from '@/components/action-dropdown';
 import FileTag from '@/components/file-tag';
 import IconButton from '@/components/icon-button';

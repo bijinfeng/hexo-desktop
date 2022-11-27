@@ -14,5 +14,5 @@ export function invokeCommand(type: string, payload = {}) {
 window.api.receive('fromMain', (args) => {
   console.log('fromMain: ', args);
   const { type } = args;
-  AppEventManager.publish(type, args);
+  AppEventManager.emit(type, args);
 });

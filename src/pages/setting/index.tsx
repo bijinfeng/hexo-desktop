@@ -2,7 +2,7 @@ import { Layout, Menu } from '@arco-design/web-react';
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 
-import IconConfig from '@/assets/icons/config.svg';
+import { ReactComponent as IconConfig } from '@/assets/icons/config.svg';
 
 import styles from './style.module.less';
 

@@ -52,6 +52,8 @@ async function createWindow() {
     },
   });
 
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   global.win = win;
 
   if (app.isPackaged) {
@@ -79,6 +81,8 @@ app.whenReady().then(createWindow);
 
 app.on('window-all-closed', () => {
   win = null;
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   global.win = null;
   if (process.platform !== 'darwin') app.quit();
 });

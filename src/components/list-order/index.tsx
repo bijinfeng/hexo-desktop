@@ -2,7 +2,7 @@ import { IconCaretDown } from '@arco-design/web-react/icon';
 import cls from 'classnames';
 import React from 'react';
 
-import OrderRules from '@/assets/icons/order-rules.svg';
+import { ReactComponent as OrderRules } from '@/assets/icons/order-rules.svg';
 import ActionDropdown, { DropItem } from '@/components/action-dropdown';
 
 import styles from './styles.module.less';

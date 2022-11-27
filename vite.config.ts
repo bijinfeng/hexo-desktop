@@ -20,13 +20,10 @@ export default defineConfig({
       styles: path.join(__dirname, 'src/assets/styles'),
     },
   },
-  optimizeDeps: {
-    exclude: ['diary'],
-  },
   plugins: [
     react(),
     vitePluginForArco(),
-    svgr({ exportAsDefault: true }),
+    svgr({ exportAsDefault: false }),
     electron({
       include: ['electron', 'preload'],
       transformOptions: {
@@ -46,7 +43,7 @@ export default defineConfig({
         : undefined,
     }),
     renderer({
-      nodeIntegration: true,
+      nodeIntegration: false,
     }),
   ],
   server: process.env.VSCODE_DEBUG

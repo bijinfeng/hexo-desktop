@@ -11,7 +11,7 @@ const updateThem = (theme: NativeTheme['themeSource']) => {
   setTheme(theme);
 };
 
-export default (args) => {
+export default (args: { theme: NativeTheme['themeSource'] }) => {
   const { theme } = args;
 
   updateThem(theme);

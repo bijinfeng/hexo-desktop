@@ -32,10 +32,10 @@ export const GlobalContextProvider = ({ children }: PropsWithChildren) => {
       setIsSystemTheme(system);
     }
 
-    AppEventManager.subscribe('themeChanged', onThemeChanged);
+    AppEventManager.on('themeChanged', onThemeChanged);
 
     return () => {
-      AppEventManager.unsubscribe('themeChanged', onThemeChanged);
+      AppEventManager.removeListener('themeChanged', onThemeChanged);
     };
   }, []);
 

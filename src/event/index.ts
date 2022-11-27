@@ -1,4 +1,4 @@
-import EventManager from '@/utils/eventManager';
+import EventManager from 'eventemitter3';
 
 export enum EventType {
   OPEN_SETTING_MODAL = 'OPEN_SETTING_MODAL',

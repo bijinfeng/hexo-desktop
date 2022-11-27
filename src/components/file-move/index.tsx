@@ -13,10 +13,10 @@ const FileMove: React.FC = () => {
   useEffect(() => {
     const handleOpen = () => setVisible(true);
 
-    AppEventManager.subscribe(EventType.OPEN_FILE_MOVE_MODAL, handleOpen);
+    AppEventManager.on(EventType.OPEN_FILE_MOVE_MODAL, handleOpen);
 
     return () => {
-      AppEventManager.unsubscribe(EventType.OPEN_FILE_MOVE_MODAL, handleOpen);
+      AppEventManager.removeListener(EventType.OPEN_FILE_MOVE_MODAL, handleOpen);
     };
   }, []);
 
@@ -81,7 +81,7 @@ const FileMove: React.FC = () => {
 };
 
 export const fileMove = () => {
-  AppEventManager.publish(EventType.OPEN_FILE_MOVE_MODAL);
+  AppEventManager.emit(EventType.OPEN_FILE_MOVE_MODAL);
 };
 
 export default FileMove;
