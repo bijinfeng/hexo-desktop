@@ -2,9 +2,9 @@ import type { NativeTheme } from 'electron';
 import { nativeTheme } from 'electron';
 import logger from 'electron-log';
 
-import { EVENTS } from '../../ipc/events';
-import { sendMessageToRenderer } from '../../ipc/utils';
 import { getTheme, setTheme } from '../../utils/store';
+import { EVENTS } from '../events';
+import { sendMessageToRenderer } from '../utils';
 
 const updateThem = (theme: NativeTheme['themeSource']) => {
   nativeTheme.themeSource = theme;

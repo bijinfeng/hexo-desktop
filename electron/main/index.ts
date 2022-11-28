@@ -1,29 +1,18 @@
-// The built directory structure
-//
-// ├─┬ dist-electron
-// │ ├─┬ main
-// │ │ └── index.js    > Electron-Main
-// │ └─┬ preload
-// │   └── index.js    > Preload-Scripts
-// ├─┬ dist
-// │ └── index.html    > Electron-Renderer
-//
 process.env.DIST_ELECTRON = join(__dirname, '../..');
 process.env.DIST = join(process.env.DIST_ELECTRON, '../dist');
 process.env.PUBLIC = app.isPackaged
   ? process.env.DIST
   : join(process.env.DIST_ELECTRON, '../public');
 
-import '../utils/sentry';
-import '../ipc/index';
+import './utils/sentry';
+import './ipc/index';
 
 import { app, BrowserWindow, ipcMain, shell } from 'electron';
 import { release } from 'os';
 import { join } from 'path';
 
-import { listenerThemeChange } from '../ipc/actions/changeAppTheme';
+import { listenerThemeChange } from './ipc/actions/changeAppTheme';
 
-// Disable GPU Acceleration for Windows 7
 if (release().startsWith('6.1')) app.disableHardwareAcceleration();
 
 // Set application name for Windows 10+ notifications
