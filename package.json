@@ -21,7 +21,8 @@
     "postinstall": "electron-builder install-app-deps",
     "build:win": "npm run build && electron-builder --win --config",
     "build:mac": "electron-vite build && electron-builder --mac --config",
-    "build:linux": "electron-vite build && electron-builder --linux --config"
+    "build:linux": "electron-vite build && electron-builder --linux --config",
+    "build:all": "npm run build && electron-builder --config -p always"
   },
   "engines": {
     "node": "^14.18.0 || >=16.0.0"

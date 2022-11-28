@@ -1,7 +1,11 @@
-import changeAppTheme from './changeAppTheme';
+import themeChanged from './changeAppTheme';
+import checkAppVersion from './checkAppVersion';
+import checkForUpdate from './checkForUpdate';
 
 const actions = {
-  themeChanged: changeAppTheme,
+  themeChanged,
+  checkAppVersion,
+  checkForUpdate,
 };
 
 export function getAction(actionName: keyof typeof actions) {
