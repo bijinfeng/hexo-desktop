@@ -14,6 +14,7 @@ process.env.PUBLIC = app.isPackaged
   ? process.env.DIST
   : join(process.env.DIST_ELECTRON, '../public');
 
+import '../utils/sentry';
 import '../ipc/index';
 
 import { app, BrowserWindow, ipcMain, shell } from 'electron';
@@ -77,8 +78,10 @@ async function createWindow() {
   listenerThemeChange();
 }
 
+// 当应用已经加载完成后，创建主窗口
 app.whenReady().then(createWindow);
 
+// 当所有窗口关闭后，应用退出
 app.on('window-all-closed', () => {
   win = null;
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment

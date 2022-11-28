@@ -1,3 +1,4 @@
+import './commands/sentry';
 import './commands/index';
 import './assets/styles/index.css';
 
