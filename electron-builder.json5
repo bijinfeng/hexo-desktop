@@ -3,16 +3,15 @@
  */
 {
   appId: "YourAppID",
-  productName: "YourAppName",
+  productName: "Hexo Desktop",
   copyright: "Copyright © 2022 ${author}",
   asar: true,
   directories: {
-    output: "release/${version}",
-    buildResources: "electron/resources",
+    output: "release",
+    buildResources: "public",
   },
   files: [
-    "dist-electron",
-    "dist"
+    "out"
   ],
   win: {
     target: [
@@ -34,7 +33,7 @@
     artifactName: "${productName}-Mac-${version}-Installer.${ext}",
   },
   linux: {
-    icon: "electron/resources/iconset",
+    icon: "public/iconset",
     target: ["AppImage", "deb"],
     artifactName: "${productName}-Linux-${version}.${ext}",
   },

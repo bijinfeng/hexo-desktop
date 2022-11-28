@@ -1,0 +1,54 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  .header {
+    display: flex;
+    align-items: center;
+    padding: 20px 15px;
+    gap: 15px;
+
+    .title {
+      flex: 1;
+      background-color: transparent;
+      border: none;
+      padding: 0;
+      line-height: 32px;
+      font-size: 20px;
+      font-weight: 500;
+    }
+
+    .icon {
+      font-size: 20px;
+      color: var(--color-text-2);
+    }
+  }
+
+  .editor {
+    flex: 1;
+
+    > div {
+      height: 100%;
+
+      :global {
+        .bytemd {
+          height: 100%;
+          border: none;
+          border-top: 1px solid var(--color-border);
+          background-color: var(--color-bg-1);
+          color: var(--color-text-2);
+
+          .bytemd-toolbar {
+            border-bottom-color: var(--color-border);
+            background-color: transparent;
+          }
+
+          .bytemd-status {
+            border-top-color: var(--color-border);
+          }
+        }
+      }
+    }
+  }
+}
