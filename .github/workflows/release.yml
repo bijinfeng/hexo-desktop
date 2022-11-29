@@ -30,7 +30,7 @@ jobs:
       - name: Build Electron App
         run: yarn run build:all
         env:
-          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Cleanup Artifacts for Windows
@@ -55,4 +55,4 @@ jobs:
         with:
           files: "release/**"
         env:
-          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

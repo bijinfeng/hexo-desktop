@@ -37,4 +37,11 @@
     target: ["AppImage", "deb"],
     artifactName: "${productName}-Linux-${version}.${ext}",
   },
+  publish: [
+    {
+      "provider": "github",
+      "owner": "bijinfeng",
+      "repo": "hexo-desktop"
+    }
+  ]
 }
