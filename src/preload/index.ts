@@ -2,21 +2,24 @@ import { contextBridge, ipcRenderer } from 'electron';
 
 contextBridge.exposeInMainWorld('api', {
   send: (channel: string, data: any) => {
-    // whitelist channels
     const validChannels = ['fromRenderer'];
     if (validChannels.includes(channel)) {
-      ipcRenderer.send('fromRenderer', data);
+      ipcRenderer.send(channel, data);
     }
+  },
+  invoke: (channel: string, data: any): Promise<any> => {
+    const validChannels = ['fromRenderer'];
+    if (validChannels.includes('fromRenderer')) {
+      return ipcRenderer.invoke(channel, data);
+    }
+    return Promise.resolve();
   },
   receive: (channel: string, func: (args: any) => void) => {
     const validChannels = ['fromMain'];
     if (validChannels.includes(channel)) {
       ipcRenderer.removeAllListeners(channel);
       // Deliberately strip event as it includes `sender`
-      ipcRenderer.addListener(channel, (_event, args) => {
-        console.log(channel, args);
-        func(args);
-      });
+      ipcRenderer.addListener(channel, (_event, args) => func(args));
     }
   },
 });

@@ -2,6 +2,7 @@ import { ipcMain } from 'electron';
 import logger from 'electron-log';
 
 import { getAction } from './actions';
+import { getCall } from './calls';
 
 ipcMain.on('fromRenderer', async (_event, args) => {
   logger.info('Action requested by renderer', args);
@@ -15,9 +16,8 @@ ipcMain.on('fromRenderer', async (_event, args) => {
 ipcMain.handle('fromRenderer', async (_event, args) => {
   const { type } = args;
   logger.info('Call requested by renderer', type);
-  // const call = getCall(type);
-  // if (!call) return;
+  const call = getCall(type);
+  if (!call) return;
 
-  // return await call(args, global.win);
-  console.log(type);
+  return await call(args, global.win);
 });

@@ -5,7 +5,7 @@ import { electronApp, is, optimizer } from '@electron-toolkit/utils';
 import { app, BrowserWindow, shell } from 'electron';
 import { join } from 'path';
 
-import { listenerThemeChange } from './ipc/actions/changeAppTheme';
+import { listenerThemeChange } from './utils/theme';
 import { configureAutoUpdater } from './utils/updater';
 
 async function createWindow() {

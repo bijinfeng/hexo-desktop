@@ -30,7 +30,7 @@ const dropList: DropItem[] = [
 
 const ListOrder: React.FC = () => {
   return (
-    <ActionDropdown drops={dropList}>
+    <ActionDropdown drops={dropList} selectedKeys={['1.1', '2.1']} openKeys={['2.1']}>
       <OrderRules className={cls('arco-icon', styles['sort-icon'])} />
       <IconCaretDown className={styles['caret-down-icon']} />
     </ActionDropdown>

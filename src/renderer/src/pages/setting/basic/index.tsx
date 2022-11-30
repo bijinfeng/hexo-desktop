@@ -1,12 +1,15 @@
 import { Card, Checkbox, Radio, Space, Typography } from '@arco-design/web-react';
-import React, { useContext } from 'react';
+import React from 'react';
 
 import RadioCard from '@/components/radio-card';
 import ThemeIllus from '@/components/theme-illus';
-import { GlobalContext } from '@/context/GlobalContext';
+import useTheme from '@/hooks/use-theme';
 
 const Basic: React.FC = () => {
-  const { theme, isSystemTheme, updateTheme } = useContext(GlobalContext);
+  const {
+    theme: { system, theme },
+    updateTheme,
+  } = useTheme();
 
   const systemThemeChange = (bol: boolean) => {
     updateTheme(bol ? 'system' : theme);
@@ -21,7 +24,7 @@ const Basic: React.FC = () => {
       </Card>
       <Card title="设置主题" bordered={false}>
         <Space direction="vertical" size="medium">
-          <Checkbox checked={isSystemTheme} onChange={systemThemeChange}>
+          <Checkbox checked={system} onChange={systemThemeChange}>
             <Space direction="vertical" size="mini">
               <Typography.Text bold>跟随系统</Typography.Text>
               <Typography.Text type="secondary">

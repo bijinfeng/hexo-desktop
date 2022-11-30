@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { invokeCommand } from '@/commands';
+import { sendCommand } from '@/commands';
 import { AppEventManager } from '@/event';
 
 const useUpdater = () => {
@@ -13,14 +13,14 @@ const useUpdater = () => {
 
   useEffect(() => {
     // 给主进程发通知，让主进程告诉我们当前应用的版本是多少
-    invokeCommand('checkAppVersion');
+    sendCommand('checkAppVersion');
     // 接收主进程发来的通知，检测当前应用版本
     AppEventManager.on('version', (params) => {
       setVersion(params.version);
     });
 
     // 给主进程发通知，检测当前应用是否需要更新
-    invokeCommand('checkForUpdate');
+    sendCommand('checkForUpdate');
     // 接收主进程发来的通知，告诉用户当前应用是否需要更新
     AppEventManager.on('updater', (args) => {
       console.log(args);

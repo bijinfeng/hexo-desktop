@@ -6,6 +6,7 @@ import {
   IconSettings,
   IconStar,
 } from '@arco-design/web-react/icon';
+import { find } from 'lodash-es';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -17,6 +18,39 @@ const MenuItem = Menu.Item;
 
 const normalWidth = 200;
 const collapsedWidth = 60;
+
+const sliders = [
+  {
+    key: 'notes',
+    label: '笔记',
+    icon: <IconDriveFile />,
+    router: '/notes',
+  },
+  {
+    key: 'notebooks',
+    label: '我的文件夹',
+    icon: <IconFolder />,
+    router: '/notes',
+  },
+  {
+    key: 'favorites',
+    label: '我的收藏',
+    icon: <IconStar />,
+    router: '/notes',
+  },
+  {
+    key: 'trash',
+    label: '回收站',
+    icon: <IconDelete />,
+    router: '/notes',
+  },
+  {
+    key: 'setting',
+    label: '设置',
+    icon: <IconSettings />,
+    router: '/setting',
+  },
+];
 
 const Slider: React.FC = () => {
   const [isMoving, setIsMoving] = useState(false);
@@ -40,7 +74,8 @@ const Slider: React.FC = () => {
   };
 
   const onClickMenuItem = (key: string) => {
-    navigate(`/${key}`);
+    const target = find(sliders, (it) => it.key === key);
+    target && navigate(target.router);
   };
 
   return (
@@ -60,26 +95,12 @@ const Slider: React.FC = () => {
       }}
     >
       <Menu onClickMenuItem={onClickMenuItem}>
-        <MenuItem key="notes">
-          <IconDriveFile className={styles.icon} />
-          笔记
-        </MenuItem>
-        <MenuItem key="notebooks">
-          <IconFolder className={styles.icon} />
-          我的文件夹
-        </MenuItem>
-        <MenuItem key="favorites">
-          <IconStar className={styles.icon} />
-          我的收藏
-        </MenuItem>
-        <MenuItem key="trash">
-          <IconDelete className={styles.icon} />
-          回收站
-        </MenuItem>
-        <MenuItem key="setting">
-          <IconSettings className={styles.icon} />
-          设置
-        </MenuItem>
+        {sliders.map((item) => (
+          <MenuItem key={item.key}>
+            {React.cloneElement(item.icon, { className: styles.icon })}
+            {item.label}
+          </MenuItem>
+        ))}
       </Menu>
     </Layout.Sider>
   );

@@ -15,7 +15,8 @@ const message = {
 
 // 这里是为了在本地做应用升级测试使用
 if (is.dev) {
-  autoUpdater.updateConfigPath = path.join(__dirname, 'dev-app-update.yml');
+  autoUpdater.forceDevUpdateConfig = true;
+  autoUpdater.updateConfigPath = path.join(__dirname, '../../dev-app-update.yml');
 }
 
 // 主进程跟渲染进程通信
