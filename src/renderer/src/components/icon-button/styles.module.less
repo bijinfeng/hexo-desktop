@@ -1,9 +1,15 @@
 .button {
   padding: 2px;
-  height: auto;
   color: var(--color-text-2);
   border-radius: 4px;
   display: inline-flex;
   align-items: center;
-  border: none !important;
+  justify-content: center;
+  cursor: pointer;
+
+  &:hover,
+  &:active,
+  &.active {
+    background-color: var(--color-fill-3);
+  }
 }

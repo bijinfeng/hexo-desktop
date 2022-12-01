@@ -1,4 +1,4 @@
-import './commands/sentry';
+// import './utils/sentry';
 import './commands/index';
 import './assets/styles/index.css';
 

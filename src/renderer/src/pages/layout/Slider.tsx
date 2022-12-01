@@ -1,29 +1,21 @@
-import { Layout, Menu, ResizeBoxProps } from '@arco-design/web-react';
-import {
-  IconDelete,
-  IconDriveFile,
-  IconFolder,
-  IconSettings,
-  IconStar,
-} from '@arco-design/web-react/icon';
+import cls from 'classnames';
 import { find } from 'lodash-es';
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import ResizeTrigger from '@/components/resize-trigger';
+import { ReactComponent as IconDelete } from '@/assets/icons/slider-delete.svg';
+import { ReactComponent as IconFile } from '@/assets/icons/slider-file.svg';
+import { ReactComponent as IconFolder } from '@/assets/icons/slider-folder.svg';
+import { ReactComponent as IconStar } from '@/assets/icons/slider-start.svg';
+import IconButton from '@/components/icon-button';
 
 import styles from './style.module.less';
-
-const MenuItem = Menu.Item;
-
-const normalWidth = 200;
-const collapsedWidth = 60;
 
 const sliders = [
   {
     key: 'notes',
     label: '笔记',
-    icon: <IconDriveFile />,
+    icon: <IconFile />,
     router: '/notes',
   },
   {
@@ -44,34 +36,16 @@ const sliders = [
     icon: <IconDelete />,
     router: '/notes',
   },
-  {
-    key: 'setting',
-    label: '设置',
-    icon: <IconSettings />,
-    router: '/setting',
-  },
+  // {
+  //   key: 'setting',
+  //   label: '设置',
+  //   icon: <IconSettings />,
+  //   router: '/setting',
+  // },
 ];
 
 const Slider: React.FC = () => {
-  const [isMoving, setIsMoving] = useState(false);
-  const [collapsed, setCollapsed] = useState(false);
-  const [siderWidth, setSiderWidth] = useState(normalWidth);
   const navigate = useNavigate();
-
-  const onCollapse = (collapsed: boolean) => {
-    setCollapsed(collapsed);
-    setSiderWidth(collapsed ? collapsedWidth : normalWidth);
-  };
-
-  const handleMoving: ResizeBoxProps['onMoving'] = (_, { width }) => {
-    if (width > collapsedWidth) {
-      setSiderWidth(width);
-      setCollapsed(!(width > collapsedWidth + 20));
-    } else {
-      setSiderWidth(collapsedWidth);
-      setCollapsed(true);
-    }
-  };
 
   const onClickMenuItem = (key: string) => {
     const target = find(sliders, (it) => it.key === key);
@@ -79,30 +53,19 @@ const Slider: React.FC = () => {
   };
 
   return (
-    <Layout.Sider
-      className={styles['layout-sider']}
-      collapsible
-      onCollapse={onCollapse}
-      collapsed={collapsed}
-      width={siderWidth}
-      trigger={null}
-      resizeBoxProps={{
-        directions: ['right'],
-        onMoving: handleMoving,
-        onMovingStart: () => setIsMoving(true),
-        onMovingEnd: () => setIsMoving(false),
-        resizeTriggers: { right: <ResizeTrigger isMoving={isMoving} /> },
-      }}
-    >
-      <Menu onClickMenuItem={onClickMenuItem}>
+    <div className={styles.slider}>
+      <div className={styles.menu}>
         {sliders.map((item) => (
-          <MenuItem key={item.key}>
-            {React.cloneElement(item.icon, { className: styles.icon })}
-            {item.label}
-          </MenuItem>
+          <IconButton
+            key={item.key}
+            onClick={() => onClickMenuItem(item.key)}
+            className={styles.button}
+          >
+            {React.cloneElement(item.icon, { className: cls('arco-icon', styles.icon) })}
+          </IconButton>
         ))}
-      </Menu>
-    </Layout.Sider>
+      </div>
+    </div>
   );
 };
 

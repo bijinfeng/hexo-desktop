@@ -7,7 +7,7 @@ const useUpdater = () => {
   // 页面上的提示信息
   const [text] = useState('');
   // 当前应用版本信息
-  const [version, setVersion] = useState('0.0.0');
+  const [version, setVersion] = useState('');
   // 当前下载进度
   const [progress] = useState(0);
 

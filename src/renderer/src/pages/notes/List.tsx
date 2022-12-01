@@ -1,9 +1,11 @@
 import { Input, List } from '@arco-design/web-react';
 import { IconSearch } from '@arco-design/web-react/icon';
 import React from 'react';
+import { useRecoilState } from 'recoil';
 
 import FileItem, { ItemData } from '@/components/file-item';
 import ListOrder from '@/components/list-order';
+import { postState } from '@/models/post';
 
 import styles from './styles.module.less';
 
@@ -16,12 +18,16 @@ const data: ItemData[] = [
 ];
 
 const ListSlider: React.FC = () => {
+  const [posts] = useRecoilState(postState);
+
+  console.log(posts);
+
   const renderItem = (item: ItemData, index: number) => {
     return <FileItem key={index} {...item} />;
   };
 
   return (
-    <div>
+    <div className={styles.wrapper}>
       <div className={styles.header}>
         <Input placeholder="搜索笔记" prefix={<IconSearch />} className={styles.round} />
         <ListOrder />

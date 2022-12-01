@@ -8,7 +8,6 @@ import { themeState } from '@/models/theme';
 import Layout from './pages/layout';
 import Notes from './pages/notes';
 import Setting from './pages/setting';
-import SettingBasic from './pages/setting/basic';
 import Trash from './pages/trash';
 
 const App: React.FC = () => {
@@ -23,9 +22,7 @@ const App: React.FC = () => {
         <Route path="/" element={<Layout />}>
           <Route path="notes" element={<Notes />} />
           <Route path="trash" element={<Trash />} />
-          <Route path="setting" element={<Setting />}>
-            <Route path="" element={<SettingBasic />} />
-          </Route>
+          <Route path="setting" element={<Setting />} />
           <Route path="/" element={<Navigate to="/notes" replace />} />
         </Route>
       </Routes>

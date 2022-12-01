@@ -3,8 +3,15 @@
 }
 
 .round {
-  :global(.arco-input-inner-wrapper) {
-    border-radius: 16px;
+  :global {
+    .arco-input-inner-wrapper {
+      border-radius: 16px;
+      background-color: var(--color-fill-3);
+    }
+
+    .arco-input-inner-wrapper.arco-input-inner-wrapper-focus {
+      background-color: var(--color-bg-2);
+    }
   }
 
   svg {
@@ -12,6 +19,10 @@
   }
 }
 
+.wrapper {
+  background-color: var(--color-fill-1);
+  height: 100%;
+}
 
 .header {
   padding: 20px 15px;

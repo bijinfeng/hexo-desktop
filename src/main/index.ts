@@ -11,6 +11,15 @@ import { configureAutoUpdater } from './utils/updater';
 async function createWindow() {
   const mainWindow = new BrowserWindow({
     title: 'Main window',
+    frame: false,
+    titleBarStyle: 'hidden',
+    autoHideMenuBar: true,
+    titleBarOverlay: {
+      height: 40,
+    },
+    minimizable: true,
+    maximizable: true,
+    closable: true,
     width: 1200,
     height: 800,
     icon: join(__dirname, '../../public/favicon.svg'),
