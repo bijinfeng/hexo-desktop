@@ -42,3 +42,9 @@ export interface Models {
   PostTag: PostTag[];
   PostCategory: PostCategory[];
 }
+
+export interface Platform {
+  isMacOS: boolean;
+  isLinux: boolean;
+  isWindows: boolean;
+}

@@ -1,9 +1,11 @@
 import getTheme from './getAppTheme';
+import getPlatform from './getPlatform';
 import getPost from './getPost';
 
 const calls = {
   getTheme,
   getPost,
+  getPlatform,
 };
 
 export const getCall = function getAction(callName: string) {

@@ -3,6 +3,10 @@ body {
   color: var(--color-text-2);
 }
 
+body[arco-theme='dark'] {
+  background-color: var(--color-bg-2);
+}
+
 :root {
   scrollbar-gutter: stable;
 }
