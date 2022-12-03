@@ -13,32 +13,47 @@ import ChangeLog from '@/components/change-log';
 import { useUpdaterStore } from '@/models/updater';
 
 const Update: React.FC = () => {
-  // const [] = useState(false);
+  const [checked, setChecked] = useState(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const { version, downloading, downloadUpdate, upgradeInfo, checkForUpdate } =
+  const { version, upgradeInfo, checkForUpdate, downloadProgress, install } =
     useUpdaterStore();
 
   const handleCheck = async () => {
     setLoading(true);
     const bol = await checkForUpdate();
     setLoading(false);
+    setChecked(true);
     if (!bol) Message.success('当前已是最新版本');
-  };
-
-  const handleInstall = () => {
-    downloadUpdate();
   };
 
   return (
     <Card title="软件更新" bordered={false}>
       <Space direction="vertical" size="large">
         <Space>
-          <Typography.Text bold>当前版本：{version}</Typography.Text>
-          {downloading && (
-            <Progress steps={5} size="small" percent={50} status="success" />
-          )}
           {upgradeInfo ? (
-            <Button size="mini" type="primary" onClick={handleInstall}>
+            <Typography.Text bold>最新版本：{upgradeInfo.version}</Typography.Text>
+          ) : (
+            <Typography.Text bold>
+              {checked ? '当前已是最新版本' : '当前版本'}：{version}
+            </Typography.Text>
+          )}
+
+          {downloadProgress && (
+            <Progress
+              steps={5}
+              size="small"
+              percent={Math.round(downloadProgress.percent)}
+              status="success"
+            />
+          )}
+
+          {upgradeInfo ? (
+            <Button
+              size="mini"
+              type="primary"
+              disabled={!!downloadProgress}
+              onClick={install}
+            >
               安装并更新
             </Button>
           ) : (

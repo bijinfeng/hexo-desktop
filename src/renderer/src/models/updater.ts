@@ -14,30 +14,29 @@ export enum UpdaterMessageEnum {
 
 export interface UpdaterStore {
   version: string;
-  checking: boolean;
-  downloading: boolean;
+  downloaded: boolean;
   upgradeInfo?: { version: string; releaseNotes: string };
-  downloadProgress?: any;
+  downloadProgress?: {
+    bytesPerSecond: number;
+    delta: number;
+    percent: number;
+    total: number;
+    transferred: number;
+  };
   checkForUpdate: () => Promise<boolean>;
-  quitAndInstall: () => void;
-  downloadUpdate: () => void;
+  install: () => Promise<void>;
 }
 
-export const useUpdaterStore = create<UpdaterStore>()((set) => {
+export const useUpdaterStore = create<UpdaterStore>()((set, get) => {
   // 接收主进程发来的通知
   Object.keys(UpdaterMessageEnum).forEach((key) => {
     AppEventManager.on(`updater:${key}`, ({ type, info }) => {
-      if (type === 'updater:checking') {
-        set({ checking: true });
-      } else if (type === 'updater:updateAva') {
-        set({ upgradeInfo: info, checking: false });
-      } else if (type === 'updater:updateNotAva') {
-        set({ checking: false });
+      if (type === 'updater:updateAva') {
+        set({ upgradeInfo: info });
       } else if (type === 'updater:downloading') {
-        console.log(info);
-        set({ downloading: true, downloadProgress: info });
+        set({ downloadProgress: info });
       } else if (type === 'updater:downloaded') {
-        set({ downloading: false });
+        set({ downloadProgress: undefined, downloaded: true });
       }
     });
   });
@@ -49,12 +48,24 @@ export const useUpdaterStore = create<UpdaterStore>()((set) => {
 
   return {
     version: '',
-    checking: false,
-    downloading: false,
-    downloadUpdate: () => {
-      sendCommand('downloadUpdate');
-    },
-    quitAndInstall: () => {
+    downloaded: true,
+    install: async () => {
+      const downloaded = get().downloaded;
+
+      let downloadPromise = Promise.resolve();
+      if (!downloaded) {
+        sendCommand('downloadUpdate');
+        downloadPromise = new Promise((resolve) => {
+          const handle = () => {
+            AppEventManager.removeListener('updater:downloaded', handle);
+            resolve();
+          };
+          AppEventManager.on('updater:downloaded', handle);
+        });
+      }
+
+      await downloadPromise;
+
       sendCommand('quitAndInstall');
     },
     checkForUpdate: () => {
