@@ -1,3 +1,4 @@
+import { Popover } from '@arco-design/web-react';
 import cls from 'classnames';
 import { find } from 'lodash-es';
 import React from 'react';
@@ -36,12 +37,6 @@ const sliders = [
     icon: <IconDelete />,
     router: '/notes',
   },
-  // {
-  //   key: 'setting',
-  //   label: '设置',
-  //   icon: <IconSettings />,
-  //   router: '/setting',
-  // },
 ];
 
 const Slider: React.FC = () => {
@@ -56,13 +51,16 @@ const Slider: React.FC = () => {
     <div className={styles.slider}>
       <div className={styles.menu}>
         {sliders.map((item) => (
-          <IconButton
-            key={item.key}
-            onClick={() => onClickMenuItem(item.key)}
-            className={styles.button}
-          >
-            {React.cloneElement(item.icon, { className: cls('arco-icon', styles.icon) })}
-          </IconButton>
+          <Popover key={item.key} content={item.label} position="right">
+            <IconButton
+              onClick={() => onClickMenuItem(item.key)}
+              className={styles.button}
+            >
+              {React.cloneElement(item.icon, {
+                className: cls('arco-icon', styles.icon),
+              })}
+            </IconButton>
+          </Popover>
         ))}
       </div>
     </div>

@@ -1,11 +1,10 @@
 import { Input, List } from '@arco-design/web-react';
 import { IconSearch } from '@arco-design/web-react/icon';
 import React from 'react';
-import { useRecoilState } from 'recoil';
 
 import FileItem, { ItemData } from '@/components/file-item';
 import ListOrder from '@/components/list-order';
-import { postState } from '@/models/post';
+import { useModelStore } from '@/models/post';
 
 import styles from './styles.module.less';
 
@@ -18,7 +17,7 @@ const data: ItemData[] = [
 ];
 
 const ListSlider: React.FC = () => {
-  const [posts] = useRecoilState(postState);
+  const posts = useModelStore((state) => state.models.Post);
 
   console.log(posts);
 

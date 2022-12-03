@@ -1,9 +1,8 @@
 import { ConfigProvider } from '@arco-design/web-react';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { useRecoilValueLoadable } from 'recoil';
 
 import FileMove from '@/components/file-move';
-import { themeState } from '@/models/theme';
+import { useThemeStore } from '@/models/theme';
 
 import Layout from './pages/layout';
 import Notes from './pages/notes';
@@ -11,10 +10,9 @@ import Setting from './pages/setting';
 import Trash from './pages/trash';
 
 const App: React.FC = () => {
-  const themeLoadable = useRecoilValueLoadable(themeState);
-  const isLoading = themeLoadable.state === 'loading';
+  const { loading } = useThemeStore();
 
-  if (isLoading) return null;
+  if (loading) return null;
 
   return (
     <ConfigProvider>

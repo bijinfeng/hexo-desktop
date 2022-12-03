@@ -29,7 +29,7 @@
     deleteAppDataOnUninstall: false,
   },
   mac: {
-    target: ["dmg"],
+    target: ["default"],
     artifactName: "${productName}-Mac-${version}-Installer.${ext}",
   },
   linux: {

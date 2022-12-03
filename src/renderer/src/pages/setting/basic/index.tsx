@@ -3,13 +3,10 @@ import React from 'react';
 
 import RadioCard from '@/components/radio-card';
 import ThemeIllus from '@/components/theme-illus';
-import useTheme from '@/hooks/use-theme';
+import { useThemeStore } from '@/models/theme';
 
 const Basic: React.FC = () => {
-  const {
-    theme: { system, theme },
-    updateTheme,
-  } = useTheme();
+  const { system, theme, updateTheme } = useThemeStore();
 
   const systemThemeChange = (bol: boolean) => {
     updateTheme(bol ? 'system' : theme);
