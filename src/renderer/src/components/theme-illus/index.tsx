@@ -1,14 +1,6 @@
 const LightTheme = () => (
   <svg width="120" height="60" viewBox="0 0 120 60" fill="none">
-    <rect
-      x="0.5"
-      y="0.5"
-      width="119"
-      height="59"
-      rx="3.5"
-      fill="#F9FAFB"
-      stroke="#ECEFF4"
-    ></rect>
+    <rect x="0.5" y="0.5" width="119" height="59" rx="3.5" fill="#F9FAFB"></rect>
     <circle cx="19" cy="19" r="7" fill="#E1E6ED"></circle>
     <circle cx="19" cy="41" r="7" fill="#E1E6ED"></circle>
     <rect x="30" y="12" width="78" height="14" rx="2" fill="#E1E6ED"></rect>

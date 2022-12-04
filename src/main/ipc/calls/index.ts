@@ -1,3 +1,4 @@
+import getAppConfig from './getAppConfig';
 import getTheme from './getAppTheme';
 import getAppVersion from './getAppVersion';
 import getPlatform from './getPlatform';
@@ -8,6 +9,7 @@ const calls = {
   getPost,
   getPlatform,
   getAppVersion,
+  getAppConfig,
 };
 
 export const getCall = function getAction(callName: string) {

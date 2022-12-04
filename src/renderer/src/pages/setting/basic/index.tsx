@@ -1,21 +1,29 @@
-import { Card, Checkbox, Radio, Space, Typography } from '@arco-design/web-react';
+import { Checkbox, Radio, Space, Typography } from '@arco-design/web-react';
 import React from 'react';
 
 import RadioCard from '@/components/radio-card';
 import ThemeIllus from '@/components/theme-illus';
+import { useConfigStore } from '@/models/config';
 import { useThemeStore } from '@/models/theme';
+
+import Card from '../card';
 
 const Basic: React.FC = () => {
   const { system, theme, updateTheme } = useThemeStore();
+  const { config, update } = useConfigStore();
 
   const systemThemeChange = (bol: boolean) => {
     updateTheme(bol ? 'system' : theme);
   };
 
+  const handleCheck = (checked: boolean) => {
+    update({ openAtLogin: checked });
+  };
+
   return (
     <>
       <Card title="偏好设置" bordered={false}>
-        <Checkbox>
+        <Checkbox checked={config.openAtLogin} onChange={handleCheck}>
           <Typography.Text bold>开机自动启动</Typography.Text>
         </Checkbox>
       </Card>
@@ -29,7 +37,7 @@ const Basic: React.FC = () => {
               </Typography.Text>
             </Space>
           </Checkbox>
-          <Radio.Group value={theme} onChange={updateTheme}>
+          <Radio.Group value={theme} onChange={updateTheme} disabled={system}>
             <RadioCard label="浅色" value="light">
               <ThemeIllus.LightTheme />
             </RadioCard>

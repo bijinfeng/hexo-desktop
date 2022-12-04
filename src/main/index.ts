@@ -1,10 +1,12 @@
 import './utils/sentry';
 import './ipc/index';
+import './utils/openAtLogin';
 
 import { electronApp, is, optimizer } from '@electron-toolkit/utils';
 import { app, BrowserWindow, shell } from 'electron';
 import { join } from 'path';
 
+import { isOpenAsHidden } from './utils/openAtLogin';
 import { listenerThemeChange } from './utils/theme';
 import { configureAutoUpdater } from './utils/updater';
 
@@ -35,7 +37,9 @@ async function createWindow() {
   global.win = mainWindow;
 
   mainWindow.on('ready-to-show', () => {
-    mainWindow.show();
+    if (!isOpenAsHidden()) {
+      mainWindow.show();
+    }
   });
 
   mainWindow.webContents.setWindowOpenHandler((details) => {

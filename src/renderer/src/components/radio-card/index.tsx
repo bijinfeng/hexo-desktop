@@ -9,10 +9,11 @@ interface RadioCardProps {
 
 const RadioCard: React.FC<RadioCardProps> = (props) => {
   const { children, label, value } = props;
+
   return (
     <Radio value={value}>
       {({ checked }) => (
-        <Card hoverable cover={children}>
+        <Card hoverable cover={children} style={{ borderRadius: 4 }}>
           <Radio checked={checked}>
             <Typography.Text bold>{label}</Typography.Text>
           </Radio>

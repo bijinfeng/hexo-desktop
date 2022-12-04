@@ -8,7 +8,7 @@ import { AppEventManager } from '@/event';
 export function sendCommand(type: string, payload = {}) {
   window.api.send('fromRenderer', {
     type,
-    ...payload,
+    payload,
   });
 }
 
@@ -21,7 +21,7 @@ export function sendCommand(type: string, payload = {}) {
 export const invokeCommand = <T>(type: string, payload = {}) => {
   return window.api.invoke<T>('fromRenderer', {
     type,
-    ...payload,
+    payload,
   });
 };
 

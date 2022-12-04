@@ -1,8 +1,12 @@
 import { setStore } from '../../utils/store';
 
-const updatePost = (values: Record<string, any>) => {
-  Object.keys(values).forEach((key) => {
-    setStore(`post.${key}`, values[key]);
+export interface Args {
+  payload: Record<string, any>;
+}
+
+const updatePost = ({ payload }: Args) => {
+  Object.keys(payload).forEach((key) => {
+    setStore(`post.${key}`, payload[key]);
   });
 };
 

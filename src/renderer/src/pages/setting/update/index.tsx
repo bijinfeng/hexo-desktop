@@ -1,6 +1,5 @@
 import {
   Button,
-  Card,
   Checkbox,
   Message,
   Progress,
@@ -10,9 +9,13 @@ import {
 import React, { useState } from 'react';
 
 import ChangeLog from '@/components/change-log';
+import { useConfigStore } from '@/models/config';
 import { useUpdaterStore } from '@/models/updater';
 
+import Card from '../card';
+
 const Update: React.FC = () => {
+  const { config, update } = useConfigStore();
   const [checked, setChecked] = useState(false);
   const [loading, setLoading] = useState<boolean>(false);
   const { version, upgradeInfo, checkForUpdate, downloadProgress, install } =
@@ -24,6 +27,10 @@ const Update: React.FC = () => {
     setLoading(false);
     setChecked(true);
     if (!bol) Message.success('当前已是最新版本');
+  };
+
+  const handleAutoUpdate = (checked: boolean) => {
+    update({ autoUpgrade: checked });
   };
 
   return (
@@ -62,7 +69,9 @@ const Update: React.FC = () => {
             </Button>
           )}
         </Space>
-        <Checkbox>自动安装更新</Checkbox>
+        <Checkbox checked={config.autoUpgrade} onChange={handleAutoUpdate}>
+          自动安装更新
+        </Checkbox>
         {upgradeInfo && <ChangeLog html={upgradeInfo.releaseNotes} />}
       </Space>
     </Card>

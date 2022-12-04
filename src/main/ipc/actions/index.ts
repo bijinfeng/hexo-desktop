@@ -2,6 +2,8 @@ import themeChanged from './changeAppTheme';
 import checkForUpdate from './checkForUpdate';
 import downloadUpdate from './downloadUpdate';
 import quitAndInstall from './quitAndInstall';
+import setOpenAtLogin from './setOpenAtLogin';
+import updateConfig from './updateConfig';
 import updatePost from './updatePost';
 
 const actions = {
@@ -10,6 +12,8 @@ const actions = {
   updatePost,
   quitAndInstall,
   downloadUpdate,
+  updateConfig,
+  setOpenAtLogin,
 };
 
 export function getAction(actionName: keyof typeof actions) {

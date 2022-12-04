@@ -2,35 +2,29 @@
   height: 100%;
 }
 
-.round {
-  :global {
-    .arco-input-inner-wrapper {
-      border-radius: 16px;
-      background-color: var(--color-fill-3);
-    }
-
-    .arco-input-inner-wrapper.arco-input-inner-wrapper-focus {
-      background-color: var(--color-bg-2);
-    }
-  }
-
-  svg {
-    font-size: 16px;
-  }
-}
-
 .wrapper {
-  background-color: var(--color-fill-1);
   height: 100%;
-}
 
-.header {
-  padding: 20px 15px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
+  .header {
+    padding: 20px 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 
-.list {
-  padding: 0 12px;
+    .round {
+      :global {
+        .arco-input-inner-wrapper {
+          border-radius: 16px;
+        }
+      }
+
+      svg {
+        font-size: 16px;
+      }
+    }
+  }
+
+  .list {
+    padding: 0 12px;
+  }
 }
