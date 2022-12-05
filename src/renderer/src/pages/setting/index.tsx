@@ -8,6 +8,7 @@ import { ReactComponent as IconConfig } from '@/assets/icons/config.svg';
 import { ReactComponent as IconUpgrade } from '@/assets/icons/upgrade.svg';
 
 import Basic from './basic';
+import Proxy from './proxy';
 import styles from './style.module.less';
 import Update from './update';
 
@@ -21,6 +22,12 @@ const menus = [
     label: '基本设置',
     icon: <IconConfig />,
     content: Basic,
+  },
+  {
+    key: 'proxy',
+    label: '代理设置',
+    icon: <IconConfig />,
+    content: Proxy,
   },
   {
     key: 'update',

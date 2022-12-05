@@ -1,4 +1,5 @@
 import { List } from '@arco-design/web-react';
+import dayjs from 'dayjs';
 import React from 'react';
 
 import FileAction from '@/components/file-action';
@@ -9,21 +10,24 @@ import styles from './style.module.less';
 export interface ItemData {
   title: string;
   time: string;
-  size: string;
+  type: string;
+  size?: string;
+  onTitleClick?: () => void;
+  onClick?: () => void;
 }
 
 const FileItem: React.FC<ItemData> = (props) => {
-  const { title, time, size } = props;
+  const { title, time, size, type, onTitleClick, onClick } = props;
 
   return (
-    <List.Item className={styles['file-item']}>
+    <List.Item className={styles['file-item']} onClick={onClick}>
       <div className={styles.top}>
-        <FileName name={title} />
+        <FileName name={title} type={type} onClick={onTitleClick} />
         <FileAction className={styles.more} />
       </div>
       <div className={styles.bottom}>
-        <span>{time}</span>
-        <span>{size}</span>
+        <span>{dayjs(time).format('YYYY-MM-DD')}</span>
+        {size && <span>{size}</span>}
       </div>
     </List.Item>
   );

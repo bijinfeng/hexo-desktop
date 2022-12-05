@@ -1,23 +1,36 @@
 // 分类
 export interface CategoryData {
-  _id: string;
+  id: string;
   name: string;
 }
 
 // 标签
 export interface TagData {
-  _id: string;
+  id: string;
   name: string;
 }
 
-export interface PostData {
-  _id: string;
-  _content: string;
-  _tags: { name: string }[];
-  _categories: { name: string }[];
-  title: string;
+export interface FolderGroup {
+  id: string;
+  isFolder: boolean;
+  children?: FolderGroup[];
+}
+
+// 目录
+export interface FolderData {
+  id: string;
+  name: string;
   date: string;
-  source: string;
+  updated?: string;
+}
+
+export interface PostData {
+  id: string;
+  tags: { name: string }[];
+  categories: { name: string }[];
+  title: string;
+  type: string;
+  date: string;
   updated: string;
   content: string;
   excerpt?: string;
@@ -26,13 +39,13 @@ export interface PostData {
 export interface PostCategory {
   post_id: string;
   category_id: string;
-  _id: string;
+  id: string;
 }
 
 export interface PostTag {
   post_id: string;
   tag_id: string;
-  _id: string;
+  id: string;
 }
 
 export interface Models {
@@ -41,6 +54,8 @@ export interface Models {
   Tag: TagData[];
   PostTag: PostTag[];
   PostCategory: PostCategory[];
+  FolderGroup: FolderGroup[];
+  Folder: FolderData[];
 }
 
 export interface Platform {

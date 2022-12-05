@@ -11,6 +11,7 @@ import { ReactComponent as MdSwitch } from '@/assets/icons/md-switch.svg';
 import ActionDropdown, { DropItem } from '@/components/action-dropdown';
 import FileTag from '@/components/file-tag';
 import IconButton from '@/components/icon-button';
+import type { PostData } from '@/interface';
 
 import styles from './styles.module.less';
 
@@ -25,13 +26,17 @@ const actions: DropItem[] = [
   { key: '3', title: '预览模式' },
 ];
 
-const MarkdownEditor: React.FC = () => {
-  const [value, setValue] = useState('');
+interface MarkdownEditorProps {
+  post: PostData;
+}
+
+const MarkdownEditor: React.FC<MarkdownEditorProps> = ({ post }) => {
+  const [value, setValue] = useState(post.content);
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.header}>
-        <Input className={styles.title} />
+        <Input className={styles.title} value={post.title} />
         <ActionDropdown drops={actions}>
           <MdSwitch className={cls('arco-icon', styles.icon)} />
         </ActionDropdown>

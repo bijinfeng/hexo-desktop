@@ -8,6 +8,7 @@ import List from './List';
 import styles from './styles.module.less';
 
 const Trash: React.FC = () => {
+  const [postId, setPostId] = useState<string>();
   const [isMoving, setIsMoving] = useState(false);
 
   return (
@@ -18,7 +19,10 @@ const Trash: React.FC = () => {
         max={0.8}
         min={0.2}
         size={0.25}
-        panes={[<List key="first" />, <Editor key="second" />]}
+        panes={[
+          <List key="first" onEditor={setPostId} />,
+          <Editor key="second" postId={postId} />,
+        ]}
         trigger={<ResizeTrigger isMoving={isMoving} />}
         onMovingStart={() => setIsMoving(true)}
         onMovingEnd={() => setIsMoving(false)}

@@ -1,0 +1,12 @@
+<svg width="20" height="20" viewBox="0 0 20 20">
+  <defs>
+    <linearGradient id="type_folder-a" x1="2.25" y1="18.748" x2="12.205" y2="2.049" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFAF36"></stop>
+      <stop offset="1" stop-color="#FFC960"></stop>
+    </linearGradient>
+  </defs>
+  <path
+    d="M8.064 2.61H3.36A1.11 1.11 0 0 0 2.25 3.721V16.28c0 .613.497 1.11 1.11 1.11h13.28a1.11 1.11 0 0 0 1.11-1.11V5.909a1.11 1.11 0 0 0-1.11-1.11h-5.677a1.11 1.11 0 0 1-.843-.388L8.907 2.998a1.11 1.11 0 0 0-.843-.388z"
+    fill="url(#type_folder-a)"></path>
+  <path d="M12.87 9.235H7.13" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"></path>
+</svg>
