@@ -2,6 +2,10 @@ import { Button, Card, Space } from '@arco-design/web-react';
 import { IconStorage, IconUpload } from '@arco-design/web-react/icon';
 import React from 'react';
 
+import ImageList from '@/components/image-list';
+
+import styles from './style.module.less';
+
 const Attachment: React.FC = () => {
   const TopExtra = (
     <Space>
@@ -14,7 +18,11 @@ const Attachment: React.FC = () => {
     </Space>
   );
 
-  return <Card title="附件管理" bordered={false} extra={TopExtra} />;
+  return (
+    <Card title="附件管理" bordered={false} extra={TopExtra} className={styles.wrapper}>
+      <ImageList />
+    </Card>
+  );
 };
 
 export default Attachment;
