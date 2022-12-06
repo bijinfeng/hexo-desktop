@@ -3,9 +3,7 @@ import {
   FolderData,
   FolderGroup,
   Models,
-  PostCategory,
   PostData,
-  PostTag,
   TagData,
 } from './index';
 
@@ -44,28 +42,12 @@ export const mockCategories: CategoryData[] = [
   },
 ];
 
-export const mockPostCategory: PostCategory[] = [
-  {
-    post_id: 'cl0eyp64y0003hommco9w7pcw',
-    category_id: 'clb37w0b90000ywa34z2kfbd6',
-    id: 'clb37w0bb0001ywa3f1et3b32',
-  },
-];
-
-export const mockPostTag: PostTag[] = [
-  {
-    post_id: 'cl0eyp64y0003hommco9w7pcw',
-    tag_id: 'clb36ar8l000238a3fqun3qgz',
-    id: 'clb36ar8p000538a36wakbey6',
-  },
-];
-
 export const mockPosts: PostData[] = [
   {
     id: 'cl0eyp64y0003hommco9w7pcw',
     content: '# xxxx\n',
-    tags: [{ name: 'React Native' }],
-    categories: [{ name: '前端' }],
+    tags: ['clb36ar8l000238a3fqun3qgz'],
+    categories: ['clb37w0b90000ywa34z2kfbd6'],
     title: '测试文档',
     type: 'md',
     date: '2022-10-18T10:54:46.000Z',
@@ -78,8 +60,6 @@ export const models: Models = {
   Post: mockPosts,
   Category: mockCategories,
   Tag: mockTags,
-  PostTag: mockPostTag,
-  PostCategory: mockPostCategory,
   Folder: mockFolder,
   FolderGroup: mockFolderGroup,
 };

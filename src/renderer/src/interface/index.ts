@@ -26,34 +26,20 @@ export interface FolderData {
 
 export interface PostData {
   id: string;
-  tags: { name: string }[];
-  categories: { name: string }[];
+  tags: string[];
+  categories: string[];
   title: string;
   type: string;
   date: string;
-  updated: string;
   content: string;
+  updated?: string;
   excerpt?: string;
-}
-
-export interface PostCategory {
-  post_id: string;
-  category_id: string;
-  id: string;
-}
-
-export interface PostTag {
-  post_id: string;
-  tag_id: string;
-  id: string;
 }
 
 export interface Models {
   Post: PostData[];
   Category: CategoryData[];
   Tag: TagData[];
-  PostTag: PostTag[];
-  PostCategory: PostCategory[];
   FolderGroup: FolderGroup[];
   Folder: FolderData[];
 }

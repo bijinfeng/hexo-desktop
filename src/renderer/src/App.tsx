@@ -4,6 +4,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import FileMove from '@/components/file-move';
 import { useThemeStore } from '@/models/theme';
 
+import Attachment from './pages/attachment';
 import Layout from './pages/layout';
 import Notes from './pages/notes';
 import Setting from './pages/setting';
@@ -21,6 +22,7 @@ const App: React.FC = () => {
           <Route path="notes" element={<Notes />} />
           <Route path="trash" element={<Trash />} />
           <Route path="setting" element={<Setting />} />
+          <Route path="attachment" element={<Attachment />} />
           <Route path="/" element={<Navigate to="/notes" replace />} />
         </Route>
       </Routes>

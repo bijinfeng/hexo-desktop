@@ -1,4 +1,3 @@
-import { Popover } from '@arco-design/web-react';
 import cls from 'classnames';
 import { find } from 'lodash-es';
 import React from 'react';
@@ -6,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { ReactComponent as IconDelete } from '@/assets/icons/slider-delete.svg';
 import { ReactComponent as IconFile } from '@/assets/icons/slider-file.svg';
-import { ReactComponent as IconFolder } from '@/assets/icons/slider-folder.svg';
+import { ReactComponent as IconImage } from '@/assets/icons/slider-image.svg';
 import { ReactComponent as IconStar } from '@/assets/icons/slider-start.svg';
 import IconButton from '@/components/icon-button';
 
@@ -20,16 +19,16 @@ const sliders = [
     router: '/notes',
   },
   {
-    key: 'notebooks',
-    label: '我的文件夹',
-    icon: <IconFolder />,
-    router: '/notes',
-  },
-  {
     key: 'favorites',
     label: '我的收藏',
     icon: <IconStar />,
     router: '/notes',
+  },
+  {
+    key: 'attachment',
+    label: '我的文件夹',
+    icon: <IconImage />,
+    router: '/attachment',
   },
   {
     key: 'trash',
@@ -51,16 +50,15 @@ const Slider: React.FC = () => {
     <div className={styles.slider}>
       <div className={styles.menu}>
         {sliders.map((item) => (
-          <Popover key={item.key} content={item.label} position="right">
-            <IconButton
-              onClick={() => onClickMenuItem(item.key)}
-              className={styles.button}
-            >
-              {React.cloneElement(item.icon, {
-                className: cls('arco-icon', styles.icon),
-              })}
-            </IconButton>
-          </Popover>
+          <IconButton
+            key={item.key}
+            onClick={() => onClickMenuItem(item.key)}
+            className={styles.button}
+          >
+            {React.cloneElement(item.icon, {
+              className: cls('arco-icon', styles.icon),
+            })}
+          </IconButton>
         ))}
       </div>
     </div>

@@ -4,21 +4,20 @@ import React, { useState } from 'react';
 
 import styles from './style.module.less';
 
-const FileTag: React.FC = () => {
-  const [tags, setTags] = useState(['Tag 1', 'Tag 2', 'Tag 3']);
+interface FileTagProps {
+  tags: string[];
+  addTag: (tag: string) => void;
+  removeTag: (tag: string) => void;
+}
+
+const FileTag: React.FC<FileTagProps> = ({ tags, addTag, removeTag }) => {
   const [inputValue, setInputValue] = useState('');
 
-  const addTag = () => {
+  const handleAddTag = () => {
     if (inputValue) {
-      tags.push(inputValue);
-      setTags(tags);
+      !tags.includes(inputValue) && addTag(inputValue);
       setInputValue('');
     }
-  };
-
-  const removeTag = (removeTag: string) => {
-    const newTags = tags.filter((tag) => tag !== removeTag);
-    setTags(newTags);
   };
 
   return (
@@ -36,8 +35,8 @@ const FileTag: React.FC = () => {
         placeholder="输入后按回车键"
         value={inputValue}
         className={styles.input}
-        onPressEnter={addTag}
-        onBlur={addTag}
+        onPressEnter={handleAddTag}
+        onBlur={handleAddTag}
         onChange={setInputValue}
       />
     </div>

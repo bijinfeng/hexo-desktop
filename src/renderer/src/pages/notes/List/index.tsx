@@ -7,10 +7,10 @@ import type { FolderGroup } from '@/interface';
 import { useModelStore } from '@/models/post';
 
 import styles from '../styles.module.less';
-import { findFolderGroup } from '../utils';
 import BackHead from './back-head';
 import FileItem from './file-item';
 import FolderItem from './folder-item';
+import RightMenu from './right-menu';
 
 interface ListSliderProps {
   onEditor: (id: string) => void;
@@ -19,11 +19,9 @@ interface ListSliderProps {
 const ListSlider: React.FC<ListSliderProps> = ({ onEditor }) => {
   const preFolderId = useRef<string[]>([]);
   const [folderId, setFolderId] = useState<string>();
-  const folderGroup = useModelStore((state) => state.models.FolderGroup);
+  const { findFolderGroup } = useModelStore();
 
-  const group = useMemo(() => {
-    return folderId ? findFolderGroup(folderId, folderGroup) : folderGroup;
-  }, [folderGroup, folderId]);
+  const group = useMemo(() => findFolderGroup(folderId), [folderId]);
 
   const handleInsetFolder = useCallback((id: string) => {
     folderId && preFolderId.current.push(folderId);
@@ -49,13 +47,11 @@ const ListSlider: React.FC<ListSliderProps> = ({ onEditor }) => {
         <ListOrder />
       </div>
       {folderId && <BackHead id={folderId} onBack={handleBack} />}
-      <List
-        className={styles.list}
-        hoverable
-        bordered={false}
-        render={renderItem}
-        dataSource={group}
-      />
+      <RightMenu folderId={folderId}>
+        <div className={styles.list}>
+          <List hoverable bordered={false} render={renderItem} dataSource={group} />
+        </div>
+      </RightMenu>
     </div>
   );
 };

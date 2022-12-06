@@ -81,7 +81,9 @@ const Setting: React.FC = () => {
         >
           {menus.map((it) => (
             <MenuItem key={it.key}>
-              {React.cloneElement(it.icon, { className: cls('arco-icon', styles.icon) })}
+              {React.cloneElement(it.icon, {
+                className: cls('arco-icon', styles.icon),
+              })}
               {it.label}
             </MenuItem>
           ))}

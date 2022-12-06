@@ -38,3 +38,17 @@ body[arco-theme='dark'] {
 ::-webkit-scrollbar-track-piece {
   background: transparent;
 }
+
+.hexo-menu-item {
+  min-width: 130px;
+}
+
+.hexo-menu-item.arco-dropdown-menu-selected {
+  color: var(--color-text-1) !important;
+  background-color: var(--color-fill-2) !important;
+  font-weight: 400 !important;
+}
+
+.hexo-sub-menu {
+  min-width: 130px;
+}

@@ -3,11 +3,11 @@ import cls from 'classnames';
 import React from 'react';
 
 import { ReactComponent as OrderRules } from '@/assets/icons/order-rules.svg';
-import ActionDropdown, { DropItem } from '@/components/action-dropdown';
+import ActionDropdown, { ActionItem } from '@/components/action-dropdown';
 
 import styles from './styles.module.less';
 
-const dropList: DropItem[] = [
+const dropList: ActionItem[] = [
   {
     key: '1',
     title: '列表展示',
@@ -30,7 +30,7 @@ const dropList: DropItem[] = [
 
 const ListOrder: React.FC = () => {
   return (
-    <ActionDropdown drops={dropList} selectedKeys={['1.1', '2.1']} openKeys={['2.1']}>
+    <ActionDropdown actions={dropList} selectedKeys={['1.1', '2.1']} openKeys={['2.1']}>
       <OrderRules className={cls('arco-icon', styles['sort-icon'])} />
       <IconCaretDown className={styles['caret-down-icon']} />
     </ActionDropdown>
