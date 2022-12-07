@@ -34,7 +34,13 @@ export const useUpdaterStore = create<UpdaterStore>()((set, get) => {
       if (type === 'updater:updateAva') {
         set({ upgradeInfo: info });
       } else if (type === 'updater:downloading') {
-        set({ downloadProgress: info });
+        const { downloadProgress, downloaded } = get();
+        if (
+          !downloaded &&
+          (!downloadProgress || info?.percent > downloadProgress?.percent)
+        ) {
+          set({ downloadProgress: info });
+        }
       } else if (type === 'updater:downloaded') {
         set({ downloadProgress: undefined, downloaded: true });
       }
@@ -48,7 +54,7 @@ export const useUpdaterStore = create<UpdaterStore>()((set, get) => {
 
   return {
     version: '',
-    downloaded: true,
+    downloaded: false,
     install: async () => {
       const downloaded = get().downloaded;
 

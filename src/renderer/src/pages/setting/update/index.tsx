@@ -18,7 +18,7 @@ const Update: React.FC = () => {
   const { config, update } = useConfigStore();
   const [checked, setChecked] = useState(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const { version, upgradeInfo, checkForUpdate, downloadProgress, install } =
+  const { version, upgradeInfo, checkForUpdate, downloaded, downloadProgress, install } =
     useUpdaterStore();
 
   const handleCheck = async () => {
@@ -55,13 +55,8 @@ const Update: React.FC = () => {
           )}
 
           {upgradeInfo ? (
-            <Button
-              size="mini"
-              type="primary"
-              disabled={!!downloadProgress}
-              onClick={install}
-            >
-              安装并更新
+            <Button size="mini" type="primary" disabled={!downloaded} onClick={install}>
+              安装并重启
             </Button>
           ) : (
             <Button size="mini" type="primary" loading={loading} onClick={handleCheck}>
