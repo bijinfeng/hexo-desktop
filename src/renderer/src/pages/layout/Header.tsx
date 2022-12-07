@@ -1,4 +1,4 @@
-import { Button, Layout, Popover, Space } from '@arco-design/web-react';
+import { Button, Divider, Layout, Popover, Space } from '@arco-design/web-react';
 import { useRequest } from 'ahooks';
 import cls from 'classnames';
 import React from 'react';
@@ -9,6 +9,7 @@ import { ReactComponent as IconUpgrade } from '@/assets/icons/slider-upgrade.svg
 import { invokeCommand } from '@/commands';
 import ChangeLog from '@/components/change-log';
 import IconButton from '@/components/icon-button';
+import WindowControl from '@/components/window-control';
 import type { Platform } from '@/interface';
 import { useUpdaterStore } from '@/models/updater';
 
@@ -49,16 +50,23 @@ const Header: React.FC = () => {
     <Layout.Header
       className={cls(styles.header, {
         [styles['header-mac']]: data?.isMacOS,
-        [styles['header-windows']]: data?.isWindows,
       })}
     >
       {!loading && (
-        <Space size="medium" className={styles.actions}>
-          {renderUpgradeNotice()}
-          <IconButton onClick={() => navigate('/setting')}>
-            <IconSettings className={cls('arco-icon', styles.icon)} />
-          </IconButton>
-        </Space>
+        <>
+          <Space size="medium" className={styles.actions}>
+            {renderUpgradeNotice()}
+            <IconButton onClick={() => navigate('/setting')}>
+              <IconSettings className={cls('arco-icon', styles.icon)} />
+            </IconButton>
+          </Space>
+          {data?.isWindows && (
+            <>
+              <Divider type="vertical" />
+              <WindowControl />
+            </>
+          )}
+        </>
       )}
     </Layout.Header>
   );

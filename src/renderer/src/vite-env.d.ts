@@ -8,8 +8,14 @@ export interface IElectronAPI {
   receive: (type: 'fromMain', callbak: (data: CommandData) => void) => void;
 }
 
+export interface WindowEvent {
+  set: (eventName: string) => void;
+  get: <T>(eventName: string) => Promise<T>;
+}
+
 declare global {
   interface Window {
     api: IElectronAPI;
+    windowEvent: WindowEvent;
   }
 }

@@ -1,4 +1,4 @@
-import { ipcMain } from 'electron';
+import { BrowserWindow, ipcMain } from 'electron';
 import logger from 'electron-log';
 
 import { getAction } from './actions';
@@ -20,4 +20,32 @@ ipcMain.handle('fromRenderer', async (_event, args) => {
   if (!call) return;
 
   return await call(args, global.win);
+});
+
+ipcMain.on('windowEvent', (event, eventName: string) => {
+  const window = BrowserWindow.fromWebContents(event.sender);
+
+  switch (eventName) {
+    case 'minimize':
+      window?.minimize();
+      break;
+    case 'maximize':
+      window?.isMaximized() ? window.unmaximize() : window?.maximize();
+      break;
+    case 'close':
+      window?.close();
+      break;
+    default:
+      break;
+  }
+});
+
+ipcMain.handle('windowEvent', (event, eventName: string) => {
+  const window = BrowserWindow.fromWebContents(event.sender);
+
+  if (eventName === 'is-maximized') {
+    return window?.isMaximized();
+  }
+
+  return;
 });

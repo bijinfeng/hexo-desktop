@@ -12,7 +12,7 @@ const LayoutContainer: React.FC = () => {
   return (
     <Layout className={styles.layout}>
       <Header />
-      <Layout hasSider className={styles.body}>
+      <Layout hasSider id="hexo-body" className={styles.body}>
         <Slider />
         <Content className={styles.content}>
           <Outlet />

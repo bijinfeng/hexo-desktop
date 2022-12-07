@@ -9,7 +9,7 @@ contextBridge.exposeInMainWorld('api', {
   },
   invoke: (channel: string, data: any): Promise<any> => {
     const validChannels = ['fromRenderer'];
-    if (validChannels.includes('fromRenderer')) {
+    if (validChannels.includes(channel)) {
       return ipcRenderer.invoke(channel, data);
     }
     return Promise.resolve();
@@ -21,5 +21,14 @@ contextBridge.exposeInMainWorld('api', {
       // Deliberately strip event as it includes `sender`
       ipcRenderer.addListener(channel, (_event, args) => func(args));
     }
+  },
+});
+
+contextBridge.exposeInMainWorld('windowEvent', {
+  set: (eventName: string) => {
+    ipcRenderer.send('windowEvent', eventName);
+  },
+  get: (eventName: string) => {
+    return ipcRenderer.invoke('windowEvent', eventName);
   },
 });

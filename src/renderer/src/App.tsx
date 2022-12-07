@@ -16,7 +16,8 @@ const App: React.FC = () => {
   if (loading) return null;
 
   return (
-    <ConfigProvider>
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    <ConfigProvider getPopupContainer={() => document.querySelector('#hexo-body')!}>
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route path="notes" element={<Notes />} />

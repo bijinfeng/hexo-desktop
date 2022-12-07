@@ -2,7 +2,7 @@ import './utils/sentry';
 import './ipc/index';
 import './utils/openAtLogin';
 
-import { electronApp, is, optimizer } from '@electron-toolkit/utils';
+import { electronApp, is, optimizer, platform } from '@electron-toolkit/utils';
 import { app, BrowserWindow, shell } from 'electron';
 import { join } from 'path';
 
@@ -14,14 +14,10 @@ async function createWindow() {
   const mainWindow = new BrowserWindow({
     title: 'Main window',
     frame: false,
-    titleBarStyle: 'hidden',
-    autoHideMenuBar: true,
+    titleBarStyle: platform.isWindows ? 'default' : 'hidden',
     titleBarOverlay: {
       height: 40,
     },
-    minimizable: true,
-    maximizable: true,
-    closable: true,
     width: 1200,
     height: 800,
     icon: join(__dirname, '../../public/favicon.svg'),
