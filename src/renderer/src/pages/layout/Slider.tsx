@@ -8,6 +8,7 @@ import { ReactComponent as IconFile } from '@/assets/icons/slider-file.svg';
 import { ReactComponent as IconImage } from '@/assets/icons/slider-image.svg';
 import { ReactComponent as IconStar } from '@/assets/icons/slider-start.svg';
 import IconButton from '@/components/icon-button';
+import { AppEventManager, EventType } from '@/event';
 
 import styles from './style.module.less';
 
@@ -42,6 +43,7 @@ const Slider: React.FC = () => {
   const navigate = useNavigate();
 
   const onClickMenuItem = (key: string) => {
+    AppEventManager.emit(EventType.CLOSE_SETTING);
     const target = find(sliders, (it) => it.key === key);
     target && navigate(target.router);
   };

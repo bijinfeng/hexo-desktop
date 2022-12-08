@@ -51,6 +51,10 @@ async function createWindow() {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'));
   }
 
+  if (is.dev) {
+    mainWindow.webContents.openDevTools();
+  }
+
   listenerThemeChange();
 }
 

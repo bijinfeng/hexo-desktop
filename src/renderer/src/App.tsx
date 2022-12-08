@@ -7,7 +7,6 @@ import { useThemeStore } from '@/models/theme';
 import Attachment from './pages/attachment';
 import Layout from './pages/layout';
 import Notes from './pages/notes';
-import Setting from './pages/setting';
 import Trash from './pages/trash';
 
 const App: React.FC = () => {
@@ -16,13 +15,11 @@ const App: React.FC = () => {
   if (loading) return null;
 
   return (
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    <ConfigProvider getPopupContainer={() => document.querySelector('#hexo-body')!}>
+    <ConfigProvider>
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route path="notes" element={<Notes />} />
           <Route path="trash" element={<Trash />} />
-          <Route path="setting" element={<Setting />} />
           <Route path="attachment" element={<Attachment />} />
           <Route path="/" element={<Navigate to="/notes" replace />} />
         </Route>

@@ -2,12 +2,13 @@ import { Layout, Menu } from '@arco-design/web-react';
 import { useScroll } from 'ahooks';
 import cls from 'classnames';
 import { isNumber } from 'lodash-es';
-import React, { memo, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { ReactComponent as IconConfig } from '@/assets/icons/config.svg';
 import { ReactComponent as IconUpgrade } from '@/assets/icons/upgrade.svg';
 
 import Basic from './basic';
+import portalHoc from './Portal';
 import Proxy from './proxy';
 import styles from './style.module.less';
 import Update from './update';
@@ -100,4 +101,4 @@ const Setting: React.FC = () => {
   );
 };
 
-export default memo(Setting);
+export default portalHoc(Setting);

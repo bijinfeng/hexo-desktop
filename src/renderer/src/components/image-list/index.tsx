@@ -10,12 +10,16 @@ const srcList = [
   '//p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/8361eeb82904210b4f55fab888fe8416.png~tplv-uwbnlip3yd-webp.webp',
 ];
 
-const ImageList: React.FC = () => {
+export interface ImageListProps {
+  getPopupContainer?: () => HTMLElement;
+}
+
+const ImageList: React.FC<ImageListProps> = ({ getPopupContainer }) => {
   const [current, setCurrent] = useState(0);
 
   return (
     <Space direction="vertical" size="large" className={styles.wrapper}>
-      <Image.PreviewGroup infinite>
+      <Image.PreviewGroup infinite getPopupContainer={getPopupContainer}>
         <Space>
           {srcList.map((src, index) => (
             <Image key={index} src={src} width={200} alt={`lamp${index + 1}`} />

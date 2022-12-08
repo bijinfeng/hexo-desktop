@@ -38,7 +38,7 @@ const Update: React.FC = () => {
       <Space direction="vertical" size="large">
         <Space>
           {upgradeInfo ? (
-            <Typography.Text bold>最新版本：{upgradeInfo.version}</Typography.Text>
+            <Typography.Text bold>发现新版本：{upgradeInfo.version}</Typography.Text>
           ) : (
             <Typography.Text bold>
               {checked ? '当前已是最新版本' : '当前版本'}：{version}
@@ -56,7 +56,7 @@ const Update: React.FC = () => {
 
           {upgradeInfo ? (
             <Button size="mini" type="primary" disabled={!downloaded} onClick={install}>
-              安装并重启
+              重启升级
             </Button>
           ) : (
             <Button size="mini" type="primary" loading={loading} onClick={handleCheck}>

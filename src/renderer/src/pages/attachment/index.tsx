@@ -1,12 +1,14 @@
 import { Button, Card, Space } from '@arco-design/web-react';
 import { IconStorage, IconUpload } from '@arco-design/web-react/icon';
-import React from 'react';
+import React, { useRef } from 'react';
 
 import ImageList from '@/components/image-list';
 
 import styles from './style.module.less';
 
 const Attachment: React.FC = () => {
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
   const TopExtra = (
     <Space>
       <Button icon={<IconStorage />} size="small">
@@ -20,7 +22,9 @@ const Attachment: React.FC = () => {
 
   return (
     <Card title="附件管理" bordered={false} extra={TopExtra} className={styles.wrapper}>
-      <ImageList />
+      <div ref={wrapperRef}>
+        <ImageList getPopupContainer={() => wrapperRef.current!} />
+      </div>
     </Card>
   );
 };
