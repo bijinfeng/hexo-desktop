@@ -1,5 +1,5 @@
-import { Image, Pagination, Space } from '@arco-design/web-react';
-import React, { useState } from 'react';
+import { Image, Space } from '@arco-design/web-react';
+import React from 'react';
 
 import styles from './style.module.less';
 
@@ -15,7 +15,7 @@ export interface ImageListProps {
 }
 
 const ImageList: React.FC<ImageListProps> = ({ getPopupContainer }) => {
-  const [current, setCurrent] = useState(0);
+  // const [current, setCurrent] = useState(0);
 
   return (
     <Space direction="vertical" size="large" className={styles.wrapper}>
@@ -27,14 +27,14 @@ const ImageList: React.FC<ImageListProps> = ({ getPopupContainer }) => {
         </Space>
       </Image.PreviewGroup>
       <div className={styles.bottom}>
-        <Pagination
+        {/* <Pagination
           showTotal
-          total={srcList.length}
+          total={20}
           sizeCanChange
           hideOnSinglePage
           current={current}
           onChange={setCurrent}
-        />
+        /> */}
       </div>
     </Space>
   );

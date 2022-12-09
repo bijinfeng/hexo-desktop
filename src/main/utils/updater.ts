@@ -1,4 +1,5 @@
 import { is } from '@electron-toolkit/utils';
+import logger from 'electron-log';
 import { autoUpdater } from 'electron-updater';
 import path from 'path';
 
@@ -45,8 +46,11 @@ export const quitAndInstall = () => {
 };
 
 export const configureAutoUpdater = () => {
+  autoUpdater.logger = logger;
   // 设置是否自动下载
-  autoUpdater.autoDownload = autoUpgrade;
+  autoUpdater.autoDownload = true;
+  // 在app.quit()后，是否自动将下载下载的更新包更新
+  autoUpdater.autoInstallOnAppQuit = autoUpgrade;
 
   // 检测下载错误
   autoUpdater.on('error', (...args) => {
@@ -61,8 +65,6 @@ export const configureAutoUpdater = () => {
   // 检测到可以更新时
   autoUpdater.on('update-available', (info) => {
     sendUpdateMessage(MessageEnum.updateAva, info);
-
-    if (autoUpgrade) downloadUpdate();
   });
 
   // 检测到不需要更新时

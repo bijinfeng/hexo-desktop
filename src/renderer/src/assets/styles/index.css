@@ -4,7 +4,7 @@ body {
 }
 
 body[arco-theme='dark'] {
-  background-color: var(--color-bg-2);
+  background-color: var(--color-bg-5);
 }
 
 :root {

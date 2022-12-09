@@ -10,9 +10,9 @@ import { useUpdaterStore } from '@/models/updater';
 import styles from './style.module.less';
 
 const UpgradePopover: React.FC = () => {
-  const { upgradeInfo, install } = useUpdaterStore();
+  const { upgradeInfo, quitAndInstall, downloaded } = useUpdaterStore();
 
-  if (!upgradeInfo) return null;
+  if (!upgradeInfo || !downloaded) return null;
 
   return (
     <Popover
@@ -21,7 +21,7 @@ const UpgradePopover: React.FC = () => {
         <Space direction="vertical" size="medium">
           <ChangeLog html={upgradeInfo.releaseNotes} />
           <div className={styles['button-group']}>
-            <Button size="mini" type="text" onClick={install}>
+            <Button size="mini" type="text" onClick={quitAndInstall}>
               重启升级
             </Button>
           </div>

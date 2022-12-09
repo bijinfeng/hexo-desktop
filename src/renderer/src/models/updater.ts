@@ -1,3 +1,4 @@
+import { Message } from '@arco-design/web-react';
 import create from 'zustand';
 
 import { invokeCommand, sendCommand } from '@/commands';
@@ -14,6 +15,8 @@ export enum UpdaterMessageEnum {
 
 export interface UpdaterStore {
   version: string;
+  checking: boolean;
+  checked: boolean;
   downloaded: boolean;
   upgradeInfo?: { version: string; releaseNotes: string };
   downloadProgress?: {
@@ -23,16 +26,21 @@ export interface UpdaterStore {
     total: number;
     transferred: number;
   };
-  checkForUpdate: () => Promise<boolean>;
-  install: () => Promise<void>;
+  checkForUpdate: () => void;
+  quitAndInstall: () => void;
 }
 
 export const useUpdaterStore = create<UpdaterStore>()((set, get) => {
+  let notAvaMessage: () => void;
+
   // 接收主进程发来的通知
   Object.keys(UpdaterMessageEnum).forEach((key) => {
     AppEventManager.on(`updater:${key}`, ({ type, info }) => {
       if (type === 'updater:updateAva') {
-        set({ upgradeInfo: info });
+        set({ upgradeInfo: info, checking: false, checked: true });
+      } else if (type === 'updater:updateNotAva') {
+        notAvaMessage && notAvaMessage();
+        set({ checking: false, checked: true });
       } else if (type === 'updater:downloading') {
         const { downloadProgress, downloaded } = get();
         if (
@@ -55,44 +63,16 @@ export const useUpdaterStore = create<UpdaterStore>()((set, get) => {
   return {
     version: '',
     downloaded: false,
-    install: async () => {
-      const downloaded = get().downloaded;
-
-      let downloadPromise = Promise.resolve();
-      if (!downloaded) {
-        sendCommand('downloadUpdate');
-        downloadPromise = new Promise((resolve) => {
-          const handle = () => {
-            AppEventManager.removeListener('updater:downloaded', handle);
-            resolve();
-          };
-          AppEventManager.on('updater:downloaded', handle);
-        });
-      }
-
-      await downloadPromise;
-
+    checking: false,
+    checked: false,
+    quitAndInstall: async () => {
       sendCommand('quitAndInstall');
     },
     checkForUpdate: () => {
+      notAvaMessage = () => Message.success('当前已是最新版本');
+      set({ checking: true });
       // 给主进程发通知，检测当前应用是否需要更新
       sendCommand('checkForUpdate');
-
-      return new Promise<boolean>((resolve) => {
-        // 有更新
-        const handleUpdateAva = () => {
-          AppEventManager.removeListener('updater:updateAva', handleUpdateAva);
-          resolve(true);
-        };
-        AppEventManager.on('updater:updateAva', handleUpdateAva);
-
-        // 没有更新
-        const handleUpdateNotAva = () => {
-          AppEventManager.removeListener('updater:updateNotAva', handleUpdateNotAva);
-          resolve(false);
-        };
-        AppEventManager.on('updater:updateNotAva', handleUpdateNotAva);
-      });
     },
   };
 });

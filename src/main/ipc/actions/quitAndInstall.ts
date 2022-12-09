@@ -1,3 +1,3 @@
 import { quitAndInstall } from '../../utils/updater';
 
-export default quitAndInstall;
+export default () => quitAndInstall();

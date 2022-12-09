@@ -1,6 +1,5 @@
 import themeChanged from './changeAppTheme';
 import checkForUpdate from './checkForUpdate';
-import downloadUpdate from './downloadUpdate';
 import quitAndInstall from './quitAndInstall';
 import setOpenAtLogin from './setOpenAtLogin';
 import updateConfig from './updateConfig';
@@ -11,7 +10,6 @@ const actions = {
   checkForUpdate,
   updatePost,
   quitAndInstall,
-  downloadUpdate,
   updateConfig,
   setOpenAtLogin,
 };

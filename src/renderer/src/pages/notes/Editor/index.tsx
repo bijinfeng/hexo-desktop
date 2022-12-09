@@ -4,6 +4,7 @@ import MarkdownEditor from '@/components/markdown-editor';
 import { useModelStore } from '@/models/post';
 
 import Empty from './Empty';
+import styles from './style.module.less';
 
 interface EditorProps {
   postId: string;
@@ -30,9 +31,11 @@ const Editor: React.FC<EditorProps> = ({ postId }) => {
 };
 
 const EditorWrapper: React.FC<Partial<EditorProps>> = ({ postId }) => {
-  if (!postId) return <Empty />;
-
-  return <Editor postId={postId} />;
+  return (
+    <div className={styles.wrapper}>
+      {postId ? <Editor postId={postId} /> : <Empty />}
+    </div>
+  );
 };
 
 export default EditorWrapper;
