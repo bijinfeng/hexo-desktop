@@ -1,7 +1,6 @@
 // import './utils/sentry';
 import './commands/index';
 import './assets/styles/index.css';
-import './assets/styles/github-markdown.css';
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';

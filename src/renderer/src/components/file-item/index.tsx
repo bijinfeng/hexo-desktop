@@ -5,8 +5,6 @@ import React from 'react';
 import FileAction from '@/components/file-action';
 import FileName from '@/components/file-name';
 
-import styles from './style.module.less';
-
 export interface ItemData {
   title: string;
   time: string;
@@ -20,12 +18,15 @@ const FileItem: React.FC<ItemData> = (props) => {
   const { title, time, size, type, onTitleClick, onClick } = props;
 
   return (
-    <List.Item className={styles['file-item']} onClick={onClick}>
-      <div className={styles.top}>
+    <List.Item
+      className="group !px-2 !py-[15px] cursor-pointer rounded"
+      onClick={onClick}
+    >
+      <div className="flex items-center	gap-[8px]">
         <FileName name={title} type={type} onClick={onTitleClick} />
-        <FileAction className={styles.more} />
+        <FileAction className="!hidden group-hover:!inline-flex" />
       </div>
-      <div className={styles.bottom}>
+      <div className="flex text-text-3 text-xs mt-1 gap-[15px]">
         <span>{dayjs(time).format('YYYY-MM-DD')}</span>
         {size && <span>{size}</span>}
       </div>

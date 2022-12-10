@@ -9,7 +9,7 @@ const ChangeLog: React.FC<ChangeLogProps> = ({ html }) => {
   return (
     <Space direction="vertical">
       <Typography.Text bold>更新详情</Typography.Text>
-      <article className="markdown-body" dangerouslySetInnerHTML={{ __html: html }} />
+      <article className="prose prose-sm" dangerouslySetInnerHTML={{ __html: html }} />
     </Space>
   );
 };

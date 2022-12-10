@@ -2,7 +2,7 @@
  * @see https://www.electron.build/configuration/configuration
  */
 {
-  appId: "com.electron.${name}",
+  appId: "com.desktop.hexo",
   productName: "Hexo Desktop",
   copyright: "Copyright © 2022 ${author}",
   asar: true,

@@ -73,7 +73,7 @@ const FileMove: React.FC = () => {
         <span>移动到:</span>
         <span className={styles.path}></span>
       </div>
-      <Card className={styles.card}>
+      <Card className="rounded">
         <Tree treeData={treeData}></Tree>
       </Card>
     </Modal>
