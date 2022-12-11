@@ -42,7 +42,7 @@ export const downloadUpdate = () => {
 
 // 退出并安装应用
 export const quitAndInstall = () => {
-  autoUpdater.quitAndInstall();
+  autoUpdater.quitAndInstall(true, true);
 };
 
 export const configureAutoUpdater = () => {

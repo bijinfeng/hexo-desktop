@@ -5,7 +5,6 @@ import ResizeTrigger from '@/components/resize-trigger';
 
 import Editor from './Editor';
 import List from './List';
-import styles from './styles.module.less';
 
 const Trash: React.FC = () => {
   const [postId, setPostId] = useState<string>();
@@ -14,7 +13,7 @@ const Trash: React.FC = () => {
   return (
     <Suspense>
       <ResizeBox.Split
-        className={styles.container}
+        className="h-full"
         direction="horizontal"
         max={0.8}
         min={0.2}

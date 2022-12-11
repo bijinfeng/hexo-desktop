@@ -37,37 +37,3 @@
   vertical-align: text-bottom;
   color: var(--color-text-2);
 }
-
-.header {
-  -webkit-app-region: drag;
-  height: 40px;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  padding: 0 16px;
-
-  &-mac {
-    padding-left: 70px;
-  }
-
-  &-windows {
-    padding-right: 138px;
-  }
-
-  .actions {
-    -webkit-app-region: no-drag;
-    height: 100%;
-
-    .icon {
-      font-size: 22px;
-    }
-
-    :global {
-      .arco-space-item {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-    }
-  }
-}

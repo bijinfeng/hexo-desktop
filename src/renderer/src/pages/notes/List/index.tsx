@@ -1,7 +1,8 @@
-import { Input, List } from '@arco-design/web-react';
+import { Button, Input, List } from '@arco-design/web-react';
 import { IconSearch } from '@arco-design/web-react/icon';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 
+import { ReactComponent as NoContentIllu } from '@/assets/icons/no-content-illu.svg';
 import ListOrder from '@/components/list-order';
 import type { FolderGroup } from '@/interface';
 import { useModelStore } from '@/models/post';
@@ -19,7 +20,7 @@ interface ListSliderProps {
 const ListSlider: React.FC<ListSliderProps> = ({ onEditor }) => {
   const preFolderId = useRef<string[]>([]);
   const [folderId, setFolderId] = useState<string>();
-  const { findFolderGroup } = useModelStore();
+  const { findFolderGroup, createPost } = useModelStore();
 
   const group = useMemo(() => findFolderGroup(folderId), [folderId]);
 
@@ -40,6 +41,17 @@ const ListSlider: React.FC<ListSliderProps> = ({ onEditor }) => {
     return <FileItem key={item.id} id={item.id} onClick={onEditor} />;
   };
 
+  const renderNoDataElement = () => {
+    return (
+      <div className="flex flex-col w-full h-full items-center justify-center text-[140px]">
+        <NoContentIllu className="opacity-40" />
+        <Button type="primary" onClick={() => createPost(folderId)}>
+          新建笔记
+        </Button>
+      </div>
+    );
+  };
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.header}>
@@ -49,7 +61,15 @@ const ListSlider: React.FC<ListSliderProps> = ({ onEditor }) => {
       {folderId && <BackHead id={folderId} onBack={handleBack} />}
       <RightMenu folderId={folderId}>
         <div className={styles.list}>
-          <List hoverable bordered={false} render={renderItem} dataSource={group} />
+          <List
+            wrapperClassName="h-full"
+            className="h-full"
+            hoverable
+            bordered={false}
+            render={renderItem}
+            noDataElement={renderNoDataElement()}
+            dataSource={group}
+          />
         </div>
       </RightMenu>
     </div>

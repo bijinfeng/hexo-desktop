@@ -2,6 +2,7 @@ import { ConfigProvider } from '@arco-design/web-react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
 import FileMove from '@/components/file-move';
+import UploadModal from '@/components/upload-modal';
 import { useThemeStore } from '@/models/theme';
 
 import Attachment from './pages/attachment';
@@ -26,6 +27,7 @@ const App: React.FC = () => {
       </Routes>
 
       <FileMove />
+      <UploadModal />
     </ConfigProvider>
   );
 };

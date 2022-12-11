@@ -4,7 +4,6 @@ import MarkdownEditor from '@/components/markdown-editor';
 import { useModelStore } from '@/models/post';
 
 import Empty from './Empty';
-import styles from './style.module.less';
 
 interface EditorProps {
   postId: string;
@@ -32,7 +31,7 @@ const Editor: React.FC<EditorProps> = ({ postId }) => {
 
 const EditorWrapper: React.FC<Partial<EditorProps>> = ({ postId }) => {
   return (
-    <div className={styles.wrapper}>
+    <div className="h-full bg-bg-1">
       {postId ? <Editor postId={postId} /> : <Empty />}
     </div>
   );

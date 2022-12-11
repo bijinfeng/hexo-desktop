@@ -1,4 +1,4 @@
-import { Divider, Layout, Space } from '@arco-design/web-react';
+import { Divider, Layout } from '@arco-design/web-react';
 import { useRequest } from 'ahooks';
 import cls from 'classnames';
 import React from 'react';
@@ -11,8 +11,6 @@ import WindowControl from '@/components/window-control';
 import { AppEventManager, EventType } from '@/event';
 import type { Platform } from '@/interface';
 
-import styles from './style.module.less';
-
 const Header: React.FC = () => {
   const { data, loading } = useRequest(() => invokeCommand<Platform>('getPlatform'));
 
@@ -22,25 +20,24 @@ const Header: React.FC = () => {
 
   return (
     <Layout.Header
-      className={cls(styles.header, {
-        [styles['header-mac']]: data?.isMacOS,
+      className={cls('flex items-center justify-end px-4 app-region-drag h-[40px]', {
+        'pl-[70px]': data?.isMacOS,
+        'pr-[10px]': data?.isWindows,
       })}
     >
       {!loading && (
-        <>
-          <Space size="medium" className={styles.actions}>
-            <UpgradePopover />
-            <IconButton onClick={openSetting}>
-              <IconSettings className={cls('arco-icon', styles.icon)} />
-            </IconButton>
-          </Space>
+        <div className="flex items-center app-region-no-drag h-full">
+          <UpgradePopover />
+          <IconButton onClick={openSetting} className="ml-4">
+            <IconSettings className={cls('arco-icon', 'text-[22px]')} />
+          </IconButton>
           {data?.isWindows && (
             <>
               <Divider type="vertical" />
               <WindowControl />
             </>
           )}
-        </>
+        </div>
       )}
     </Layout.Header>
   );

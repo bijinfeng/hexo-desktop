@@ -2,11 +2,9 @@ import React from 'react';
 
 import { ReactComponent as EmptyIllu } from '@/assets/icons/empty-illu.svg';
 
-import styles from './style.module.less';
-
 const Empty: React.FC = () => {
   return (
-    <div className={styles.wrap}>
+    <div className="flex text-[150px] opacity-40 h-full items-center justify-center">
       <EmptyIllu />
     </div>
   );

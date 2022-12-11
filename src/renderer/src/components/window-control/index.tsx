@@ -7,7 +7,7 @@ import { ReactComponent as Minimize } from '@/assets/icons/minimize.svg';
 import { ReactComponent as Restore } from '@/assets/icons/restore.svg';
 import IconButton from '@/components/icon-button';
 
-import styles from './style.module.less';
+const iconClass = 'inline-flex items-center justify-center w-[22px] h-[22px]';
 
 const WindowControl: React.FC = () => {
   const [isMaximize, setIsMaximize] = useState<boolean>(false);
@@ -32,17 +32,17 @@ const WindowControl: React.FC = () => {
   }, []);
 
   return (
-    <Space className={styles.control}>
+    <Space className="inline-flex select-none app-region-no-drag">
       <IconButton onClick={handleMinimize}>
-        <span className={styles.icon}>
+        <span className={iconClass}>
           <Minimize />
         </span>
       </IconButton>
       <IconButton onClick={handleMaximize}>
-        <span className={styles.icon}>{isMaximize ? <Restore /> : <Maximize />}</span>
+        <span className={iconClass}>{isMaximize ? <Restore /> : <Maximize />}</span>
       </IconButton>
       <IconButton onClick={handleClose}>
-        <span className={styles.icon}>
+        <span className={iconClass}>
           <Close />
         </span>
       </IconButton>
