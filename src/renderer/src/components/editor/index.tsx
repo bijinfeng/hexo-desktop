@@ -1,10 +1,5 @@
-import 'bytemd/dist/index.css';
-
 import { Input } from '@arco-design/web-react';
 import { IconFindReplace, IconMore } from '@arco-design/web-react/icon';
-import gfm from '@bytemd/plugin-gfm';
-import { Editor } from '@bytemd/react';
-import cls from 'classnames';
 import React from 'react';
 
 import { ReactComponent as MdSwitch } from '@/assets/icons/md-switch.svg';
@@ -13,12 +8,7 @@ import FileTag from '@/components/file-tag';
 import IconButton from '@/components/icon-button';
 import type { PostData } from '@/interface';
 
-import styles from './styles.module.less';
-
-const plugins = [
-  gfm(),
-  // Add more plugins here
-];
+import Markdown from './markdown';
 
 const actions: ActionItem[] = [
   { key: '1', title: '分屏编辑' },
@@ -39,28 +29,26 @@ const MarkdownEditor: React.FC<MarkdownEditorProps> = (props) => {
   const { post, postTags, addTag, removeTag, onTitleChange, onContentChange } = props;
 
   return (
-    <div className={styles.wrapper}>
-      <div className={styles.header}>
-        <Input className={styles.title} value={post.title} onChange={onTitleChange} />
+    <div className="flex flex-col h-full">
+      <div className="flex items-center gap-[15px] py-[20px] px-[15px]">
+        <Input
+          className="flex-1 !bg-transparent !border-none !p-0 !leading-[32px] !text-[20px] font-medium"
+          value={post.title}
+          onChange={onTitleChange}
+        />
         <ActionDropdown actions={actions}>
-          <MdSwitch className={cls('arco-icon', styles.icon)} />
+          <MdSwitch className="arco-icon" fontSize={22} />
         </ActionDropdown>
         <IconButton>
-          <IconFindReplace className={styles.icon} />
+          <IconFindReplace fontSize={22} />
         </IconButton>
         <IconButton>
-          <IconMore className={styles.icon} />
+          <IconMore fontSize={22} />
         </IconButton>
       </div>
       <FileTag tags={postTags} addTag={addTag} removeTag={removeTag} />
-      <div className={styles.editor}>
-        <Editor
-          key={post.id}
-          mode={'split'}
-          value={post.content}
-          plugins={plugins}
-          onChange={onContentChange}
-        />
+      <div className="flex-1">
+        <Markdown value={post.content} onChange={onContentChange} />
       </div>
     </div>
   );

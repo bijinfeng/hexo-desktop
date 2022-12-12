@@ -3,6 +3,7 @@ module.exports = {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     colors: {
+      transparent: 'transparent',
       primary: {
         1: 'var(--primary-1)',
         2: 'var(--primary-2)',
@@ -31,12 +32,7 @@ module.exports = {
         3: 'var(--color-fill-3)',
         4: 'var(--color-fill-4)',
       },
-      border: {
-        1: 'var(--color-border-1)',
-        2: 'var(--color-border-2)',
-        3: 'var(--color-border-3)',
-        4: 'var(--color-border-4)',
-      },
+      border: 'var(--color-border)',
     },
     extend: {
       typography: {

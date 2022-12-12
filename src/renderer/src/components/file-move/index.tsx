@@ -5,8 +5,6 @@ import React, { useEffect, useState } from 'react';
 import FileName from '@/components/file-name';
 import { AppEventManager, EventType } from '@/event';
 
-import styles from './style.module.less';
-
 const FileMove: React.FC = () => {
   const [visible, setVisible] = useState(false);
 
@@ -69,9 +67,9 @@ const FileMove: React.FC = () => {
       onCancel={() => setVisible(false)}
     >
       <FileName name="无标题Markdown.md" />
-      <div className={styles.target}>
+      <div className="flex my-[16px] items-center gap-[8px]">
         <span>移动到:</span>
-        <span className={styles.path}></span>
+        <span className="flex-1 px-[16px] leading-[32px] h-[32px] bg-fill-1 rounded"></span>
       </div>
       <Card className="rounded">
         <Tree treeData={treeData}></Tree>

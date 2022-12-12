@@ -28,7 +28,7 @@ const Attachment: React.FC = () => {
       title="附件管理"
       bordered={false}
       extra={TopExtra}
-      className="relative h-full bg-transparent"
+      className="relative h-full !bg-transparent"
     >
       <div ref={wrapperRef}>
         <ImageList getPopupContainer={() => wrapperRef.current!} />

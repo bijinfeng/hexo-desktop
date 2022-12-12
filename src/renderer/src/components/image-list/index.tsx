@@ -1,8 +1,6 @@
 import { Image, Space } from '@arco-design/web-react';
 import React from 'react';
 
-import styles from './style.module.less';
-
 const srcList = [
   '//p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/a8c8cdb109cb051163646151a4a5083b.png~tplv-uwbnlip3yd-webp.webp',
   '//p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/e278888093bef8910e829486fb45dd69.png~tplv-uwbnlip3yd-webp.webp',
@@ -18,7 +16,7 @@ const ImageList: React.FC<ImageListProps> = ({ getPopupContainer }) => {
   // const [current, setCurrent] = useState(0);
 
   return (
-    <Space direction="vertical" size="large" className={styles.wrapper}>
+    <Space direction="vertical" size="large" className="w-full">
       <Image.PreviewGroup infinite getPopupContainer={getPopupContainer}>
         <Space>
           {srcList.map((src, index) => (
@@ -26,7 +24,7 @@ const ImageList: React.FC<ImageListProps> = ({ getPopupContainer }) => {
           ))}
         </Space>
       </Image.PreviewGroup>
-      <div className={styles.bottom}>
+      <div className="flex justify-end">
         {/* <Pagination
           showTotal
           total={20}

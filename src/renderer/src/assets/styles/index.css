@@ -65,3 +65,7 @@ body[arco-theme='dark'] {
 .hexo-sub-menu {
   min-width: 130px;
 }
+
+.hexo-sub-menu.arco-dropdown-menu-selected {
+  font-weight: 400 !important;
+}

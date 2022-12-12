@@ -1,11 +1,8 @@
 import { IconCaretDown } from '@arco-design/web-react/icon';
-import cls from 'classnames';
 import React from 'react';
 
 import { ReactComponent as OrderRules } from '@/assets/icons/order-rules.svg';
 import ActionDropdown, { ActionItem } from '@/components/action-dropdown';
-
-import styles from './styles.module.less';
 
 const dropList: ActionItem[] = [
   {
@@ -31,8 +28,8 @@ const dropList: ActionItem[] = [
 const ListOrder: React.FC = () => {
   return (
     <ActionDropdown actions={dropList} selectedKeys={['1.1', '2.1']} openKeys={['2.1']}>
-      <OrderRules className={cls('arco-icon', styles['sort-icon'])} />
-      <IconCaretDown className={styles['caret-down-icon']} />
+      <OrderRules className="arco-icon text-[20px] !text-text-2 !stroke-none" />
+      <IconCaretDown fontSize={11} className="!text-text-2" />
     </ActionDropdown>
   );
 };

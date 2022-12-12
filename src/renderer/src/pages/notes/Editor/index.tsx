@@ -1,6 +1,6 @@
 import React from 'react';
 
-import MarkdownEditor from '@/components/markdown-editor';
+import Editors from '@/components/editor';
 import { useModelStore } from '@/models/post';
 
 import Empty from './Empty';
@@ -18,7 +18,7 @@ const Editor: React.FC<EditorProps> = ({ postId }) => {
   if (!post) return <Empty />;
 
   return (
-    <MarkdownEditor
+    <Editors
       post={post}
       postTags={postTags}
       addTag={(tag) => addPostTag(postId, tag)}
