@@ -19,6 +19,7 @@ const Editor: React.FC<EditorProps> = ({ postId }) => {
 
   return (
     <Editors
+      key={postId}
       post={post}
       postTags={postTags}
       addTag={(tag) => addPostTag(postId, tag)}

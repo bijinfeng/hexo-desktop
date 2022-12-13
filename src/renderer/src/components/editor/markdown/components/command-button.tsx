@@ -1,6 +1,6 @@
 import { Tooltip } from '@arco-design/web-react';
 import { CoreIcon, isString } from '@remirror/core';
-import React, { FC, MouseEvent, MouseEventHandler, ReactNode, useCallback } from 'react';
+import React, { FC, MouseEventHandler, ReactNode, useCallback } from 'react';
 
 import IconButton from '@/components/icon-button';
 
@@ -45,16 +45,7 @@ const CommandButton: React.FC<CommandButtonProps> = ({
   displayShortcut = true,
   'aria-label': ariaLabel,
   label,
-  ...rest
 }) => {
-  const handleChange = useCallback(
-    (e: MouseEvent<HTMLElement>, value: any) => {
-      onSelect();
-      // onChange?.(e, value);
-    },
-    [onSelect],
-  );
-
   const handleMouseDown: MouseEventHandler<HTMLButtonElement> = useCallback((e) => {
     e.preventDefault();
   }, []);
@@ -81,6 +72,7 @@ const CommandButton: React.FC<CommandButtonProps> = ({
         disabled={!enabled}
         active={active}
         onMouseDown={handleMouseDown}
+        onClick={onSelect}
       >
         <ButtonIcon icon={icon ?? fallbackIcon} />
       </IconButton>

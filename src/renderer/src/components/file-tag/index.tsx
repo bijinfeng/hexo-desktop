@@ -8,14 +8,6 @@ interface FileTagProps {
   removeTag: (tag: string) => void;
 }
 
-// .tags {
-//   overflow-x: overlay;
-
-//   ::-webkit-scrollbar {
-//     height: 3px;
-//   }
-// }
-
 const FileTag: React.FC<FileTagProps> = ({ tags, addTag, removeTag }) => {
   const [inputValue, setInputValue] = useState('');
 
@@ -29,7 +21,7 @@ const FileTag: React.FC<FileTagProps> = ({ tags, addTag, removeTag }) => {
   return (
     <div className="flex items-center gap-[10px] px-[15px] border-t border-t-border">
       <IconSubscribed fontSize={18} />
-      <div className="flex gap-[10px] py-[5px] shrink">
+      <div className="flex gap-[10px] py-[5px] shrink overflow-x-overlay webkit-scrollbar-h-3">
         {tags.map((tag) => (
           <Tag key={tag} closable onClose={() => removeTag(tag)}>
             {tag}

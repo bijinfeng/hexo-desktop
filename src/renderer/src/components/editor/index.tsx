@@ -47,7 +47,7 @@ const MarkdownEditor: React.FC<MarkdownEditorProps> = (props) => {
         </IconButton>
       </div>
       <FileTag tags={postTags} addTag={addTag} removeTag={removeTag} />
-      <div className="flex-1">
+      <div className="flex-1 overflow-hidden">
         <Markdown value={post.content} onChange={onContentChange} />
       </div>
     </div>

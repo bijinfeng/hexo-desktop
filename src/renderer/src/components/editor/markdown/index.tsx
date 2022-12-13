@@ -1,7 +1,15 @@
 import 'remirror/styles/all.css';
 
-import { EditorComponent, Remirror, ThemeProvider, useRemirror } from '@remirror/react';
-import React from 'react';
+import {
+  EditorComponent,
+  Remirror,
+  RemirrorProps,
+  ThemeProvider,
+  useRemirror,
+} from '@remirror/react';
+import cls from 'classnames';
+import { debounce } from 'lodash-es';
+import React, { useCallback } from 'react';
 import jsx from 'refractor/lang/jsx.js';
 import typescript from 'refractor/lang/typescript.js';
 import { ExtensionPriority } from 'remirror';
@@ -12,7 +20,6 @@ import {
   CalloutExtension,
   CodeBlockExtension,
   CodeExtension,
-  DocExtension,
   HardBreakExtension,
   HeadingExtension,
   ItalicExtension,
@@ -28,6 +35,7 @@ import {
 } from 'remirror/extensions';
 
 import Menu from './components/menu';
+import styles from './style.module.less';
 
 const extensions = () => [
   new LinkExtension({ autoLink: true }),
@@ -67,10 +75,18 @@ const MarkdownEditor: React.FC<MarkdownEditorProps> = ({ value, onChange }) => {
     stringHandler: 'markdown',
   });
 
+  const handleChange = useCallback(
+    debounce<Required<RemirrorProps>['onChange']>((parameter) => {
+      const markdownText = parameter.helpers.getMarkdown(parameter.state);
+      onChange(markdownText);
+    }, 300),
+    [],
+  );
+
   return (
-    <div className="flex flex-col">
-      <ThemeProvider>
-        <Remirror manager={manager} initialContent={state}>
+    <div className={cls('h-full', styles.wrapper)}>
+      <ThemeProvider theme={{ color: { text: 'var(--color-text-1)' } }}>
+        <Remirror manager={manager} initialContent={state} onChange={handleChange}>
           <Menu />
           <EditorComponent />
         </Remirror>
