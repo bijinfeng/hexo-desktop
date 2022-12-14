@@ -1,20 +1,14 @@
 import { Input } from '@arco-design/web-react';
 import { IconFindReplace, IconMore } from '@arco-design/web-react/icon';
-import React from 'react';
+import React, { useState } from 'react';
 
-import { ReactComponent as MdSwitch } from '@/assets/icons/md-switch.svg';
-import ActionDropdown, { ActionItem } from '@/components/action-dropdown';
+import ActionDropdown from '@/components/action-dropdown';
 import FileTag from '@/components/file-tag';
 import IconButton from '@/components/icon-button';
 import type { PostData } from '@/interface';
 
+import { EditorActions, editorActions } from './const';
 import Markdown from './markdown';
-
-const actions: ActionItem[] = [
-  { key: '1', title: '分屏编辑' },
-  { key: '2', title: '所见即所得' },
-  { key: '3', title: '预览模式' },
-];
 
 interface MarkdownEditorProps {
   post: PostData;
@@ -27,6 +21,13 @@ interface MarkdownEditorProps {
 
 const MarkdownEditor: React.FC<MarkdownEditorProps> = (props) => {
   const { post, postTags, addTag, removeTag, onTitleChange, onContentChange } = props;
+  const [showTag, setShowTag] = useState<boolean>(false);
+
+  const handleAction = (key: string) => {
+    if (key === EditorActions.ADD_TAG) {
+      setShowTag(true);
+    }
+  };
 
   return (
     <div className="flex flex-col h-full">
@@ -36,17 +37,21 @@ const MarkdownEditor: React.FC<MarkdownEditorProps> = (props) => {
           value={post.title}
           onChange={onTitleChange}
         />
-        <ActionDropdown actions={actions}>
-          <MdSwitch className="arco-icon" fontSize={22} />
-        </ActionDropdown>
         <IconButton>
           <IconFindReplace fontSize={22} />
         </IconButton>
-        <IconButton>
+        <ActionDropdown actions={editorActions} onClickMenuItem={handleAction}>
           <IconMore fontSize={22} />
-        </IconButton>
+        </ActionDropdown>
       </div>
-      <FileTag tags={postTags} addTag={addTag} removeTag={removeTag} />
+      {showTag && (
+        <FileTag
+          tags={postTags}
+          addTag={addTag}
+          removeTag={removeTag}
+          onClose={() => setShowTag(false)}
+        />
+      )}
       <div className="flex-1 overflow-hidden">
         <Markdown value={post.content} onChange={onContentChange} />
       </div>
