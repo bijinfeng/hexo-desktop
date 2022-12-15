@@ -33,6 +33,7 @@ const FileTag: React.FC<FileTagProps> = ({ tags, addTag, removeTag, onClose }) =
           ))}
         </div>
         <Input
+          autoFocus={true}
           size="mini"
           placeholder="输入后按回车键"
           value={inputValue}

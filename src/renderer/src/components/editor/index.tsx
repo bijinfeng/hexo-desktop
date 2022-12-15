@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import ActionDropdown from '@/components/action-dropdown';
 import FileTag from '@/components/file-tag';
 import IconButton from '@/components/icon-button';
+import { AppEventManager, EventType } from '@/event';
 import type { PostData } from '@/interface';
 
 import { EditorActions, editorActions } from './const';
@@ -37,7 +38,7 @@ const MarkdownEditor: React.FC<MarkdownEditorProps> = (props) => {
           value={post.title}
           onChange={onTitleChange}
         />
-        <IconButton>
+        <IconButton onClick={() => AppEventManager.emit(EventType.VISIBLE_FILE_SEARCH)}>
           <IconFindReplace fontSize={22} />
         </IconButton>
         <ActionDropdown actions={editorActions} onClickMenuItem={handleAction}>
@@ -52,9 +53,7 @@ const MarkdownEditor: React.FC<MarkdownEditorProps> = (props) => {
           onClose={() => setShowTag(false)}
         />
       )}
-      <div className="flex-1 overflow-hidden">
-        <Markdown value={post.content} onChange={onContentChange} />
-      </div>
+      <Markdown value={post.content} onChange={onContentChange} />
     </div>
   );
 };

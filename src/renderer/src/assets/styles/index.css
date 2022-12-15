@@ -17,6 +17,15 @@
   .webkit-scrollbar-h-3::-webkit-scrollbar {
     height: 3px;
   }
+
+  .search-box {
+    transform: translateY(calc(-100% - 20px));
+    transition: transform .2s linear;
+  }
+
+  .search-box-visible {
+    transform: translateY(0);
+  }
 }
 
 body {

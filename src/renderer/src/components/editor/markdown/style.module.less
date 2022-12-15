@@ -1,15 +1,10 @@
 .wrapper {
-  :global {
-    .remirror-theme {
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-    }
+  --rmr-color-text: var(--color-text-1);
 
+  :global {
     .remirror-editor-wrapper {
       padding-top: 0;
-      flex: 1;
-      overflow-y: auto;
+      height: 100%;
 
       .ProseMirror {
         height: 100%;

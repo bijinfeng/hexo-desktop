@@ -1,15 +1,10 @@
 import 'remirror/styles/all.css';
 
-import {
-  EditorComponent,
-  Remirror,
-  RemirrorProps,
-  ThemeProvider,
-  useRemirror,
-} from '@remirror/react';
+import { FindExtension } from '@remirror/extension-find';
+import { EditorComponent, Remirror, RemirrorProps, useRemirror } from '@remirror/react';
 import cls from 'classnames';
 import { debounce } from 'lodash-es';
-import React, { useCallback } from 'react';
+import React, { useCallback, useRef } from 'react';
 import jsx from 'refractor/lang/jsx.js';
 import typescript from 'refractor/lang/typescript.js';
 import { ExtensionPriority } from 'remirror';
@@ -34,10 +29,12 @@ import {
   UnderlineExtension,
 } from 'remirror/extensions';
 
+import FindReplace from './components/find-replace';
 import Menu from './components/menu';
 import styles from './style.module.less';
 
 const extensions = () => [
+  new FindExtension(),
   new LinkExtension({ autoLink: true }),
   new BoldExtension(),
   new CalloutExtension(),
@@ -69,6 +66,8 @@ export interface MarkdownEditorProps {
 }
 
 const MarkdownEditor: React.FC<MarkdownEditorProps> = ({ value, onChange }) => {
+  const contentRef = useRef<HTMLDivElement>(null);
+
   const { manager, state } = useRemirror({
     extensions,
     content: value,
@@ -84,13 +83,20 @@ const MarkdownEditor: React.FC<MarkdownEditorProps> = ({ value, onChange }) => {
   );
 
   return (
-    <div className={cls('h-full', styles.wrapper)}>
-      <ThemeProvider theme={{ color: { text: 'var(--color-text-1)' } }}>
-        <Remirror manager={manager} initialContent={state} onChange={handleChange}>
-          <Menu />
+    <div className="flex flex-col flex-1 overflow-hidden">
+      <Remirror manager={manager} initialContent={state} onChange={handleChange}>
+        <Menu />
+        <div
+          ref={contentRef}
+          className={cls(
+            'flex-1 h-full relative overflow-auto remirror-theme',
+            styles.wrapper,
+          )}
+        >
           <EditorComponent />
-        </Remirror>
-      </ThemeProvider>
+          <FindReplace nodeRef={contentRef} />
+        </div>
+      </Remirror>
     </div>
   );
 };

@@ -1,4 +1,3 @@
-import cls from 'classnames';
 import { find } from 'lodash-es';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -10,8 +9,6 @@ import { ReactComponent as IconStar } from '@/assets/icons/slider-start.svg';
 import IconButton from '@/components/icon-button';
 import { AppEventManager, EventType } from '@/event';
 
-import styles from './style.module.less';
-
 const sliders = [
   {
     key: 'notes',
@@ -21,13 +18,13 @@ const sliders = [
   },
   {
     key: 'favorites',
-    label: '我的收藏',
+    label: '收藏',
     icon: <IconStar />,
     router: '/notes',
   },
   {
     key: 'attachment',
-    label: '我的文件夹',
+    label: '附件',
     icon: <IconImage />,
     router: '/attachment',
   },
@@ -49,17 +46,17 @@ const Slider: React.FC = () => {
   };
 
   return (
-    <div className={styles.slider}>
-      <div className={styles.menu}>
+    <div className="w-[60px] flex flex-col justify-between">
+      <div className="flex flex-col items-center">
         {sliders.map((item) => (
           <IconButton
             key={item.key}
             onClick={() => onClickMenuItem(item.key)}
-            className={styles.button}
+            className="flex flex-col w-[50px] h-[50px] mb-2"
+            size={25}
           >
-            {React.cloneElement(item.icon, {
-              className: cls('arco-icon', styles.icon),
-            })}
+            {item.icon}
+            <span className="text-[10px] mt-1">{item.label}</span>
           </IconButton>
         ))}
       </div>
