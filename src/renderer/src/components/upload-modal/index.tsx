@@ -28,7 +28,9 @@ const UploadModal: React.FC = () => {
           <Typography.Text>选择存储策略：</Typography.Text>
           <Radio.Group>
             <Radio value="local">
-              {({ checked }) => <Button type="outline">本地存储</Button>}
+              {({ checked }) => (
+                <Button type={checked ? 'primary' : 'outline'}>本地存储</Button>
+              )}
             </Radio>
           </Radio.Group>
         </Space>
