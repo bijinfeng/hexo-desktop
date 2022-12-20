@@ -20,7 +20,7 @@
 
   .search-box {
     transform: translateY(calc(-100% - 20px));
-    transition: transform .2s linear;
+    transition: transform 0.2s linear;
   }
 
   .search-box-visible {

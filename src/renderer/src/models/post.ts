@@ -7,7 +7,12 @@ import type { FolderData, FolderGroup, Models, PostData } from '@/interface';
 import { models } from '@/interface/mock';
 
 interface ModelStore {
+  postId?: string; // 当前编辑的文档 id
+  folderId?: string; // 当前打开的文件夹 id
   models: Models;
+  setPostId: (id?: string) => void;
+  setFolderId: (id?: string) => void;
+  findParentFolder: (folderId: string) => string | undefined;
   findFolderGroup: (folderId?: string) => FolderGroup[];
   getPost: (postId: string) => PostData | undefined;
   getPostTags: (postId: string) => string[];
@@ -17,6 +22,7 @@ interface ModelStore {
   createPost: (folderId?: string) => void;
   updatePostTitle: (postId: string, title: string) => void;
   updatePostContent: (postId: string, content: string) => void;
+  updateFolderName: (folderId: string, title: string) => void;
 }
 
 export const useModelStore = create<ModelStore>()((set, get) => {
@@ -60,14 +66,52 @@ export const useModelStore = create<ModelStore>()((set, get) => {
     return Post.find((post) => post.id === postId);
   };
 
+  const findFolder = (folderId: string) => {
+    const { Folder } = get().models;
+    return Folder.find((folder) => folder.id === folderId);
+  };
+
   return {
     models,
+    setPostId(id) {
+      set({ postId: id });
+    },
+    setFolderId(id) {
+      set({ folderId: id });
+    },
     // 获取文件夹的内容
     findFolderGroup,
+    // 寻找父级文件夹
+    findParentFolder(folderId: string) {
+      const { FolderGroup } = get().models;
+
+      function isTargetGroup(group: FolderGroup[]) {
+        let target: string | undefined;
+
+        for (let index = 0; index < group.length; index++) {
+          const item = group[index];
+          if (item.isFolder && item.children) {
+            const isTarget = item.children.find((it) => it.id === folderId);
+
+            if (isTarget) {
+              target = item.id;
+              break;
+            } else {
+              target = isTargetGroup(item.children);
+              if (target) break;
+            }
+          }
+        }
+
+        return target;
+      }
+
+      return isTargetGroup(FolderGroup);
+    },
     // 获取文档内容
     getPost: findPost,
     // 获取文档的所有标签
-    getPostTags: (postId: string) => {
+    getPostTags(postId: string) {
       const { Post, Tag } = get().models;
       const tags = Post.find((post) => post.id === postId)?.tags ?? [];
       return tags.map((it) => Tag.find((category) => category.id === it)?.name ?? '');
@@ -146,6 +190,14 @@ export const useModelStore = create<ModelStore>()((set, get) => {
       if (!post) return;
 
       post.content = content;
+      setModels();
+    },
+    // 修改文件夹名称
+    updateFolderName(folderId: string, name: string) {
+      const folder = findFolder(folderId);
+      if (!folder) return;
+
+      folder.name = name;
       setModels();
     },
   };

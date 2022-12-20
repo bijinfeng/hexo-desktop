@@ -1,6 +1,6 @@
-import { Button, Input, List } from '@arco-design/web-react';
+import { Button, Input, List, Typography } from '@arco-design/web-react';
 import { IconSearch } from '@arco-design/web-react/icon';
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useMemo } from 'react';
 
 import { ReactComponent as NoContentIllu } from '@/assets/icons/no-content-illu.svg';
 import ListOrder from '@/components/list-order';
@@ -13,32 +13,28 @@ import FileItem from './file-item';
 import FolderItem from './folder-item';
 import RightMenu from './right-menu';
 
-interface ListSliderProps {
-  onEditor: (id: string) => void;
-}
-
-const ListSlider: React.FC<ListSliderProps> = ({ onEditor }) => {
-  const preFolderId = useRef<string[]>([]);
-  const [folderId, setFolderId] = useState<string>();
-  const { findFolderGroup, createPost } = useModelStore();
+const ListSlider: React.FC = () => {
+  const {
+    findFolderGroup,
+    findParentFolder,
+    createPost,
+    folderId,
+    setFolderId,
+    setPostId,
+  } = useModelStore();
 
   const group = useMemo(() => findFolderGroup(folderId), [folderId]);
 
-  const handleInsetFolder = useCallback((id: string) => {
-    folderId && preFolderId.current.push(folderId);
-    setFolderId(id);
-  }, []);
-
-  const handleBack = useCallback(() => {
-    const pre = preFolderId.current.pop();
-    setFolderId(pre);
+  const handleBack = useCallback((id: string) => {
+    const parentFolder = findParentFolder(id);
+    setFolderId(parentFolder);
   }, []);
 
   const renderItem = (item: FolderGroup) => {
     if (item.isFolder)
-      return <FolderItem key={item.id} id={item.id} onTitleClick={handleInsetFolder} />;
+      return <FolderItem key={item.id} id={item.id} onTitleClick={setFolderId} />;
 
-    return <FileItem key={item.id} id={item.id} onClick={onEditor} />;
+    return <FileItem key={item.id} id={item.id} onClick={setPostId} />;
   };
 
   const renderNoDataElement = () => {
@@ -60,10 +56,10 @@ const ListSlider: React.FC<ListSliderProps> = ({ onEditor }) => {
       </div>
       {folderId && <BackHead id={folderId} onBack={handleBack} />}
       <RightMenu folderId={folderId}>
-        <div className={styles.list}>
+        <div className="flex-1 overflow-hidden">
           <List
             wrapperClassName="h-full"
-            className="h-full"
+            className="h-full px-3"
             hoverable
             bordered={false}
             render={renderItem}
@@ -72,6 +68,11 @@ const ListSlider: React.FC<ListSliderProps> = ({ onEditor }) => {
           />
         </div>
       </RightMenu>
+      <div className="flex items-center px-3 border-t border-border h-7">
+        <Typography.Text className="text-xs" type="secondary">
+          总共{group.length}项
+        </Typography.Text>
+      </div>
     </div>
   );
 };

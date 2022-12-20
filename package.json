@@ -27,12 +27,6 @@
   "engines": {
     "node": "^14.18.0 || >=16.0.0"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
-  },
   "lint-staged": {
     "src/**/*.{tex,ts,js}": [
       "yarn lint"

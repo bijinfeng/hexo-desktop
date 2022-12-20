@@ -1,5 +1,5 @@
 import { find } from 'lodash-es';
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { ReactComponent as IconDelete } from '@/assets/icons/slider-delete.svg';
@@ -38,8 +38,10 @@ const sliders = [
 
 const Slider: React.FC = () => {
   const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState('notes');
 
   const onClickMenuItem = (key: string) => {
+    setActiveTab(key);
     AppEventManager.emit(EventType.CLOSE_SETTING);
     const target = find(sliders, (it) => it.key === key);
     target && navigate(target.router);
@@ -52,6 +54,7 @@ const Slider: React.FC = () => {
           <IconButton
             key={item.key}
             onClick={() => onClickMenuItem(item.key)}
+            active={item.key === activeTab}
             className="flex flex-col w-[50px] h-[50px] mb-2"
             size={25}
           >

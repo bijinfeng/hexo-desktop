@@ -2,32 +2,22 @@ import { IconMore } from '@arco-design/web-react/icon';
 import React from 'react';
 
 import ActionDropdown, { ActionItem } from '@/components/action-dropdown';
-import { fileMove } from '@/components/file-move';
 
 export interface FileActionProps {
   className: string;
+  actions: ActionItem[];
+  onClickMenuItem?: (key: string) => void;
 }
 
-const dropList: ActionItem[] = [
-  {
-    key: '1',
-    title: '新建',
-  },
-];
-
 const FileAction: React.FC<FileActionProps> = (props) => {
-  const { className } = props;
-
-  const handleAction = () => {
-    fileMove();
-  };
+  const { actions, onClickMenuItem, className } = props;
 
   return (
     <ActionDropdown
       className={className}
-      actions={dropList}
+      actions={actions}
       position="rt"
-      onClickMenuItem={handleAction}
+      onClickMenuItem={onClickMenuItem}
     >
       <IconMore className="text-text-1 text-base" />
     </ActionDropdown>

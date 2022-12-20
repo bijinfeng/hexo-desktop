@@ -8,7 +8,12 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 }
 
 const IconButton = (props: ButtonProps) => {
-  const { children, className, active, size, disabled, ...rest } = props;
+  const { children, className, active, size, disabled, onClick, ...rest } = props;
+
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.stopPropagation();
+    onClick && onClick(e);
+  };
 
   return (
     <button
@@ -21,6 +26,7 @@ const IconButton = (props: ButtonProps) => {
       )}
       disabled={disabled}
       style={size ? { fontSize: size } : undefined}
+      onClick={handleClick}
       {...rest}
     >
       {children}

@@ -30,7 +30,9 @@ const Editor: React.FC<EditorProps> = ({ postId }) => {
   );
 };
 
-const EditorWrapper: React.FC<Partial<EditorProps>> = ({ postId }) => {
+const EditorWrapper: React.FC = () => {
+  const { postId } = useModelStore();
+
   return (
     <div className="h-full bg-bg-1">
       {postId ? <Editor postId={postId} /> : <Empty />}

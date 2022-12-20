@@ -9,7 +9,7 @@ import styles from '../styles.module.less';
 
 interface BackHeadProps {
   id: string;
-  onBack: () => void;
+  onBack: (id: string) => void;
 }
 
 const BackHead: React.FC<BackHeadProps> = ({ id, onBack }) => {
@@ -18,7 +18,7 @@ const BackHead: React.FC<BackHeadProps> = ({ id, onBack }) => {
 
   return (
     <div className={styles['back-head']}>
-      <IconButton className={styles.back} onClick={onBack}>
+      <IconButton className={styles.back} onClick={() => onBack(id)}>
         <IconLeft />
       </IconButton>
       <Typography.Text bold>{folder?.name}</Typography.Text>
