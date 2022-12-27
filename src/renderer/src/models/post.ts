@@ -3,17 +3,17 @@ import { v1 as uuid } from 'uuid';
 import create from 'zustand';
 
 import { invokeCommand, sendCommand } from '@/commands';
-import type { FolderData, FolderGroup, Models, PostData } from '@/interface';
+import type { FolderData, FolderItemData, Models, PostData } from '@/interface';
 import { models } from '@/interface/mock';
 
 interface ModelStore {
   postId?: string; // 当前编辑的文档 id
-  folderId?: string; // 当前打开的文件夹 id
+  folderId: string; // 当前打开的文件夹 id
   models: Models;
   setPostId: (id?: string) => void;
   setFolderId: (id?: string) => void;
-  findParentFolder: (folderId: string) => string | undefined;
-  findFolderGroup: (folderId?: string) => FolderGroup[];
+  findParentFolder: (folderId: string) => string;
+  findFolderGroup: (folderId?: string) => FolderItemData[];
   getPost: (postId: string) => PostData | undefined;
   getPostTags: (postId: string) => string[];
   addPostTag: (postId: string, tag: string) => void;
@@ -23,6 +23,16 @@ interface ModelStore {
   updatePostTitle: (postId: string, title: string) => void;
   updatePostContent: (postId: string, content: string) => void;
   updateFolderName: (folderId: string, title: string) => void;
+  movePostToTrash: (postId: string) => void;
+  moveFolderToTrash: (folderId: string) => void;
+  replyPostFromTrash: (postId: string) => void;
+  replyFolderFromTrash: (folderId: string) => void;
+  deletePost: (postId: string) => void;
+  delelteFolder: (folderId: string) => void;
+  collect: (postId: string) => void;
+  cancelCollect: (postId: string) => void;
+  findTrash: () => Array<{ id: string; isFolder: boolean }>;
+  findFolder: (folderId: string) => FolderData | undefined;
 }
 
 export const useModelStore = create<ModelStore>()((set, get) => {
@@ -35,30 +45,30 @@ export const useModelStore = create<ModelStore>()((set, get) => {
     set((state) => ({ models: { ...state.models, ..._models } }));
   };
 
-  const findGroup = (folderId: string, group: FolderGroup[]): FolderGroup[] => {
-    let target: FolderGroup[] | undefined;
+  /**
+   * 获取文件夹的内容
+   * @param folderId 文件夹 id
+   * @param widthTrash 是否包含回收站中的内容
+   * @returns
+   */
+  const findFolderGroup = (folderId = '', widthTrash = false): FolderItemData[] => {
+    const { Folder, Post } = get().models;
 
-    for (let index = 0; index < group.length; index++) {
-      const item = group[index];
-
-      if (item.isFolder && item.id === folderId) {
-        target = item.children;
-        break;
+    const targetFolder = Folder.reduce<FolderItemData[]>((result, it) => {
+      if (it.parentId === folderId && (!it.trash || widthTrash)) {
+        result.push({ type: 'folder', id: it.id });
       }
+      return result;
+    }, []);
 
-      if (item.isFolder && item.children) {
-        target = findGroup(folderId, item.children);
-
-        if (target) break;
+    const targetPost = Post.reduce<FolderItemData[]>((result, it) => {
+      if (it.parentId === folderId && (!it.trash || widthTrash)) {
+        result.push({ type: 'post', id: it.id });
       }
-    }
+      return result;
+    }, []);
 
-    return target ?? [];
-  };
-
-  const findFolderGroup = (folderId?: string): FolderGroup[] => {
-    const { FolderGroup } = get().models;
-    return folderId ? findGroup(folderId, FolderGroup) : FolderGroup;
+    return targetFolder.concat(targetPost);
   };
 
   const findPost = (postId: string) => {
@@ -71,42 +81,52 @@ export const useModelStore = create<ModelStore>()((set, get) => {
     return Folder.find((folder) => folder.id === folderId);
   };
 
+  // 删除文章
+  const deletePost = (postList: PostData[], postId: string): PostData[] => {
+    return postList.filter((post) => post.id !== postId);
+  };
+
+  // 删除文件夹
+  const delelteFolder = (
+    folderList: FolderData[],
+    postList: PostData[],
+    folderId: string,
+  ): [FolderData[], PostData[]] => {
+    // 子文件夹
+    const childrenFolderList = folderList.filter(
+      (folder) => folder.parentId === folderId,
+    );
+    // 过滤掉文件夹本身及其子文件夹
+    const lastFolderList = folderList.filter(
+      (folder) => folder.id !== folderId && folder.parentId !== folderId,
+    );
+    // 过滤掉文件夹下的文章
+    const lastPostList = postList.filter((post) => post.parentId !== folderId);
+
+    // 递归删除子文件夹
+    return childrenFolderList.reduce<[FolderData[], PostData[]]>(
+      (result, folder) => delelteFolder(result[0], result[1], folder.id),
+      [lastFolderList, lastPostList],
+    );
+  };
+
   return {
     models,
+    folderId: '',
     setPostId(id) {
       set({ postId: id });
     },
     setFolderId(id) {
       set({ folderId: id });
     },
+    findFolder,
     // 获取文件夹的内容
     findFolderGroup,
     // 寻找父级文件夹
     findParentFolder(folderId: string) {
-      const { FolderGroup } = get().models;
+      const { Folder } = get().models;
 
-      function isTargetGroup(group: FolderGroup[]) {
-        let target: string | undefined;
-
-        for (let index = 0; index < group.length; index++) {
-          const item = group[index];
-          if (item.isFolder && item.children) {
-            const isTarget = item.children.find((it) => it.id === folderId);
-
-            if (isTarget) {
-              target = item.id;
-              break;
-            } else {
-              target = isTargetGroup(item.children);
-              if (target) break;
-            }
-          }
-        }
-
-        return target;
-      }
-
-      return isTargetGroup(FolderGroup);
+      return Folder.find((it) => it.id === folderId)?.parentId || '';
     },
     // 获取文档内容
     getPost: findPost,
@@ -141,25 +161,23 @@ export const useModelStore = create<ModelStore>()((set, get) => {
       set({ models: { ...models, Post } });
     },
     // 新建文件夹
-    createFolder(folderId) {
+    createFolder(folderId = '') {
       const { Folder } = get().models;
-      const folderGroup = findFolderGroup(folderId);
 
       const newFolder: FolderData = {
         id: uuid(),
         name: '新建文件夹',
         date: dayjs().format(),
+        parentId: folderId,
       };
 
       Folder.push(newFolder);
-      folderGroup.push({ id: newFolder.id, isFolder: true });
 
       setModels({ Folder });
     },
     // 新建文档
-    createPost(folderId) {
+    createPost(folderId = '') {
       const { Post } = get().models;
-      const folderGroup = findFolderGroup(folderId);
 
       const newPost: PostData = {
         id: uuid(),
@@ -169,10 +187,10 @@ export const useModelStore = create<ModelStore>()((set, get) => {
         type: 'md',
         date: dayjs().format(),
         content: '',
+        parentId: folderId,
       };
 
       Post.push(newPost);
-      folderGroup.push({ id: newPost.id, isFolder: false });
 
       setModels({ Post });
     },
@@ -199,6 +217,77 @@ export const useModelStore = create<ModelStore>()((set, get) => {
 
       folder.name = name;
       setModels();
+    },
+    // 删除文章（进入回收站）
+    movePostToTrash(postId: string) {
+      const { Post } = get().models;
+      setModels({
+        Post: Post.map((it) =>
+          it.id === postId ? { ...it, trash: true, trashed: dayjs().format() } : it,
+        ),
+      });
+    },
+    // 恢复文章（从回收站）
+    replyPostFromTrash(postId: string) {
+      const { Post } = get().models;
+      setModels({
+        Post: Post.map((it) =>
+          it.id === postId ? { ...it, trash: false, trashed: dayjs().format() } : it,
+        ),
+      });
+    },
+    // 删除文件夹（进入回收站）
+    moveFolderToTrash(folderId: string) {
+      const { Folder } = get().models;
+      setModels({
+        Folder: Folder.map((it) =>
+          it.id === folderId ? { ...it, trash: true, trashed: dayjs().format() } : it,
+        ),
+      });
+    },
+    // 恢复文件夹（从回收站）
+    replyFolderFromTrash(folderId: string) {
+      const { Folder } = get().models;
+      setModels({
+        Folder: Folder.map((it) =>
+          it.id === folderId ? { ...it, trash: false, trashed: dayjs().format() } : it,
+        ),
+      });
+    },
+    // 删除文章
+    deletePost(postId: string) {
+      const { Post } = get().models;
+      setModels({ Post: deletePost(Post, postId) });
+    },
+    // 删除文件夹
+    delelteFolder(folderId: string) {
+      const { Folder, Post } = get().models;
+      const [newFolder, newPost] = delelteFolder(Folder, Post, folderId);
+      setModels({ Folder: newFolder, Post: newPost });
+    },
+    // 收藏文章
+    collect(postId: string) {
+      const { Post } = get().models;
+      setModels({
+        Post: Post.map((it) => (it.id === postId ? { ...it, collect: true } : it)),
+      });
+    },
+    // 取消收藏文章
+    cancelCollect(postId: string) {
+      const { Post } = get().models;
+      setModels({
+        Post: Post.map((it) => (it.id === postId ? { ...it, collect: false } : it)),
+      });
+    },
+    // 回收站
+    findTrash() {
+      const { Folder, Post } = get().models;
+
+      return Folder.filter((it) => it.trash)
+        .map((it) => ({ id: it.id, isFolder: true }))
+        .concat(
+          Post.filter((it) => it.trash).map((it) => ({ id: it.id, isFolder: false })),
+        );
     },
   };
 });

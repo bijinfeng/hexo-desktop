@@ -26,6 +26,14 @@
   .search-box-visible {
     transform: translateY(0);
   }
+
+  .arco-round-input .arco-input-inner-wrapper {
+    border-radius: 16px !important;
+  }
+
+  .arco-round-input svg {
+    font-size: 16px !important;
+  }
 }
 
 body {

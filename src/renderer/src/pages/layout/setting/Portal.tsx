@@ -1,4 +1,4 @@
-import { Card, Portal } from '@arco-design/web-react';
+import { Card } from '@arco-design/web-react';
 import { IconClose } from '@arco-design/web-react/icon';
 import React, { useEffect, useState } from 'react';
 
@@ -7,12 +7,8 @@ import { AppEventManager, EventType } from '@/event';
 
 import styles from './style.module.less';
 
-export interface SettingProps {
-  layoutRef: React.RefObject<HTMLElement>;
-}
-
 const portalHoc = (Component: React.FC) => {
-  return function PortalContainer({ layoutRef }: SettingProps) {
+  return function PortalContainer() {
     const [visible, setVisible] = useState(false);
 
     useEffect(() => {
@@ -28,23 +24,20 @@ const portalHoc = (Component: React.FC) => {
     }, []);
 
     return (
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      <Portal visible={visible} getContainer={() => layoutRef.current!}>
-        <Card
-          className={styles.portal}
-          title="设置"
-          bordered={false}
-          bodyStyle={{ padding: 0, flex: 1, overflowY: 'scroll' }}
-          style={{ display: visible ? 'flex' : 'none' }}
-          extra={
-            <IconButtom onClick={() => setVisible(false)}>
-              <IconClose style={{ fontSize: 20 }} />
-            </IconButtom>
-          }
-        >
-          <Component />
-        </Card>
-      </Portal>
+      <Card
+        className={styles.portal}
+        title="设置"
+        bordered={false}
+        bodyStyle={{ padding: 0, flex: 1, overflow: 'hidden' }}
+        style={{ display: visible ? 'flex' : 'none' }}
+        extra={
+          <IconButtom onClick={() => setVisible(false)}>
+            <IconClose style={{ fontSize: 20 }} />
+          </IconButtom>
+        }
+      >
+        <Component />
+      </Card>
     );
   };
 };

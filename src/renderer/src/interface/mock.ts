@@ -1,11 +1,4 @@
-import {
-  CategoryData,
-  FolderData,
-  FolderGroup,
-  Models,
-  PostData,
-  TagData,
-} from './index';
+import { CategoryData, FolderData, Models, PostData, TagData } from './index';
 
 export const mockTags: TagData[] = [
   {
@@ -19,19 +12,7 @@ export const mockFolder: FolderData[] = [
     id: 'xdsfsdfsfdsfsdfdsf',
     name: '我的博客',
     date: '2022-10-18T10:54:46.000Z',
-  },
-];
-
-export const mockFolderGroup: FolderGroup[] = [
-  {
-    id: 'xdsfsdfsfdsfsdfdsf',
-    isFolder: true,
-    children: [
-      {
-        id: 'cl0eyp64y0003hommco9w7pcw',
-        isFolder: false,
-      },
-    ],
+    parentId: '',
   },
 ];
 
@@ -53,6 +34,7 @@ export const mockPosts: PostData[] = [
     date: '2022-10-18T10:54:46.000Z',
     updated: '2022-11-30T04:53:32.614Z',
     excerpt: '',
+    parentId: '',
   },
 ];
 
@@ -61,5 +43,4 @@ export const models: Models = {
   Category: mockCategories,
   Tag: mockTags,
   Folder: mockFolder,
-  FolderGroup: mockFolderGroup,
 };

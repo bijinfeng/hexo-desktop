@@ -4,7 +4,7 @@ import React from 'react';
 import ActionDropdown, { ActionItem } from '@/components/action-dropdown';
 
 export interface FileActionProps {
-  className: string;
+  className?: string;
   actions: ActionItem[];
   onClickMenuItem?: (key: string) => void;
 }

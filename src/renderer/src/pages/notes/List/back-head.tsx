@@ -1,27 +1,28 @@
 import { Typography } from '@arco-design/web-react';
 import { IconLeft } from '@arco-design/web-react/icon';
-import React, { useMemo } from 'react';
+import React from 'react';
 
 import IconButton from '@/components/icon-button';
 import { useModelStore } from '@/models/post';
 
-import styles from '../styles.module.less';
+const BackHead: React.FC = () => {
+  const { findParentFolder, setFolderId } = useModelStore();
+  const folderId = useModelStore((state) => state.folderId);
+  const folder = useModelStore((state) => state.findFolder(folderId));
 
-interface BackHeadProps {
-  id: string;
-  onBack: (id: string) => void;
-}
+  if (!folder) return null;
 
-const BackHead: React.FC<BackHeadProps> = ({ id, onBack }) => {
-  const folderList = useModelStore((state) => state.models.Folder);
-  const folder = useMemo(() => folderList.find((it) => it.id === id), [id, folderList]);
+  const handleBack = () => {
+    const parentFolder = findParentFolder(folder.id);
+    setFolderId(parentFolder);
+  };
 
   return (
-    <div className={styles['back-head']}>
-      <IconButton className={styles.back} onClick={() => onBack(id)}>
-        <IconLeft />
+    <div className="flex items-center justify-center relative mx-[20px] my-[8px]">
+      <IconButton className="left-0 absolute" onClick={handleBack}>
+        <IconLeft fontSize={18} />
       </IconButton>
-      <Typography.Text bold>{folder?.name}</Typography.Text>
+      <Typography.Text bold>{folder.name}</Typography.Text>
     </div>
   );
 };

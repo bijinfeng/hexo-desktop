@@ -5,21 +5,34 @@ import { fileMove } from '@/components/file-move';
 import { useModelStore } from '@/models/post';
 import { ActionItem } from '@/utils/menu-hoc';
 
+import { deleteConfirm } from './delete-confirm';
+
 export interface ItemProps {
   id: string;
   onClick: (id: string) => void;
 }
 
 const Item: React.FC<ItemProps> = ({ id, onClick }) => {
-  const { updatePostTitle } = useModelStore();
-  const postList = useModelStore((state) => state.models.Post);
+  const { updatePostTitle, collect, cancelCollect, movePostToTrash } = useModelStore();
+  const post = useModelStore((state) => state.getPost(id));
+  const currentPostId = useModelStore((state) => state.postId);
   const [nameEditable, setNameEditable] = useState(false);
-
-  const post = useMemo(() => postList.find((it) => it.id === id), [id, postList]);
 
   if (!post) return null;
 
   const actions = useMemo<ActionItem[]>(() => {
+    const collectAction: ActionItem = post.collect
+      ? {
+          key: 'cancel-collect',
+          title: '取消收藏',
+          onClick: () => cancelCollect(post.id),
+        }
+      : {
+          key: 'collect',
+          title: '收藏',
+          onClick: () => collect(post.id),
+        };
+
     return [
       {
         key: 'create',
@@ -29,6 +42,7 @@ const Item: React.FC<ItemProps> = ({ id, onClick }) => {
       {
         key: 'delete',
         title: '删除',
+        onClick: deleteConfirm(() => movePostToTrash(post.id)),
       },
       { type: 'divider' },
       {
@@ -41,8 +55,10 @@ const Item: React.FC<ItemProps> = ({ id, onClick }) => {
         title: '移动到',
         onClick: () => fileMove(),
       },
+      { type: 'divider' },
+      collectAction,
     ];
-  }, []);
+  }, [post]);
 
   const onNameChange = useCallback((newName: string) => {
     updatePostTitle(post.id, newName);
@@ -56,6 +72,7 @@ const Item: React.FC<ItemProps> = ({ id, onClick }) => {
       time={post.date}
       nameEditable={nameEditable}
       actions={actions}
+      active={post.id === currentPostId}
       onClick={() => onClick(id)}
       onNameChange={onNameChange}
     />

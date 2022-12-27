@@ -1,29 +1,12 @@
-import { ResizeBox } from '@arco-design/web-react';
-import React, { Suspense, useState } from 'react';
+import React from 'react';
 
-import ResizeTrigger from '@/components/resize-trigger';
+import ResizeSplit from '@/components/resize-split';
 
 import Editor from './Editor';
 import List from './List';
 
 const Trash: React.FC = () => {
-  const [isMoving, setIsMoving] = useState(false);
-
-  return (
-    <Suspense>
-      <ResizeBox.Split
-        className="h-full"
-        direction="horizontal"
-        max={0.8}
-        min={0.2}
-        size={0.25}
-        panes={[<List key="first" />, <Editor key="second" />]}
-        trigger={<ResizeTrigger isMoving={isMoving} />}
-        onMovingStart={() => setIsMoving(true)}
-        onMovingEnd={() => setIsMoving(false)}
-      />
-    </Suspense>
-  );
+  return <ResizeSplit panes={[<List key="first" />, <Editor key="second" />]} />;
 };
 
 export default Trash;

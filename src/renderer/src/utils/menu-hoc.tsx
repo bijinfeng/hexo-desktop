@@ -45,7 +45,7 @@ const menuHoc = <E extends DropProps>(
     const renderItems = useCallback((items: ActionItem[]) => {
       return items.map((drop, index) => {
         if (isDivider(drop)) {
-          return <div key={index} className="!mx-[12px] border-t border-border" />;
+          return <div key={index} className="!mx-[12px] border-t border-fill-3" />;
         }
 
         const hasChildren = !isEmpty(drop?.children);
@@ -84,6 +84,7 @@ const menuHoc = <E extends DropProps>(
             selectedKeys={selectedKeys}
             openKeys={openKeys}
             onClickMenuItem={onClickMenuItem}
+            onClick={(e) => e.stopPropagation()}
           >
             {renderItems(actions)}
           </Menu>

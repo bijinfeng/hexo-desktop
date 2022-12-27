@@ -5,17 +5,18 @@ import { fileMove } from '@/components/file-move';
 import { useModelStore } from '@/models/post';
 import { ActionItem } from '@/utils/menu-hoc';
 
+import { deleteConfirm } from './delete-confirm';
+
 export interface ItemProps {
   id: string;
   onTitleClick: (id: string) => void;
 }
 
 const FolderItem: React.FC<ItemProps> = ({ id, onTitleClick }) => {
-  const { updateFolderName, createFolder, createPost } = useModelStore();
-  const folderList = useModelStore((state) => state.models.Folder);
+  const { updateFolderName, createFolder, createPost, moveFolderToTrash } =
+    useModelStore();
+  const folder = useModelStore((state) => state.findFolder(id));
   const [nameEditable, setNameEditable] = useState(false);
-
-  const folder = useMemo(() => folderList.find((it) => it.id === id), [id, folderList]);
 
   if (!folder) return null;
 
@@ -45,6 +46,7 @@ const FolderItem: React.FC<ItemProps> = ({ id, onTitleClick }) => {
       {
         key: 'delete',
         title: '删除',
+        onClick: deleteConfirm(() => moveFolderToTrash(folder.id)),
       },
       { type: 'divider' },
       {
