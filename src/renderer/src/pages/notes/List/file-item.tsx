@@ -70,8 +70,10 @@ const Item: React.FC<ItemProps> = ({ id, onClick }) => {
       type={post.type}
       title={post.title}
       time={post.date}
+      collect={post.collect}
       nameEditable={nameEditable}
       actions={actions}
+      rightMenu={actions}
       active={post.id === currentPostId}
       onClick={() => onClick(id)}
       onNameChange={onNameChange}

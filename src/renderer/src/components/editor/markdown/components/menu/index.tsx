@@ -24,7 +24,7 @@ const Divider = () => <ArcoDivider type="vertical" className="!m-0 !h-[16px]" />
 
 const Menu: React.FC = () => {
   return (
-    <div className="flex items-center border-y border-y-border p-[10px] text-[20px] gap-[8px]">
+    <div className="flex items-center border-t border-t-border p-[10px] text-[20px] gap-[8px]">
       <UndoButton />
       <RedoButton />
       <Divider />

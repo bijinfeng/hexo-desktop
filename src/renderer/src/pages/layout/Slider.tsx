@@ -19,7 +19,7 @@ const sliders = [
     key: 'favorites',
     label: '收藏',
     icon: <IconStar />,
-    router: '/collect',
+    router: '/notes?mode=collect',
   },
   {
     key: 'trash',
@@ -51,8 +51,8 @@ const Slider: React.FC = () => {
             <IconButton
               onClick={() => onClickMenuItem(item.key)}
               active={item.key === activeTab}
-              className="flex flex-col w-[50px] h-[50px] mb-2"
-              size={25}
+              className="flex flex-col w-[48px] h-[48px] mb-2"
+              size={22}
             >
               {item.icon}
               <span className="text-[10px] mt-1">{item.label}</span>

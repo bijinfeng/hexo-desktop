@@ -62,10 +62,12 @@ const extensions = () => [
 
 export interface MarkdownEditorProps {
   value: string;
-  onChange: (value: string) => void;
+  editable?: boolean;
+  onChange?: (value: string) => void;
 }
 
-const MarkdownEditor: React.FC<MarkdownEditorProps> = ({ value, onChange }) => {
+const MarkdownEditor: React.FC<MarkdownEditorProps> = (props) => {
+  const { value, editable = true, onChange } = props;
   const contentRef = useRef<HTMLDivElement>(null);
 
   const { manager, state } = useRemirror({
@@ -77,19 +79,24 @@ const MarkdownEditor: React.FC<MarkdownEditorProps> = ({ value, onChange }) => {
   const handleChange = useCallback(
     debounce<Required<RemirrorProps>['onChange']>((parameter) => {
       const markdownText = parameter.helpers.getMarkdown(parameter.state);
-      onChange(markdownText);
+      onChange?.(markdownText);
     }, 300),
     [],
   );
 
   return (
     <div className="flex flex-col flex-1 overflow-hidden">
-      <Remirror manager={manager} initialContent={state} onChange={handleChange}>
-        <Menu />
+      <Remirror
+        editable={editable}
+        manager={manager}
+        initialContent={state}
+        onChange={handleChange}
+      >
+        {editable && <Menu />}
         <div
           ref={contentRef}
           className={cls(
-            'flex-1 h-full relative overflow-auto remirror-theme',
+            'flex-1 h-full relative overflow-auto remirror-theme border-t border-t-border',
             styles.wrapper,
           )}
         >

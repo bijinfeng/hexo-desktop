@@ -31,7 +31,8 @@ interface ModelStore {
   delelteFolder: (folderId: string) => void;
   collect: (postId: string) => void;
   cancelCollect: (postId: string) => void;
-  findTrash: () => Array<{ id: string; isFolder: boolean }>;
+  findCollect: () => FolderItemData[];
+  findTrash: () => FolderItemData[];
   findFolder: (folderId: string) => FolderData | undefined;
 }
 
@@ -229,12 +230,20 @@ export const useModelStore = create<ModelStore>()((set, get) => {
     },
     // 恢复文章（从回收站）
     replyPostFromTrash(postId: string) {
+      const currentPostId = get().postId;
       const { Post } = get().models;
-      setModels({
-        Post: Post.map((it) =>
-          it.id === postId ? { ...it, trash: false, trashed: dayjs().format() } : it,
-        ),
-      });
+
+      set((state) => ({
+        postId: currentPostId === postId ? '' : currentPostId,
+        models: {
+          ...state.models,
+          ...{
+            Post: Post.map((it) =>
+              it.id === postId ? { ...it, trash: false, trashed: dayjs().format() } : it,
+            ),
+          },
+        },
+      }));
     },
     // 删除文件夹（进入回收站）
     moveFolderToTrash(folderId: string) {
@@ -279,15 +288,30 @@ export const useModelStore = create<ModelStore>()((set, get) => {
         Post: Post.map((it) => (it.id === postId ? { ...it, collect: false } : it)),
       });
     },
+    // 查询收藏的文章列表
+    findCollect() {
+      const { Post } = get().models;
+      return Post.filter((it) => it.collect).map((it) => ({ type: 'post', id: it.id }));
+    },
     // 回收站
     findTrash() {
       const { Folder, Post } = get().models;
 
-      return Folder.filter((it) => it.trash)
-        .map((it) => ({ id: it.id, isFolder: true }))
-        .concat(
-          Post.filter((it) => it.trash).map((it) => ({ id: it.id, isFolder: false })),
-        );
+      const targetFolder = Folder.reduce<FolderItemData[]>((result, it) => {
+        if (it.trash) {
+          result.push({ id: it.id, type: 'folder' });
+        }
+        return result;
+      }, []);
+
+      const targetPost = Post.reduce<FolderItemData[]>((result, it) => {
+        if (it.trash) {
+          result.push({ id: it.id, type: 'post' });
+        }
+        return result;
+      }, []);
+
+      return targetFolder.concat(targetPost);
     },
   };
 });

@@ -1,3 +1,4 @@
+import { Tooltip, TooltipProps } from '@arco-design/web-react';
 import cls from 'classnames';
 import React from 'react';
 
@@ -5,10 +6,22 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
   children: React.ReactNode;
   size?: number;
   active?: boolean;
+  tooltip?: string;
+  tooltipProps?: TooltipProps;
 }
 
 const IconButton = (props: ButtonProps) => {
-  const { children, className, active, size, disabled, onClick, ...rest } = props;
+  const {
+    children,
+    className,
+    active,
+    size,
+    disabled,
+    tooltip,
+    tooltipProps,
+    onClick,
+    ...rest
+  } = props;
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.stopPropagation();
@@ -29,7 +42,13 @@ const IconButton = (props: ButtonProps) => {
       onClick={handleClick}
       {...rest}
     >
-      {children}
+      {tooltip ? (
+        <Tooltip {...tooltipProps} content={tooltip}>
+          {children}
+        </Tooltip>
+      ) : (
+        children
+      )}
     </button>
   );
 };

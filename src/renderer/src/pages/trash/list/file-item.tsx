@@ -8,12 +8,13 @@ import { ActionItem } from '@/utils/menu-hoc';
 
 export interface ItemProps {
   id: string;
+  active: boolean;
+  onClick: () => void;
 }
 
-const Item: React.FC<ItemProps> = ({ id }) => {
+const Item: React.FC<ItemProps> = ({ id, active, onClick }) => {
   const { replyPostFromTrash, deletePost } = useModelStore();
   const post = useModelStore((state) => state.getPost(id));
-  const currentPostId = useModelStore((state) => state.postId);
 
   if (!post) return null;
 
@@ -48,9 +49,10 @@ const Item: React.FC<ItemProps> = ({ id }) => {
       type={post.type}
       title={post.title}
       time={post.date}
-      active={post.id === currentPostId}
+      active={active}
       rightMenu={actions}
       suffix={renderSuffix()}
+      onClick={onClick}
     />
   );
 };

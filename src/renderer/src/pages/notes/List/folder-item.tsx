@@ -73,6 +73,7 @@ const FolderItem: React.FC<ItemProps> = ({ id, onTitleClick }) => {
       title={folder.name}
       time={folder.date}
       actions={actions}
+      rightMenu={actions}
       nameEditable={nameEditable}
       onNameChange={onNameChange}
       onTitleClick={() => onTitleClick(id)}

@@ -1,4 +1,5 @@
 import { List } from '@arco-design/web-react';
+import { IconStarFill } from '@arco-design/web-react/icon';
 import cls from 'classnames';
 import dayjs from 'dayjs';
 import React from 'react';
@@ -18,6 +19,7 @@ export interface ItemData {
   active?: boolean;
   nameEditable?: boolean;
   size?: string;
+  collect?: boolean; // 是否收藏
   onTitleClick?: () => void;
   onClick?: () => void;
   onClickMenuItem?: (key: string) => void;
@@ -29,6 +31,7 @@ const FileItem: React.FC<ItemData> = (props) => {
     title,
     time,
     size,
+    collect,
     type,
     suffix,
     actions,
@@ -51,7 +54,10 @@ const FileItem: React.FC<ItemData> = (props) => {
           onClick={onTitleClick}
           onNameChange={onNameChange}
         />
-        <div className="flex items-center gap-[8px] invisible group-hover:visible">
+        {collect && (
+          <IconStarFill className="group-hover:hidden" style={{ color: '#ffcd00' }} />
+        )}
+        <div className="hidden group-hover:flex items-center gap-[8px]">
           {suffix}
           {actions && actions.length > 0 && (
             <FileAction onClickMenuItem={onClickMenuItem} actions={actions} />
