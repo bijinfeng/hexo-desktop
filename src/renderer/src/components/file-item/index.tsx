@@ -13,6 +13,7 @@ export interface ItemData {
   title: string;
   time: string;
   type: string;
+  keyword?: string;
   suffix?: React.ReactNode;
   actions?: ActionItem[];
   rightMenu?: ActionItem[];
@@ -33,6 +34,7 @@ const FileItem: React.FC<ItemData> = (props) => {
     size,
     collect,
     type,
+    keyword,
     suffix,
     actions,
     nameEditable,
@@ -50,6 +52,7 @@ const FileItem: React.FC<ItemData> = (props) => {
         <FileName
           editable={nameEditable}
           name={title}
+          keyword={keyword}
           type={type}
           onClick={onTitleClick}
           onNameChange={onNameChange}

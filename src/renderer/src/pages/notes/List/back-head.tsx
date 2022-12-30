@@ -3,12 +3,17 @@ import { IconLeft } from '@arco-design/web-react/icon';
 import React from 'react';
 
 import IconButton from '@/components/icon-button';
+import { useNote } from '@/hooks/use-note';
+import { FolderData } from '@/interface';
 import { useModelStore } from '@/models/post';
 
-const BackHead: React.FC = () => {
-  const { findParentFolder, setFolderId } = useModelStore();
-  const folderId = useModelStore((state) => state.folderId);
-  const folder = useModelStore((state) => state.findFolder(folderId));
+interface BackHeadProps {
+  folder?: FolderData;
+}
+
+const BackHead: React.FC<BackHeadProps> = ({ folder }) => {
+  const { setFolderId } = useNote();
+  const { findParentFolder } = useModelStore();
 
   if (!folder) return null;
 

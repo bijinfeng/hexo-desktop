@@ -1,21 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import ResizeSplit from '@/components/resize-split';
+import { NoteProvider } from '@/hooks/use-note';
 
 import Editor from './editor';
 import List from './list';
 
-const Trash: React.FC = () => {
-  const [postId, setPostId] = useState<string>();
-
-  return (
-    <ResizeSplit
-      panes={[
-        <List key="first" postId={postId} setPostId={setPostId} />,
-        <Editor key="second" postId={postId} />,
-      ]}
-    />
-  );
-};
+const Trash: React.FC = () => (
+  <NoteProvider>
+    <ResizeSplit panes={[<List key="first" />, <Editor key="second" />]} />
+  </NoteProvider>
+);
 
 export default Trash;

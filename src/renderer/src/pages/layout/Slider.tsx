@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
 
 import { ReactComponent as IconDelete } from '@/assets/icons/slider-delete.svg';
 import { ReactComponent as IconFile } from '@/assets/icons/slider-file.svg';
@@ -19,7 +19,7 @@ const sliders = [
     key: 'favorites',
     label: '收藏',
     icon: <IconStar />,
-    router: '/notes?mode=collect',
+    router: '/collect',
   },
   {
     key: 'trash',
@@ -36,10 +36,9 @@ const sliders = [
 ];
 
 const Slider: React.FC = () => {
-  const [activeTab, setActiveTab] = useState('notes');
+  const location = useLocation();
 
-  const onClickMenuItem = (key: string) => {
-    setActiveTab(key);
+  const onClickMenuItem = () => {
     AppEventManager.emit(EventType.CLOSE_SETTING);
   };
 
@@ -49,8 +48,8 @@ const Slider: React.FC = () => {
         {sliders.map((item) => (
           <Link to={item.router} key={item.key}>
             <IconButton
-              onClick={() => onClickMenuItem(item.key)}
-              active={item.key === activeTab}
+              onClick={onClickMenuItem}
+              active={item.router === location.pathname}
               className="flex flex-col w-[48px] h-[48px] mb-2"
               size={22}
             >

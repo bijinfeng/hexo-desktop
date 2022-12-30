@@ -30,9 +30,12 @@ const Attachment: React.FC = () => {
       extra={TopExtra}
       className="relative h-full !bg-transparent"
     >
-      <div ref={wrapperRef}>
-        <ImageList getPopupContainer={() => wrapperRef.current!} />
-      </div>
+      <Space direction="vertical" className="block" ref={wrapperRef}>
+        {/* <div className="flex">
+          <Input size="small" />
+        </div> */}
+        <ImageList srcList={[]} getPopupContainer={() => wrapperRef.current!} />
+      </Space>
     </Card>
   );
 };

@@ -6,39 +6,44 @@ import { useModelStore } from '@/models/post';
 import { ActionItem } from '@/utils/menu-hoc';
 
 import { deleteConfirm } from './delete-confirm';
+import type { ItemProps } from './index';
 
-export interface ItemProps {
-  id: string;
-  onClick: (id: string) => void;
-}
-
-const Item: React.FC<ItemProps> = ({ id, onClick }) => {
+const Item: React.FC<ItemProps> = ({ id, keyword, active, couldCreate, onClick }) => {
   const { updatePostTitle, collect, cancelCollect, movePostToTrash } = useModelStore();
   const post = useModelStore((state) => state.getPost(id));
-  const currentPostId = useModelStore((state) => state.postId);
   const [nameEditable, setNameEditable] = useState(false);
 
   if (!post) return null;
 
-  const actions = useMemo<ActionItem[]>(() => {
-    const collectAction: ActionItem = post.collect
-      ? {
-          key: 'cancel-collect',
-          title: '取消收藏',
-          onClick: () => cancelCollect(post.id),
-        }
-      : {
-          key: 'collect',
-          title: '收藏',
-          onClick: () => collect(post.id),
-        };
-
+  const createAction = useMemo<ActionItem[]>(() => {
+    if (!couldCreate) return [];
     return [
       {
         key: 'create',
         title: '新建',
       },
       { type: 'divider' },
+    ];
+  }, [couldCreate]);
+
+  const collectAction = useMemo<ActionItem>(() => {
+    if (post.collect) {
+      return {
+        key: 'cancel-collect',
+        title: '取消收藏',
+        onClick: () => cancelCollect(post.id),
+      };
+    }
+    return {
+      key: 'collect',
+      title: '收藏',
+      onClick: () => collect(post.id),
+    };
+  }, [post.collect]);
+
+  const actions = useMemo<ActionItem[]>(() => {
+    return [
+      ...createAction,
       {
         key: 'delete',
         title: '删除',
@@ -58,7 +63,7 @@ const Item: React.FC<ItemProps> = ({ id, onClick }) => {
       { type: 'divider' },
       collectAction,
     ];
-  }, [post]);
+  }, [createAction, collectAction, post]);
 
   const onNameChange = useCallback((newName: string) => {
     updatePostTitle(post.id, newName);
@@ -71,11 +76,12 @@ const Item: React.FC<ItemProps> = ({ id, onClick }) => {
       title={post.title}
       time={post.date}
       collect={post.collect}
+      keyword={keyword}
       nameEditable={nameEditable}
       actions={actions}
       rightMenu={actions}
-      active={post.id === currentPostId}
-      onClick={() => onClick(id)}
+      active={active}
+      onClick={onClick}
       onNameChange={onNameChange}
     />
   );

@@ -1,26 +1,23 @@
-import { Input, List, Typography } from '@arco-design/web-react';
-import { IconSearch } from '@arco-design/web-react/icon';
+import { List, Typography } from '@arco-design/web-react';
 import React from 'react';
 
 import ContextMenu, { ActionItem } from '@/components/context-menu';
 import ListOrder from '@/components/list-order';
+import PostSearch, { PostSearchProps } from '@/components/post-search';
 
 type ListProps = React.ComponentProps<typeof List>;
 
 export interface PostListProps
   extends Pick<ListProps, 'dataSource' | 'render' | 'noDataElement'> {
+  scopes?: PostSearchProps['scopes'];
+  onSearchChange: PostSearchProps['onChange'];
   header?: React.ReactNode;
   rightMenu?: ActionItem[];
 }
 
 const PostList: React.FC<PostListProps> = (props) => {
-  const { header, dataSource, render, rightMenu, noDataElement } = props;
-
-  const renderNoDataElement = () => (
-    <div className="flex flex-col w-full h-full items-center justify-center">
-      {noDataElement}
-    </div>
-  );
+  const { header, dataSource, render, rightMenu, noDataElement, scopes, onSearchChange } =
+    props;
 
   const renderList = () => (
     <div className="flex-1 overflow-hidden">
@@ -30,7 +27,11 @@ const PostList: React.FC<PostListProps> = (props) => {
         hoverable
         bordered={false}
         render={render}
-        noDataElement={renderNoDataElement()}
+        noDataElement={
+          <div className="flex flex-col w-full h-full items-center justify-center">
+            {noDataElement}
+          </div>
+        }
         dataSource={dataSource}
       />
     </div>
@@ -39,11 +40,7 @@ const PostList: React.FC<PostListProps> = (props) => {
   return (
     <div className="flex flex-col h-full">
       <div className="flex items-center px-[15px] py-[20px] gap-[8px]">
-        <Input
-          placeholder="搜索笔记"
-          prefix={<IconSearch />}
-          className="arco-round-input"
-        />
+        <PostSearch scopes={scopes} onChange={onSearchChange} />
         <ListOrder />
       </div>
       {header}

@@ -1,20 +1,27 @@
 import React from 'react';
-import { useSearchParams } from 'react-router-dom';
 
 import ResizeSplit from '@/components/resize-split';
+import { NoteProvider } from '@/hooks/use-note';
 
 import Editor from './editor';
 import List from './list';
+import CollectList from './list/collect';
 
-export type Mode = 'collect' | undefined;
+interface NotesProps {
+  mode?: 'collect';
+}
 
-const Trash: React.FC = () => {
-  const [searchParams] = useSearchParams();
-  const mode = searchParams.get('mode') as Mode;
-
+const Notes: React.FC<NotesProps> = ({ mode }) => {
   return (
-    <ResizeSplit panes={[<List key="first" mode={mode} />, <Editor key="second" />]} />
+    <NoteProvider>
+      <ResizeSplit
+        panes={[
+          mode === 'collect' ? <CollectList key="first" /> : <List key="first" />,
+          <Editor key="second" />,
+        ]}
+      />
+    </NoteProvider>
   );
 };
 
-export default Trash;
+export default Notes;

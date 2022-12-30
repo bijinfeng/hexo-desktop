@@ -6,13 +6,9 @@ import IconButton from '@/components/icon-button';
 import { useModelStore } from '@/models/post';
 import { ActionItem } from '@/utils/menu-hoc';
 
-export interface ItemProps {
-  id: string;
-  active: boolean;
-  onClick: () => void;
-}
+import type { ItemProps } from './index';
 
-const Item: React.FC<ItemProps> = ({ id, active, onClick }) => {
+const Item: React.FC<ItemProps> = ({ id, active, keyword, onClick }) => {
   const { replyPostFromTrash, deletePost } = useModelStore();
   const post = useModelStore((state) => state.getPost(id));
 
@@ -49,6 +45,7 @@ const Item: React.FC<ItemProps> = ({ id, active, onClick }) => {
       type={post.type}
       title={post.title}
       time={post.date}
+      keyword={keyword}
       active={active}
       rightMenu={actions}
       suffix={renderSuffix()}

@@ -6,11 +6,9 @@ import IconButton from '@/components/icon-button';
 import { useModelStore } from '@/models/post';
 import { ActionItem } from '@/utils/menu-hoc';
 
-export interface ItemProps {
-  id: string;
-}
+import type { ItemProps } from './index';
 
-const FolderItem: React.FC<ItemProps> = ({ id }) => {
+const FolderItem: React.FC<ItemProps> = ({ id, keyword, active, onClick }) => {
   const { replyFolderFromTrash, delelteFolder } = useModelStore();
   const folder = useModelStore((state) => state.findFolder(id));
 
@@ -48,7 +46,10 @@ const FolderItem: React.FC<ItemProps> = ({ id }) => {
       title={folder.name}
       suffix={renderSuffix()}
       time={folder.date}
+      keyword={keyword}
       rightMenu={actions}
+      active={active}
+      onClick={onClick}
     />
   );
 };

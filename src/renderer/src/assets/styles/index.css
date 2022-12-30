@@ -34,6 +34,14 @@
   .arco-round-input svg {
     font-size: 16px !important;
   }
+
+  .arco-trigger-popup {
+    padding: 12px;
+    border: 1px solid var(--color-fill-3);
+    border-radius: var(--border-radius-medium);
+    background-color: var(--color-bg-popup);
+    box-shadow: 0 4px 10px rgb(0 0 0 / 10%);
+  }
 }
 
 body {

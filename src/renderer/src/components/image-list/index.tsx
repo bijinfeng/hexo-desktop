@@ -1,40 +1,29 @@
-import { Image, Space } from '@arco-design/web-react';
+import { Empty, Image, Space } from '@arco-design/web-react';
+import { isEmpty } from 'lodash-es';
 import React from 'react';
-
-const srcList = [
-  '//p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/a8c8cdb109cb051163646151a4a5083b.png~tplv-uwbnlip3yd-webp.webp',
-  '//p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/e278888093bef8910e829486fb45dd69.png~tplv-uwbnlip3yd-webp.webp',
-  '//p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/3ee5f13fb09879ecb5185e440cef6eb9.png~tplv-uwbnlip3yd-webp.webp',
-  '//p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/8361eeb82904210b4f55fab888fe8416.png~tplv-uwbnlip3yd-webp.webp',
-];
 
 export interface ImageListProps {
   getPopupContainer?: () => HTMLElement;
+  srcList: string[];
 }
 
-const ImageList: React.FC<ImageListProps> = ({ getPopupContainer }) => {
-  // const [current, setCurrent] = useState(0);
+const ImageList: React.FC<ImageListProps> = ({ getPopupContainer, srcList }) => {
+  if (isEmpty(srcList))
+    return (
+      <Empty
+        className="flex flex-col items-center"
+        imgSrc="//p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/a0082b7754fbdb2d98a5c18d0b0edd25.png~tplv-uwbnlip3yd-webp.webp"
+      />
+    );
 
   return (
-    <Space direction="vertical" size="large" className="w-full">
-      <Image.PreviewGroup infinite getPopupContainer={getPopupContainer}>
-        <Space>
-          {srcList.map((src, index) => (
-            <Image key={index} src={src} width={200} alt={`lamp${index + 1}`} />
-          ))}
-        </Space>
-      </Image.PreviewGroup>
-      <div className="flex justify-end">
-        {/* <Pagination
-          showTotal
-          total={20}
-          sizeCanChange
-          hideOnSinglePage
-          current={current}
-          onChange={setCurrent}
-        /> */}
-      </div>
-    </Space>
+    <Image.PreviewGroup infinite getPopupContainer={getPopupContainer}>
+      <Space>
+        {srcList.map((src, index) => (
+          <Image key={index} src={src} width={200} alt={`lamp${index + 1}`} />
+        ))}
+      </Space>
+    </Image.PreviewGroup>
   );
 };
 

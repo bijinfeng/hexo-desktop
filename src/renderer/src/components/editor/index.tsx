@@ -1,28 +1,19 @@
 import { Input } from '@arco-design/web-react';
 import React from 'react';
 
+import Folder from './folder';
 import Markdown from './markdown';
 
-interface MarkdownEditorProps {
+interface EditorProps {
   title: string;
-  content: string;
   editable?: boolean;
   titleSuffix?: React.ReactNode;
   children?: React.ReactNode;
   onTitleChange?: (title: string) => void;
-  onContentChange?: (content: string) => void;
 }
 
-const MarkdownEditor: React.FC<MarkdownEditorProps> = (props) => {
-  const {
-    title,
-    content,
-    titleSuffix,
-    children,
-    editable = true,
-    onTitleChange,
-    onContentChange,
-  } = props;
+const EditorInner: React.FC<EditorProps> = (props) => {
+  const { title, titleSuffix, children, editable = true, onTitleChange } = props;
 
   return (
     <div className="flex flex-col h-full">
@@ -36,9 +27,10 @@ const MarkdownEditor: React.FC<MarkdownEditorProps> = (props) => {
         {titleSuffix}
       </div>
       {children}
-      <Markdown value={content} editable={editable} onChange={onContentChange} />
     </div>
   );
 };
 
-export default MarkdownEditor;
+const Editor = Object.assign(EditorInner, { Markdown, Folder });
+
+export default Editor;

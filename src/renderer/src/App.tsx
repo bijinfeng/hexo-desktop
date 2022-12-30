@@ -22,7 +22,8 @@ const App: React.FC = () => {
           <Route path="notes" element={<Notes />} />
           <Route path="trash" element={<Trash />} />
           <Route path="attachment" element={<Attachment />} />
-          <Route path="/" element={<Navigate to="/notes" replace />} />
+          <Route path="collect" element={<Notes mode="collect" />} />
+          <Route path="*" element={<Navigate to="/notes" replace />} />
         </Route>
       </Routes>
 

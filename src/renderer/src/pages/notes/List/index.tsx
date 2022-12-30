@@ -1,26 +1,31 @@
 import { Button } from '@arco-design/web-react';
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 
 import { ReactComponent as NoContentIllu } from '@/assets/icons/no-content-illu.svg';
 import { ActionItem } from '@/components/context-menu';
-import PostList from '@/components/post-list';
-import type { FolderItemData } from '@/interface';
+import PostList, { PostListProps } from '@/components/post-list';
+import { NoteItemProps, useNote } from '@/hooks/use-note';
 import { useModelStore } from '@/models/post';
 
-import type { Mode } from '../index';
 import BackHead from './back-head';
 import FileItem from './file-item';
 import FolderItem from './folder-item';
 
-export interface ListProps {
-  mode: Mode;
+export interface ItemProps extends NoteItemProps {
+  keyword?: string;
+  couldCreate?: boolean;
 }
 
-const List: React.FC<ListProps> = ({ mode }) => {
-  const isCollect = mode === 'collect';
-  const { createPost, createFolder, folderId, setFolderId, setPostId } = useModelStore();
+const List: React.FC = () => {
+  const { folderId, renderItem } = useNote();
+  // 搜索关键词
+  const [keyword, setKeyword] = useState('');
+  // 搜索范围
+  const [scope, setScope] = useState('');
+  const { createPost, createFolder } = useModelStore();
+  const folder = useModelStore((state) => state.findFolder(folderId));
   const group = useModelStore((state) =>
-    isCollect ? state.findCollect() : state.findFolderGroup(folderId),
+    state.findFolderGroup({ folderId, keyword, scope }),
   );
 
   const rightMenu = useMemo<ActionItem[]>(
@@ -39,25 +44,33 @@ const List: React.FC<ListProps> = ({ mode }) => {
     [folderId],
   );
 
-  const renderItem = (item: FolderItemData) => {
-    switch (item.type) {
-      case 'folder':
-        return <FolderItem key={item.id} id={item.id} onTitleClick={setFolderId} />;
+  const scopes = useMemo<PostListProps['scopes']>(() => {
+    if (!folder) return undefined;
+    return [
+      { key: folder.id, label: folder.name },
+      { key: '', label: '全部笔记' },
+    ];
+  }, [folder]);
 
-      case 'post':
-        return <FileItem key={item.id} id={item.id} onClick={setPostId} />;
+  const handleSearch = useCallback<PostListProps['onSearchChange']>((keyword, scope) => {
+    setKeyword(keyword);
+    setScope(scope);
+  }, []);
 
-      default:
-        return null;
-    }
-  };
+  const render = useCallback(
+    renderItem({
+      folder: (params) => <FolderItem {...params} key={params.id} keyword={keyword} />,
+      post: (params) => <FileItem {...params} key={params.id} keyword={keyword} />,
+    }),
+    [keyword],
+  );
 
   return (
     <PostList
-      header={!isCollect && <BackHead />}
+      header={<BackHead folder={folder} />}
       dataSource={group}
       rightMenu={rightMenu}
-      render={renderItem}
+      render={render}
       noDataElement={
         <>
           <NoContentIllu className="opacity-40 text-[140px]" />
@@ -66,6 +79,8 @@ const List: React.FC<ListProps> = ({ mode }) => {
           </Button>
         </>
       }
+      scopes={scopes}
+      onSearchChange={handleSearch}
     />
   );
 };

@@ -7,13 +7,14 @@ import type { FolderData, FolderItemData, Models, PostData } from '@/interface';
 import { models } from '@/interface/mock';
 
 interface ModelStore {
-  postId?: string; // 当前编辑的文档 id
-  folderId: string; // 当前打开的文件夹 id
   models: Models;
-  setPostId: (id?: string) => void;
-  setFolderId: (id?: string) => void;
   findParentFolder: (folderId: string) => string;
-  findFolderGroup: (folderId?: string) => FolderItemData[];
+  findFolderGroup: (params: {
+    folderId: string;
+    keyword?: string;
+    scope?: string;
+    widthTrash?: boolean;
+  }) => FolderItemData[];
   getPost: (postId: string) => PostData | undefined;
   getPostTags: (postId: string) => string[];
   addPostTag: (postId: string, tag: string) => void;
@@ -31,8 +32,8 @@ interface ModelStore {
   delelteFolder: (folderId: string) => void;
   collect: (postId: string) => void;
   cancelCollect: (postId: string) => void;
-  findCollect: () => FolderItemData[];
-  findTrash: () => FolderItemData[];
+  findCollect: (keyword?: string) => FolderItemData[];
+  findTrash: (keyword?: string) => FolderItemData[];
   findFolder: (folderId: string) => FolderData | undefined;
 }
 
@@ -52,7 +53,12 @@ export const useModelStore = create<ModelStore>()((set, get) => {
    * @param widthTrash 是否包含回收站中的内容
    * @returns
    */
-  const findFolderGroup = (folderId = '', widthTrash = false): FolderItemData[] => {
+  const findFolderGroup: ModelStore['findFolderGroup'] = ({
+    folderId,
+    keyword,
+    scope,
+    widthTrash = false,
+  }) => {
     const { Folder, Post } = get().models;
 
     const targetFolder = Folder.reduce<FolderItemData[]>((result, it) => {
@@ -113,13 +119,6 @@ export const useModelStore = create<ModelStore>()((set, get) => {
 
   return {
     models,
-    folderId: '',
-    setPostId(id) {
-      set({ postId: id });
-    },
-    setFolderId(id) {
-      set({ folderId: id });
-    },
     findFolder,
     // 获取文件夹的内容
     findFolderGroup,
@@ -230,11 +229,9 @@ export const useModelStore = create<ModelStore>()((set, get) => {
     },
     // 恢复文章（从回收站）
     replyPostFromTrash(postId: string) {
-      const currentPostId = get().postId;
       const { Post } = get().models;
 
       set((state) => ({
-        postId: currentPostId === postId ? '' : currentPostId,
         models: {
           ...state.models,
           ...{
@@ -289,23 +286,25 @@ export const useModelStore = create<ModelStore>()((set, get) => {
       });
     },
     // 查询收藏的文章列表
-    findCollect() {
+    findCollect(keyword) {
       const { Post } = get().models;
-      return Post.filter((it) => it.collect).map((it) => ({ type: 'post', id: it.id }));
+      return Post.filter((it) => {
+        return it.collect && (!keyword || it.title.search(new RegExp(keyword, 'i')) >= 0);
+      }).map((it) => ({ type: 'post', id: it.id }));
     },
     // 回收站
-    findTrash() {
+    findTrash(keyword) {
       const { Folder, Post } = get().models;
 
       const targetFolder = Folder.reduce<FolderItemData[]>((result, it) => {
-        if (it.trash) {
+        if (it.trash && (!keyword || it.name.search(new RegExp(keyword, 'i')) >= 0)) {
           result.push({ id: it.id, type: 'folder' });
         }
         return result;
       }, []);
 
       const targetPost = Post.reduce<FolderItemData[]>((result, it) => {
-        if (it.trash) {
+        if (it.trash && (!keyword || it.title.search(new RegExp(keyword, 'i')) >= 0)) {
           result.push({ id: it.id, type: 'post' });
         }
         return result;

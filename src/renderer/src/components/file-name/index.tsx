@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 
 import { ReactComponent as IconFolder } from '@/assets/icons/file-folder.svg';
 import { ReactComponent as IconMd } from '@/assets/icons/file-md.svg';
+import Highlight from '@/components/highlight';
 
 const fileIcons = {
   folder: <IconFolder />,
@@ -13,13 +14,14 @@ const fileIcons = {
 
 export interface FileNameProps extends React.HTMLAttributes<HTMLDivElement> {
   name: string;
+  keyword?: string;
   type?: string;
   editable?: boolean;
   onNameChange?: (newName: string) => void;
 }
 
 const FileName: React.FC<FileNameProps> = (props) => {
-  const { name, type, editable, onClick, onNameChange, ...rest } = props;
+  const { name, keyword, type, editable, onClick, onNameChange, ...rest } = props;
   const [nameValue, setNameValue] = useState<string>(name);
 
   const handleBlur = () => {
@@ -56,7 +58,7 @@ const FileName: React.FC<FileNameProps> = (props) => {
             'hover:underline': !!onClick,
           })}
         >
-          {name}
+          <Highlight text={name} keyword={keyword} />
         </span>
       )}
     </div>
