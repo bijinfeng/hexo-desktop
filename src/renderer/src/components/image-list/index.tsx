@@ -2,25 +2,29 @@ import { Empty, Image, Space } from '@arco-design/web-react';
 import { isEmpty } from 'lodash-es';
 import React from 'react';
 
+import type { IImgInfo } from '@/models/picgo';
+
 export interface ImageListProps {
   getPopupContainer?: () => HTMLElement;
-  srcList: string[];
+  data: IImgInfo[];
 }
 
-const ImageList: React.FC<ImageListProps> = ({ getPopupContainer, srcList }) => {
-  if (isEmpty(srcList))
+const ImageList: React.FC<ImageListProps> = ({ getPopupContainer, data }) => {
+  if (isEmpty(data))
     return (
-      <Empty
-        className="flex flex-col items-center"
-        imgSrc="//p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/a0082b7754fbdb2d98a5c18d0b0edd25.png~tplv-uwbnlip3yd-webp.webp"
-      />
+      <div className="h-full flex items-center justify-center">
+        <Empty
+          className="!w-auto inline-flex"
+          imgSrc="//p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/a0082b7754fbdb2d98a5c18d0b0edd25.png~tplv-uwbnlip3yd-webp.webp"
+        />
+      </div>
     );
 
   return (
     <Image.PreviewGroup infinite getPopupContainer={getPopupContainer}>
       <Space>
-        {srcList.map((src, index) => (
-          <Image key={index} src={src} width={200} alt={`lamp${index + 1}`} />
+        {data.map((item, index) => (
+          <Image key={index} src={item.imgUrl} width={200} alt={`lamp${index + 1}`} />
         ))}
       </Space>
     </Image.PreviewGroup>

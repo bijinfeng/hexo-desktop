@@ -49,6 +49,11 @@ body {
   color: var(--color-text-2);
 }
 
+svg {
+  display: initial;
+  vertical-align: initial;
+}
+
 body[arco-theme='dark'] {
   background-color: var(--color-bg-5);
 }

@@ -22,12 +22,12 @@ const Basic: React.FC = () => {
 
   return (
     <>
-      <Card title="偏好设置" bordered={false}>
+      <Card title="偏好设置">
         <Checkbox checked={config.openAtLogin} onChange={handleCheck}>
           <Typography.Text bold>开机自动启动</Typography.Text>
         </Checkbox>
       </Card>
-      <Card title="设置主题" bordered={false}>
+      <Card title="设置主题">
         <Space direction="vertical" size="medium">
           <Checkbox checked={system} onChange={systemThemeChange}>
             <Space direction="vertical" size="mini">

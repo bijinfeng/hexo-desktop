@@ -1,30 +1,29 @@
-import { Card as ArchCard, CardProps, Grid } from '@arco-design/web-react';
-import cls from 'classnames';
+import { Divider, Typography } from '@arco-design/web-react';
 import React from 'react';
 
-import styles from './style.module.less';
-
-interface Props extends CardProps {
-  span?: number;
+interface Props extends React.HTMLAttributes<HTMLDivElement> {
+  title: string;
+  width?: number | string;
+  divider?: boolean;
 }
 
-const Card: React.FC<Props> = ({ className, span, children, ...rest }) => {
-  const renderChildren = () => {
-    if (span) {
-      return (
-        <Grid.Row>
-          <Grid.Col span={12}>{children}</Grid.Col>
-        </Grid.Row>
-      );
-    }
-
-    return children;
-  };
+const Card: React.FC<Props> = (props) => {
+  const { divider = true, width = '70%', children, title, ...rest } = props;
 
   return (
-    <ArchCard {...rest} bordered={false} className={cls(className, styles.card)}>
-      {renderChildren()}
-    </ArchCard>
+    <>
+      <div {...rest} className="p-4">
+        <Typography.Title heading={6} className="!mb-4 !mt-0">
+          {title}
+        </Typography.Title>
+        <div style={{ width }}>{children}</div>
+      </div>
+      {divider && (
+        <div className="mx-4">
+          <Divider className="!m-0" />
+        </div>
+      )}
+    </>
   );
 };
 

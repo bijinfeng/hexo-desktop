@@ -4,8 +4,10 @@ import React, { useCallback, useRef } from 'react';
 
 import ImageList from '@/components/image-list';
 import { AppEventManager, EventType } from '@/event';
+import { usePicgoStore } from '@/models/picgo';
 
 const Attachment: React.FC = () => {
+  const attachments = usePicgoStore((state) => state.attachments);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   const handleOpen = useCallback(() => {
@@ -25,17 +27,14 @@ const Attachment: React.FC = () => {
 
   return (
     <Card
+      ref={wrapperRef}
       title="附件管理"
       bordered={false}
       extra={TopExtra}
-      className="relative h-full !bg-transparent"
+      className="flex flex-col relative h-full !bg-transparent"
+      bodyStyle={{ flex: 1 }}
     >
-      <Space direction="vertical" className="block" ref={wrapperRef}>
-        {/* <div className="flex">
-          <Input size="small" />
-        </div> */}
-        <ImageList srcList={[]} getPopupContainer={() => wrapperRef.current!} />
-      </Space>
+      <ImageList data={attachments} getPopupContainer={() => wrapperRef.current!} />
     </Card>
   );
 };

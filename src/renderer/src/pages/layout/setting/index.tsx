@@ -1,4 +1,5 @@
 import { Layout, Menu } from '@arco-design/web-react';
+import { IconAttachment } from '@arco-design/web-react/icon';
 import { useScroll } from 'ahooks';
 import cls from 'classnames';
 import { isNumber } from 'lodash-es';
@@ -7,6 +8,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { ReactComponent as IconConfig } from '@/assets/icons/config.svg';
 import { ReactComponent as IconUpgrade } from '@/assets/icons/upgrade.svg';
 
+import Attachment from './attachment';
 import Basic from './basic';
 import portalHoc from './Portal';
 import Proxy from './proxy';
@@ -23,6 +25,12 @@ const menus = [
     label: '基本设置',
     icon: <IconConfig />,
     content: Basic,
+  },
+  {
+    key: 'attachment',
+    label: '附件设置',
+    icon: <IconAttachment />,
+    content: Attachment,
   },
   {
     key: 'proxy',

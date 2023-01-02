@@ -1,9 +1,14 @@
-import { Button, Modal, Radio, Space, Typography, Upload } from '@arco-design/web-react';
+import { Modal, Upload } from '@arco-design/web-react';
+import { UploadItem } from '@arco-design/web-react/es/Upload';
+import { isArray, isEmpty, isError } from 'lodash-es';
 import React, { useEffect, useState } from 'react';
 
 import { AppEventManager, EventType } from '@/event';
+import { IImgInfo, usePicgoStore } from '@/models/picgo';
 
 const UploadModal: React.FC = () => {
+  const { upload, addAttachment } = usePicgoStore();
+  const [fileList, setFileList] = useState<UploadItem[]>([]);
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -16,26 +21,42 @@ const UploadModal: React.FC = () => {
     };
   }, []);
 
+  const handleOk = () => {
+    const attachments = fileList.reduce((result: IImgInfo[], item) => {
+      if (isArray(item.response) && !isEmpty(item.response)) {
+        return [...result, ...item.response];
+      }
+      return result;
+    }, []);
+
+    addAttachment(attachments);
+    setVisible(false);
+  };
+
   return (
     <Modal
       visible={visible}
       title="上传附件"
       onCancel={() => setVisible(false)}
-      footer={null}
+      onOk={handleOk}
+      afterClose={() => setFileList([])}
     >
-      <Space direction="vertical" className="w-full">
-        <Space size="mini">
-          <Typography.Text>选择存储策略：</Typography.Text>
-          <Radio.Group>
-            <Radio value="local">
-              {({ checked }) => (
-                <Button type={checked ? 'primary' : 'outline'}>本地存储</Button>
-              )}
-            </Radio>
-          </Radio.Group>
-        </Space>
-        <Upload drag multiple accept="image/*" tip="Only pictures can be uploaded" />
-      </Space>
+      <Upload
+        drag
+        multiple
+        accept="image/*"
+        tip="Only pictures can be uploaded"
+        fileList={fileList}
+        onChange={setFileList}
+        customRequest={(option) => {
+          const { onProgress, onError, onSuccess, file } = option;
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          upload([file.path], onProgress).then((res) => {
+            isError(res) ? onError(res) : onSuccess(res);
+          });
+        }}
+      />
     </Modal>
   );
 };

@@ -70,7 +70,7 @@ const Update: React.FC = () => {
   };
 
   return (
-    <Card title="软件更新" bordered={false}>
+    <Card title="软件更新" divider={false}>
       <Space direction="vertical" size="large">
         <Space>
           {renderVersion()}

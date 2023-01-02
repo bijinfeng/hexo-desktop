@@ -2,6 +2,7 @@ import themeChanged from './changeAppTheme';
 import checkForUpdate from './checkForUpdate';
 import quitAndInstall from './quitAndInstall';
 import setOpenAtLogin from './setOpenAtLogin';
+import updateAttachment from './updateAttachment';
 import updateConfig from './updateConfig';
 import updatePost from './updatePost';
 
@@ -12,6 +13,7 @@ const actions = {
   quitAndInstall,
   updateConfig,
   setOpenAtLogin,
+  updateAttachment,
 };
 
 export function getAction(actionName: keyof typeof actions) {
