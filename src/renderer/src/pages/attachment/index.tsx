@@ -1,13 +1,17 @@
-import { Button, Card, Space } from '@arco-design/web-react';
+import { Button, Card, Image, Space } from '@arco-design/web-react';
 import { IconStorage, IconUpload } from '@arco-design/web-react/icon';
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 
-import ImageList from '@/components/image-list';
 import { AppEventManager, EventType } from '@/event';
-import { usePicgoStore } from '@/models/picgo';
+
+import CardList from './card';
+import { AttachmentProvider } from './context';
+import Header from './header';
+import TableList from './table';
+import Toolbar from './toolbar';
 
 const Attachment: React.FC = () => {
-  const attachments = usePicgoStore((state) => state.attachments);
+  const [isList, setIsList] = useState<boolean>(true);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   const handleOpen = useCallback(() => {
@@ -26,16 +30,22 @@ const Attachment: React.FC = () => {
   );
 
   return (
-    <Card
-      ref={wrapperRef}
-      title="附件管理"
-      bordered={false}
-      extra={TopExtra}
-      className="flex flex-col relative h-full !bg-transparent"
-      bodyStyle={{ flex: 1 }}
-    >
-      <ImageList data={attachments} getPopupContainer={() => wrapperRef.current!} />
-    </Card>
+    <AttachmentProvider>
+      <Card
+        ref={wrapperRef}
+        title="附件管理"
+        bordered={false}
+        extra={TopExtra}
+        className="flex flex-col relative h-full !bg-transparent"
+        bodyStyle={{ flex: 1 }}
+      >
+        <Header isList={isList} setIsList={setIsList} />
+        <Image.PreviewGroup infinite getPopupContainer={() => wrapperRef.current!}>
+          {isList ? <TableList /> : <CardList />}
+        </Image.PreviewGroup>
+        <Toolbar />
+      </Card>
+    </AttachmentProvider>
   );
 };
 

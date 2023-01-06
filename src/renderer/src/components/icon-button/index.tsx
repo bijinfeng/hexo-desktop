@@ -43,7 +43,7 @@ const IconButton = (props: ButtonProps) => {
       {...rest}
     >
       {tooltip ? (
-        <Tooltip {...tooltipProps} content={tooltip}>
+        <Tooltip mini {...tooltipProps} content={tooltip}>
           {children}
         </Tooltip>
       ) : (

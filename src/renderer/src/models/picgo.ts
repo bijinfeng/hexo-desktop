@@ -1,15 +1,16 @@
+import dayjs from 'dayjs';
 import { forEach, get as lodashGet, set as lodashSet } from 'lodash-es';
-import type { IConfig, IImgInfo } from 'picgo';
+import type { IConfig } from 'picgo';
+import { v1 as uuid } from 'uuid';
 import create from 'zustand';
 
 import { invokeCommand, sendCommand } from '@/commands';
 import { AppEventManager } from '@/event';
 
-export type { IImgInfo } from 'picgo';
 export type BedConfig = { config: PICGO.IPicGoPluginConfig[]; data: PICGO.IStringKeyMap };
 
 interface PicgoStore {
-  attachments: IImgInfo[];
+  attachments: PICGO.IPicAttachment[];
   picConfig?: IConfig;
   defaultPicBed: string;
   picBeds: PICGO.IPicBedType[];
@@ -22,8 +23,9 @@ interface PicgoStore {
   upload: (
     paths: string[],
     onProgress: (percent: number) => void,
-  ) => Promise<IImgInfo[] | Error>;
-  addAttachment: (list: IImgInfo[]) => void;
+  ) => Promise<PICGO.IImgInfo[] | Error>;
+  addAttachment: (list: PICGO.IImgInfo[]) => void;
+  deleteAttachment: (ids: Array<string | number>) => void;
 }
 
 export const usePicgoStore = create<PicgoStore>()((set, get) => {
@@ -47,14 +49,13 @@ export const usePicgoStore = create<PicgoStore>()((set, get) => {
     return invokeCommand<void>('savePicConfig', data);
   };
 
-  const saveAttachments = (list: IImgInfo[]) => {
+  const saveAttachments = (list: PICGO.IPicAttachment[]) => {
     const newAttachments = [...get().attachments, ...list];
     set({ attachments: newAttachments });
     sendCommand('updateAttachment', newAttachments);
   };
 
-  invokeCommand<IImgInfo[]>('getAttachment').then((res) => {
-    console.log('res: ', res);
+  invokeCommand<PICGO.IPicAttachment[]>('getAttachment').then((res) => {
     set({ attachments: res ?? [] });
   });
 
@@ -78,12 +79,18 @@ export const usePicgoStore = create<PicgoStore>()((set, get) => {
     upload: async (paths, onProgress) => {
       const handle = ({ progress }) => onProgress(progress);
       AppEventManager.addListener('pic-uploadProgress', handle);
-      const res = await invokeCommand<IImgInfo[] | Error>('picUpload', paths);
+      const res = await invokeCommand<PICGO.IImgInfo[] | Error>('picUpload', paths);
       AppEventManager.removeListener('pic-uploadProgress', handle);
       return res;
     },
     addAttachment(list) {
-      saveAttachments(list);
+      saveAttachments(
+        list.map((item) => ({
+          ...item,
+          id: uuid(), // 主键 id
+          date: dayjs().format(), // 新建时间
+        })),
+      );
     },
     getPicBedConfig: async (type) => {
       const configs = get().picBedConfigs;
@@ -109,6 +116,10 @@ export const usePicgoStore = create<PicgoStore>()((set, get) => {
         'picBed.current': type,
         'picBed.uploader': type,
       });
+    },
+    deleteAttachment: (ids) => {
+      const attachments = get().attachments;
+      set({ attachments: attachments.filter((it) => !ids.includes(it.id)) });
     },
   };
 });

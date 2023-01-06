@@ -1,5 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 namespace PICGO {
+  export type IImgInfo = import('picgo').IImgInfo;
+
+  export interface IPicAttachment extends IImgInfo {
+    id: string;
+    date: string;
+    updated?: string;
+  }
+
   export interface IPicBedType {
     type: string;
     name: string;

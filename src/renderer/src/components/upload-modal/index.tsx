@@ -4,7 +4,7 @@ import { isArray, isEmpty, isError } from 'lodash-es';
 import React, { useEffect, useState } from 'react';
 
 import { AppEventManager, EventType } from '@/event';
-import { IImgInfo, usePicgoStore } from '@/models/picgo';
+import { usePicgoStore } from '@/models/picgo';
 
 const UploadModal: React.FC = () => {
   const { upload, addAttachment } = usePicgoStore();
@@ -22,7 +22,7 @@ const UploadModal: React.FC = () => {
   }, []);
 
   const handleOk = () => {
-    const attachments = fileList.reduce((result: IImgInfo[], item) => {
+    const attachments = fileList.reduce((result: PICGO.IImgInfo[], item) => {
       if (isArray(item.response) && !isEmpty(item.response)) {
         return [...result, ...item.response];
       }
