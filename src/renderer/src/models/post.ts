@@ -55,8 +55,8 @@ export const useModelStore = create<ModelStore>()((set, get) => {
    */
   const findFolderGroup: ModelStore['findFolderGroup'] = ({
     folderId,
-    keyword,
-    scope,
+    // keyword,
+    // scope,
     widthTrash = false,
   }) => {
     const { Folder, Post } = get().models;
