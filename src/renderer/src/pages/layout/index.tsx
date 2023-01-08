@@ -2,9 +2,9 @@ import { Layout } from '@arco-design/web-react';
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 
-import Header from './Header';
+import Header from './header';
 import Setting from './setting';
-import Slider from './Slider';
+import Slider from './slider';
 
 const Content = Layout.Content;
 

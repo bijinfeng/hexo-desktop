@@ -2,7 +2,8 @@ import create from 'zustand';
 
 import { invokeCommand, sendCommand } from '@/commands';
 import { AppEventManager } from '@/event';
-import changeTheme from '@/utils/changeTheme';
+
+import changeTheme from '../utils/change-theme';
 
 export type Theme = 'light' | 'dark';
 export type ThemeState = { system: boolean; theme: Theme };
