@@ -5,6 +5,8 @@ namespace PICGO {
   export interface IPicAttachment extends IImgInfo {
     id: string;
     date: string;
+    fileType: string;
+    size: number;
     updated?: string;
   }
 

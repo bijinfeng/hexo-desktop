@@ -7,11 +7,12 @@ import menuHoc from '@/utils/menu-hoc';
 export interface ActionDropdownProps extends Omit<DropdownProps, 'position'> {
   children: React.ReactNode;
   className?: string;
+  active?: boolean;
   position?: TriggerProps['position'];
 }
 
 const ActionDropdown: React.FC<ActionDropdownProps> = (props) => {
-  const { className, children, position = 'br', ...rest } = props;
+  const { className, children, position = 'br', active, ...rest } = props;
 
   return (
     <Dropdown
@@ -19,10 +20,12 @@ const ActionDropdown: React.FC<ActionDropdownProps> = (props) => {
       triggerProps={{ autoFixPosition: false, position }}
       {...rest}
     >
-      <IconButton className={className}>{children}</IconButton>
+      <IconButton active={active} className={className}>
+        {children}
+      </IconButton>
     </Dropdown>
   );
 };
 
 export default menuHoc(ActionDropdown);
-export type { ActionItem } from '@/utils/menu-hoc';
+export type { Action, ActionItem } from '@/utils/menu-hoc';

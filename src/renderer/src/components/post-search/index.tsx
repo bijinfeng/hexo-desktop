@@ -11,8 +11,7 @@ import { get, isEmpty, isEqual } from 'lodash-es';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import IconButton from '@/components/icon-button';
-
-import { useQueryStorage } from './userQueryStorage';
+import useSearchStorage from '@/hooks/use-search-storage';
 
 type InputProps = React.ComponentProps<typeof Input>;
 
@@ -29,7 +28,7 @@ const PostSearch: React.FC<PostSearchProps> = ({ scopes = [], onChange }) => {
   const [visible, setVisible] = useState(false);
   const preScopes = useRef(() => [...scope]);
   const [scope, setScope] = useState<string>(() => get(scopes, [0, 'key']));
-  const { query, setQuery, clearQuery } = useQueryStorage();
+  const { query, setQuery, clearQuery } = useSearchStorage('notes-search');
 
   const hasQuery = !isEmpty(query);
   const hasScope = !isEmpty(scopes);

@@ -1,63 +1,89 @@
 import { Table, Typography } from '@arco-design/web-react';
 import { ColumnProps } from '@arco-design/web-react/es/Table';
-import { IconMore } from '@arco-design/web-react/icon';
+import { IconArrowDown, IconArrowUp } from '@arco-design/web-react/icon';
 import dayjs from 'dayjs';
 import React, { useContext, useMemo } from 'react';
 
-import ActionDropdown, { ActionItem } from '@/components/action-dropdown';
+import { usePicgoStore } from '@/models/picgo';
+import { formatFileSize } from '@/utils/format-file-size';
 
+import Action from './action';
 import AttachIcon from './attach-icon';
-import { AttchmentContext } from './context';
+import { AttchmentContext, SortDirection } from './context';
 
 const AttachmentTable: React.FC = () => {
-  const { selectedKeys, data, setSelectedKeys } = useContext(AttchmentContext);
+  const { picBeds } = usePicgoStore();
+  const { selectedKeys, data, sorter, setSorter, setSelectedKeys } =
+    useContext(AttchmentContext);
 
   const columns = useMemo<ColumnProps<PICGO.IPicAttachment>[]>(() => {
-    const actions: ActionItem[] = [
-      {
-        key: 'download',
-        title: '下载',
+    const getHeaderCellCallback = (field: string) => () => ({
+      onClick: () => {
+        let direction: SortDirection = 'ascend';
+
+        if (sorter?.field === field) {
+          direction = sorter.direction === 'descend' ? 'ascend' : 'descend';
+        }
+
+        setSorter({ field, direction });
       },
-      {
-        key: 'delete',
-        title: '删除',
-      },
-    ];
+    });
+
+    const renderTitle = (title: string, field: string) => {
+      const direction = sorter?.field === field ? sorter.direction : undefined;
+      return (
+        <div className="flex items-center gap-2">
+          {title}
+          {direction && (direction === 'ascend' ? <IconArrowUp /> : <IconArrowDown />)}
+        </div>
+      );
+    };
 
     return [
       {
-        title: '名称',
+        title: renderTitle('名称', 'fileName'),
         dataIndex: 'fileName',
+        headerCellStyle: { cursor: 'pointer' },
+        onHeaderCell: getHeaderCellCallback('fileName'),
         render: (_col, item) => (
           <div className="flex items-center justify-between">
             <div className="flex-1 flex items-center">
-              <AttachIcon imgUrl={item.imgUrl} type={item.extname} />
+              <AttachIcon fit="cover" imgUrl={item.imgUrl} type={item.fileType} />
               <Typography.Text className="ml-4">{item.fileName}</Typography.Text>
             </div>
-            <ActionDropdown actions={actions} className="invisible group-hover:visible">
-              <IconMore />
-            </ActionDropdown>
+            <Action className="invisible group-hover:visible" />
           </div>
         ),
       },
       {
-        title: '修改时间',
+        title: renderTitle('创建时间', 'date'),
         dataIndex: 'date',
-        render: (_col, item) => {
-          const timestamp = item.date || item.updated;
-          const formatTime = timestamp
-            ? dayjs(timestamp).format('YYYY-MM-DD HH:mm')
-            : '--';
-          return <Typography.Text>{formatTime}</Typography.Text>;
-        },
+        headerCellStyle: { cursor: 'pointer' },
+        onHeaderCell: getHeaderCellCallback('date'),
+        render: (_col, item) => (
+          <Typography.Text>{dayjs(item.date).format('YYYY/MM/DD HH:mm')}</Typography.Text>
+        ),
+      },
+      {
+        title: renderTitle('大小', 'size'),
+        dataIndex: 'size',
+        headerCellStyle: { cursor: 'pointer' },
+        onHeaderCell: getHeaderCellCallback('size'),
+        render: (_col, item) => (
+          <Typography.Text>{formatFileSize(item.size)}</Typography.Text>
+        ),
       },
       {
         title: '图床',
         dataIndex: 'type',
-        render: (_col, item) => <Typography.Text>{item.type}</Typography.Text>,
+        render: (_col, item) => (
+          <Typography.Text>
+            {picBeds.find((it) => it.type === item.type)?.name || '--'}
+          </Typography.Text>
+        ),
       },
     ];
-  }, []);
+  }, [sorter, picBeds]);
 
   return (
     <Table

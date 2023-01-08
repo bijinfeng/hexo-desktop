@@ -5,12 +5,12 @@ module.exports = {
     colors: {
       transparent: 'transparent',
       primary: {
-        1: 'var(--primary-1)',
-        2: 'var(--primary-2)',
-        3: 'var(--primary-3)',
-        4: 'var(--primary-4)',
-        5: 'var(--primary-5)',
-        6: 'var(--primary-6)',
+        1: 'rgb(var(--primary-1))',
+        2: 'rgb(var(--primary-2))',
+        3: 'rgb(var(--primary-3))',
+        4: 'rgb(var(--primary-4))',
+        5: 'rgb(var(--primary-5))',
+        6: 'rgb(var(--primary-6))',
       },
       text: {
         1: 'var(--color-text-1)',

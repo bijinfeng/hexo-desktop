@@ -1,5 +1,5 @@
 import { Menu, MenuProps } from '@arco-design/web-react';
-import { IconCaretRight } from '@arco-design/web-react/icon';
+import { IconArrowDown, IconArrowUp, IconCaretRight } from '@arco-design/web-react/icon';
 import cls from 'classnames';
 import { get, isEmpty } from 'lodash-es';
 import React, { useCallback } from 'react';
@@ -14,6 +14,7 @@ export interface DividerItem {
 export interface Action {
   key: string;
   title: React.ReactNode;
+  sort?: 'ascend' | 'descend';
   className?: string;
   children?: ActionItem[];
   onClick?: () => void;
@@ -65,11 +66,16 @@ const menuHoc = <E extends DropProps>(
 
         return (
           <MenuItem
-            className={cls('hexo-menu-item', drop.className)}
+            className={cls(
+              'hexo-menu-item flex items-center justify-between',
+              drop.className,
+            )}
             key={drop.key}
             onClick={drop.onClick}
           >
             {drop.title}
+            {drop.sort === 'ascend' && <IconArrowUp />}
+            {drop.sort === 'descend' && <IconArrowDown />}
           </MenuItem>
         );
       });
