@@ -40,6 +40,7 @@
     "@electron-toolkit/preload": "^1.0.2",
     "@electron-toolkit/tsconfig": "^1.0.1",
     "@electron-toolkit/utils": "^1.0.2",
+    "@icon-park/react": "^1.4.2",
     "@remirror/pm": "^2.0.2",
     "@remirror/react": "^2.0.20",
     "@sentry/electron": "^4.1.2",

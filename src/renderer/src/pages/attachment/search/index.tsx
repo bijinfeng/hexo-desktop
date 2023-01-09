@@ -30,7 +30,7 @@ const Search: React.FC = () => {
         alignCenter={false}
       >
         <SearchInput onClose={() => setVisible(false)} />
-        <SearchResult />
+        <SearchResult onClose={() => setVisible(false)} />
         <FileType />
         <SearchHistory />
       </Modal>

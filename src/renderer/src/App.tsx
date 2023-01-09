@@ -8,6 +8,7 @@ import { useThemeStore } from '@/models/theme';
 import Attachment from './pages/attachment';
 import Layout from './pages/layout';
 import Notes from './pages/notes';
+import Setting from './pages/setting';
 import Trash from './pages/trash';
 
 const App: React.FC = () => {
@@ -29,6 +30,7 @@ const App: React.FC = () => {
 
       <FileMove />
       <UploadModal />
+      <Setting />
     </ConfigProvider>
   );
 };

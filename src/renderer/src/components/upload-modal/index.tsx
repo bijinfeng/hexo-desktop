@@ -26,6 +26,10 @@ const UploadModal: React.FC = () => {
     };
   }, []);
 
+  const openSetting = () => {
+    AppEventManager.emit(EventType.OPEN_SETTING, 'attachment');
+  };
+
   const handleOk = () => {
     const attachments = fileList.reduce((result: PICGO.IPicAttachment[], item) => {
       if (isArray(item.response) && !isEmpty(item.response)) {
@@ -41,7 +45,7 @@ const UploadModal: React.FC = () => {
   const renderAlertContent = () => (
     <Typography.Text>
       上传至{defaultPicBedName}图床，可以到「
-      <Typography.Text type="primary" className="cursor-pointer">
+      <Typography.Text type="primary" className="cursor-pointer" onClick={openSetting}>
         设置-附件管理
       </Typography.Text>
       」中修改默认图床
@@ -56,6 +60,7 @@ const UploadModal: React.FC = () => {
       onOk={handleOk}
       afterClose={() => setFileList([])}
       className="modal-clear-padding"
+      mountOnEnter={false}
     >
       <Alert content={renderAlertContent()} />
       <div className="px-5 py-6">

@@ -1,6 +1,7 @@
 // import './utils/sentry';
 import './commands/index';
 import './assets/styles/index.css';
+import '@icon-park/react/styles/index.css';
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';

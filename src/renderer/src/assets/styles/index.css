@@ -1,6 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss/tailwind";
 
 @layer components {
   .app-region-drag {
@@ -56,6 +54,10 @@
 
   .modal-clear-padding .arco-modal-content {
     padding: 0;
+  }
+
+  .setting-sider {
+    --color-menu-light-bg: --color-bg-3;
   }
 }
 

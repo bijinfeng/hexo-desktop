@@ -1,47 +1,51 @@
 import {
-  Button,
   Checkbox,
   Form,
   Grid,
   Input,
   Message,
+  Modal,
   Select,
   Switch,
 } from '@arco-design/web-react';
 import { get, isString } from 'lodash-es';
-import React, { useEffect, useState } from 'react';
+import React, { forwardRef, useImperativeHandle, useState } from 'react';
 
 import { usePicgoStore } from '@/models/picgo';
 
-interface ConfigFormProps {
-  type: string;
+export interface FormRef {
+  show: (bed: PICGO.IPicBedType) => void;
 }
 
-const ConfigForm: React.FC<ConfigFormProps> = ({ type }) => {
+const ConfigForm = forwardRef<FormRef>((_, ref) => {
   const [form] = Form.useForm();
+  const [visible, setVisible] = useState(false);
+  const [bed, setBed] = useState<PICGO.IPicBedType>();
   const [config, setConfig] = useState<PICGO.IPicGoPluginConfig[]>([]);
-  const { defaultPicBed, setDefaultPicBed, getPicBedConfig, savePicBedConfig } =
-    usePicgoStore();
+  const { getPicBedConfig, savePicBedConfig } = usePicgoStore();
 
-  useEffect(() => {
-    getPicBedConfig(type).then((res) => {
-      setConfig(res.config);
-      form.setFieldsValue(res.data);
-    });
-  }, [type, form]);
+  useImperativeHandle(ref, () => ({
+    show: (bed) => {
+      setBed(bed);
+      getPicBedConfig(bed.type).then((res) => {
+        setConfig(res.config);
+        form.setFieldsValue(res.data);
+        setVisible(true);
+      });
+    },
+  }));
 
   const getChoiceKey = (choice: PICGO.Choice, key: 'name' | 'value') => {
     return isString(choice) ? choice : get(choice, key);
   };
 
-  const handleSubmit = (values: PICGO.IStringKeyMap) => {
-    savePicBedConfig(type, values);
-    Message.success('保存成功');
-  };
-
-  const handleSet = () => {
-    setDefaultPicBed(type);
-    Message.success('设置成功');
+  const handleOk = () => {
+    form.validate((errors, values) => {
+      if (!errors && bed) {
+        savePicBedConfig(bed.type, values);
+        Message.success('保存成功');
+      }
+    });
   };
 
   const renderContent = (item: PICGO.IPicGoPluginConfig) => {
@@ -92,30 +96,32 @@ const ConfigForm: React.FC<ConfigFormProps> = ({ type }) => {
   };
 
   return (
-    <Form form={form} layout="vertical" onSubmit={handleSubmit}>
-      <Grid.Row gutter={24}>
-        {config.map((item, index) => (
-          <Grid.Col key={index} span={12}>
-            <Form.Item
-              field={item.name}
-              label={item.alias || item.name}
-              rules={[{ required: !!item.required }]}
-            >
-              {renderContent(item)}
-            </Form.Item>
-          </Grid.Col>
-        ))}
-      </Grid.Row>
-      <Form.Item>
-        <Button type="primary" htmlType="submit" style={{ marginRight: 12 }}>
-          确定
-        </Button>
-        <Button disabled={defaultPicBed === type} onClick={handleSet}>
-          设为默认图床
-        </Button>
-      </Form.Item>
-    </Form>
+    <Modal
+      title={<div className="text-left">{bed?.name}</div>}
+      visible={visible}
+      onCancel={() => setVisible(false)}
+      onOk={handleOk}
+      afterClose={() => form.clearFields()}
+    >
+      <Form form={form} layout="vertical">
+        <Grid.Row gutter={24}>
+          {config.map((item, index) => (
+            <Grid.Col key={index} span={12}>
+              <Form.Item
+                field={item.name}
+                label={item.alias || item.name}
+                rules={[{ required: !!item.required }]}
+              >
+                {renderContent(item)}
+              </Form.Item>
+            </Grid.Col>
+          ))}
+        </Grid.Row>
+      </Form>
+    </Modal>
   );
-};
+});
+
+ConfigForm.displayName = 'ConfigForm';
 
 export default ConfigForm;

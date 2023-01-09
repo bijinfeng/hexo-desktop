@@ -9,10 +9,10 @@ import { SearchContext } from './context';
 import Item from './item';
 
 const SearchHistory: React.FC = () => {
-  const { searchStorage } = useContext(SearchContext);
+  const { searchState, searchStorage, setSearchState } = useContext(SearchContext);
   const { query, clearQuery, deleteQuery } = searchStorage;
 
-  if (isEmpty(query)) return null;
+  if (isEmpty(query) || searchState.keyword || searchState.type) return null;
 
   return (
     <div className="px-3 pb-2">
@@ -28,6 +28,7 @@ const SearchHistory: React.FC = () => {
           preIcon={<IconSchedule />}
           subIcon={<IconMinusCircle fontSize={18} />}
           onSubClick={() => deleteQuery(keyword)}
+          onClick={() => setSearchState({ keyword: keyword })}
         >
           {keyword}
         </Item>

@@ -31,32 +31,27 @@ const SearchInput: React.FC<SearchInputProps> = ({ onClose }) => {
   };
 
   return (
-    <>
-      <div className="flex items-center pl-3 pr-6 pt-5 pb-2">
-        {renderFileTag()}
-        <Input
-          placeholder="搜索文件"
-          className="!border-none !bg-transparent !text-lg font-medium"
-          value={searchState.keyword}
-          onChange={(keyword) => setSearchState({ keyword })}
-        />
-        {couldClear && (
-          <>
-            <IconButton onClick={() => setSearchState({ keyword: '', type: '' })}>
-              <Typography.Text className="text-xs !whitespace-nowrap">
-                清空
-              </Typography.Text>
-            </IconButton>
-            <Divider type="vertical" className="!ml-3 !mr-0" />
-          </>
-        )}
+    <div className="flex items-center pl-3 pr-6 pt-5 pb-2">
+      {renderFileTag()}
+      <Input
+        placeholder="搜索文件"
+        className="!border-none !bg-transparent !text-lg font-medium"
+        value={searchState.keyword}
+        onChange={(keyword) => setSearchState({ keyword })}
+      />
+      {couldClear && (
+        <>
+          <IconButton onClick={() => setSearchState({ keyword: '', type: '' })}>
+            <Typography.Text className="text-xs !whitespace-nowrap">清空</Typography.Text>
+          </IconButton>
+          <Divider type="vertical" className="!ml-3 !mr-0" />
+        </>
+      )}
 
-        <IconButton className="ml-3" onClick={onClose}>
-          <IconClose fontSize={18} />
-        </IconButton>
-      </div>
-      <Divider className="!m-0" />
-    </>
+      <IconButton className="ml-3" onClick={onClose}>
+        <IconClose fontSize={18} />
+      </IconButton>
+    </div>
   );
 };
 
