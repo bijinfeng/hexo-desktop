@@ -6,8 +6,6 @@ import {
   SettingTwo as IconConfig,
   Wifi as IconWifi,
 } from '@icon-park/react';
-import { useScroll } from 'ahooks';
-import { isNumber } from 'lodash-es';
 import React, { useEffect, useRef, useState } from 'react';
 
 import IconButtom from '@/components/icon-button';
@@ -51,15 +49,9 @@ const menus = [
 
 const Setting: React.FC = () => {
   const [visible, setVisible] = useState(false);
-  const [selectedKey, setSelectKey] = useState<string>();
-  const sectionRef = useRef<HTMLDivElement[]>([]);
+  const [selectedKey, setSelectKey] = useState<string>('basic');
   const containerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
-  const contentScroll = useScroll(contentRef);
-
-  const setSectionRef = (ref: HTMLDivElement, index: number) => {
-    sectionRef.current[index] = ref;
-  };
 
   useEffect(() => {
     const open = (key?: string) => {
@@ -76,28 +68,11 @@ const Setting: React.FC = () => {
     };
   }, []);
 
-  useEffect(() => {
-    const scrollTop = contentScroll?.top;
-    const containerRect = containerRef.current?.getBoundingClientRect();
+  const renderContent = () => {
+    const target = menus.find((it) => it.key === selectedKey);
+    if (!target) return null;
 
-    if (isNumber(scrollTop) && containerRect) {
-      const index = [...sectionRef.current].reverse().findIndex((ref) => {
-        const sectionRect = ref.getBoundingClientRect();
-        // section 到容器顶部的距离
-        const releativeTop = scrollTop + sectionRect.top - containerRect.top;
-        // section 中心到容器顶部的距离
-        const centerPoint = releativeTop + sectionRect.height / 2;
-        // 判断 section 中心 是否在容器的可视区域内
-        return centerPoint - scrollTop < containerRect.height;
-      });
-      const activeIndex = sectionRef.current.length - index - 1;
-      setSelectKey(menus[activeIndex]?.key);
-    }
-  }, [contentScroll?.top]);
-
-  const handleClick = (key: string) => {
-    const index = menus.findIndex((menu) => menu.key === key) ?? 0;
-    sectionRef.current[index]?.scrollIntoView();
+    return React.createElement(target.content);
   };
 
   return (
@@ -121,7 +96,7 @@ const Setting: React.FC = () => {
           >
             <Menu
               selectedKeys={selectedKey ? [selectedKey] : undefined}
-              onClickMenuItem={handleClick}
+              onClickMenuItem={setSelectKey}
             >
               {menus.map((it) => (
                 <MenuItem key={it.key}>
@@ -135,11 +110,7 @@ const Setting: React.FC = () => {
             </Menu>
           </Sider>
           <Content className="h-full bg-bg-1 overflow-y-scroll" ref={contentRef}>
-            {menus.map((it, idx) => (
-              <div key={it.key} ref={(ref) => ref && setSectionRef(ref, idx)}>
-                <it.content />
-              </div>
-            ))}
+            {renderContent()}
           </Content>
         </Layout>
       </Card>

@@ -9,31 +9,36 @@ import {
   Switch,
 } from '@arco-design/web-react';
 import { get, isString } from 'lodash-es';
-import React, { forwardRef, useImperativeHandle, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
+import { AppEventManager, EventType } from '@/event';
 import { usePicgoStore } from '@/models/picgo';
 
 export interface FormRef {
-  show: (bed: PICGO.IPicBedType) => void;
+  show: () => void;
 }
 
-const ConfigForm = forwardRef<FormRef>((_, ref) => {
+const ConfigForm: React.FC = () => {
   const [form] = Form.useForm();
   const [visible, setVisible] = useState(false);
   const [bed, setBed] = useState<PICGO.IPicBedType>();
   const [config, setConfig] = useState<PICGO.IPicGoPluginConfig[]>([]);
   const { getPicBedConfig, savePicBedConfig } = usePicgoStore();
 
-  useImperativeHandle(ref, () => ({
-    show: (bed) => {
+  useEffect(() => {
+    const show = (bed: PICGO.IPicBedType) => {
       setBed(bed);
       getPicBedConfig(bed.type).then((res) => {
         setConfig(res.config);
         form.setFieldsValue(res.data);
         setVisible(true);
       });
-    },
-  }));
+    };
+    AppEventManager.addListener(EventType.OPEN_BED_CONFIG_MODAL, show);
+    return () => {
+      AppEventManager.removeListener(EventType.OPEN_BED_CONFIG_MODAL, show);
+    };
+  }, []);
 
   const getChoiceKey = (choice: PICGO.Choice, key: 'name' | 'value') => {
     return isString(choice) ? choice : get(choice, key);
@@ -120,7 +125,7 @@ const ConfigForm = forwardRef<FormRef>((_, ref) => {
       </Form>
     </Modal>
   );
-});
+};
 
 ConfigForm.displayName = 'ConfigForm';
 

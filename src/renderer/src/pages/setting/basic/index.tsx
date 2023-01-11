@@ -1,14 +1,17 @@
 import { Checkbox, Radio, Space, Typography } from '@arco-design/web-react';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 import RadioCard from '@/components/radio-card';
 import ThemeIllus from '@/components/theme-illus';
+import { lngMaps } from '@/i18n';
 import { useConfigStore } from '@/models/config';
 import { useThemeStore } from '@/models/theme';
 
 import Card from '../card';
 
 const Basic: React.FC = () => {
+  const { i18n } = useTranslation();
   const { system, theme, updateTheme } = useThemeStore();
   const { config, update } = useConfigStore();
 
@@ -20,14 +23,31 @@ const Basic: React.FC = () => {
     update({ openAtLogin: checked });
   };
 
+  const handleLangChange = (newLang: string) => {
+    i18n.changeLanguage(newLang);
+    update({ lang: newLang });
+  };
+
   return (
-    <>
-      <Card title="偏好设置">
+    <Card title="基本设置">
+      <div>
+        <Typography.Title heading={6}>启动设置</Typography.Title>
         <Checkbox checked={config.openAtLogin} onChange={handleCheck}>
           <Typography.Text bold>开机自动启动</Typography.Text>
         </Checkbox>
-      </Card>
-      <Card title="设置主题">
+      </div>
+      <div>
+        <Typography.Title heading={6}>语言</Typography.Title>
+        <Radio.Group value={config.lang} onChange={handleLangChange}>
+          {Object.keys(lngMaps).map((key) => (
+            <Radio key={key} value={key}>
+              {lngMaps[key].label}
+            </Radio>
+          ))}
+        </Radio.Group>
+      </div>
+      <div>
+        <Typography.Title heading={6}>主题设置</Typography.Title>
         <Space direction="vertical" size="medium">
           <Checkbox checked={system} onChange={systemThemeChange}>
             <Space direction="vertical" size="mini">
@@ -46,8 +66,8 @@ const Basic: React.FC = () => {
             </RadioCard>
           </Radio.Group>
         </Space>
-      </Card>
-    </>
+      </div>
+    </Card>
   );
 };
 

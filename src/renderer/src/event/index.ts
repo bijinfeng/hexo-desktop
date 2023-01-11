@@ -6,6 +6,7 @@ export enum EventType {
   OPEN_UPLOAD_MODAL = 'OPEN_UPLOAD_MODAL',
   OPEN_SETTING = 'OPEN_SETTING',
   CLOSE_SETTING = 'CLOSE_SETTING',
+  OPEN_BED_CONFIG_MODAL = 'OPEN_BED_CONFIG_MODAL',
 }
 
 export const AppEventManager = new EventManager();

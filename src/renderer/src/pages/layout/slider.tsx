@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import { ReactComponent as IconDelete } from '@/assets/icons/slider-delete.svg';
 import { ReactComponent as IconFile } from '@/assets/icons/slider-file.svg';
@@ -8,39 +9,43 @@ import { ReactComponent as IconStar } from '@/assets/icons/slider-start.svg';
 import IconButton from '@/components/icon-button';
 import { AppEventManager, EventType } from '@/event';
 
-const sliders = [
-  {
-    key: 'notes',
-    label: '笔记',
-    icon: <IconFile />,
-    router: '/notes',
-  },
-  {
-    key: 'favorites',
-    label: '收藏',
-    icon: <IconStar />,
-    router: '/collect',
-  },
-  {
-    key: 'trash',
-    label: '回收站',
-    icon: <IconDelete />,
-    router: '/trash',
-  },
-  {
-    key: 'attachment',
-    label: '附件',
-    icon: <IconImage />,
-    router: '/attachment',
-  },
-];
-
 const Slider: React.FC = () => {
+  const { t } = useTranslation();
   const location = useLocation();
 
   const onClickMenuItem = () => {
     AppEventManager.emit(EventType.CLOSE_SETTING);
   };
+
+  const sliders = useMemo(
+    () => [
+      {
+        key: 'notes',
+        label: t('notes'),
+        icon: <IconFile />,
+        router: '/notes',
+      },
+      {
+        key: 'favorites',
+        label: '收藏',
+        icon: <IconStar />,
+        router: '/collect',
+      },
+      {
+        key: 'trash',
+        label: '回收站',
+        icon: <IconDelete />,
+        router: '/trash',
+      },
+      {
+        key: 'attachment',
+        label: '附件',
+        icon: <IconImage />,
+        router: '/attachment',
+      },
+    ],
+    [t],
+  );
 
   return (
     <div className="w-[60px] flex flex-col justify-between">

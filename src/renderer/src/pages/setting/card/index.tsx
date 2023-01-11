@@ -8,12 +8,12 @@ interface Props extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const Card: React.FC<Props> = (props) => {
-  const { divider = true, width = '70%', children, title, ...rest } = props;
+  const { divider, width = '70%', children, title, ...rest } = props;
 
   return (
     <>
       <div {...rest} className="p-4">
-        <Typography.Title heading={6} className="!mb-4 !mt-0">
+        <Typography.Title heading={5} className="!mb-6 !mt-0">
           {title}
         </Typography.Title>
         <div style={{ width }}>{children}</div>

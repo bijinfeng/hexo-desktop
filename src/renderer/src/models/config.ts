@@ -1,17 +1,18 @@
 import create from 'zustand';
 
 import { invokeCommand, sendCommand } from '@/commands';
-import type { Config } from '@/interface/config';
+import { initI18n } from '@/i18n';
 
 interface ConfigStore {
-  config: Config;
-  update: (config: Partial<Config>) => void;
+  config: Partial<NOTES.Config>;
+  update: (config: Partial<NOTES.Config>) => void;
   setOpenAtLogin: (bol: boolean) => void;
 }
 
 export const useConfigStore = create<ConfigStore>()((set, get) => {
-  invokeCommand<Config>('getAppConfig').then((config) => {
+  invokeCommand<NOTES.Config>('getAppConfig').then(async (config) => {
     const preConfig = get().config;
+    await initI18n(config.lang);
     set({ config: { ...preConfig, ...config } });
   });
 
@@ -25,7 +26,7 @@ export const useConfigStore = create<ConfigStore>()((set, get) => {
     config: {},
     update: updateConfig,
     setOpenAtLogin: (bol) => {
-      const obj: Partial<Config> = { openAtLogin: bol };
+      const obj: Partial<NOTES.Config> = { openAtLogin: bol };
       updateConfig(obj);
       sendCommand('setOpenAtLogin', obj);
     },

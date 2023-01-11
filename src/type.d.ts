@@ -42,3 +42,11 @@ namespace PICGO {
     [propName: string]: any;
   }
 }
+
+namespace NOTES {
+  export interface Config {
+    lang: string; //  语言
+    openAtLogin: boolean; // 是否开机自动启动
+    autoUpgrade: boolean; //  是否自动升级
+  }
+}
