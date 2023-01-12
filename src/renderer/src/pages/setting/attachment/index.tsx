@@ -8,8 +8,8 @@ import Plugin from './plugin';
 const Attachment: React.FC = () => {
   return (
     <Card title="附件设置">
-      <BedList />
       <Plugin />
+      <BedList />
       <ConfigForm />
     </Card>
   );

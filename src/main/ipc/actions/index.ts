@@ -1,5 +1,6 @@
 import themeChanged from './changeAppTheme';
 import checkForUpdate from './checkForUpdate';
+import openUrl from './openUrl';
 import quitAndInstall from './quitAndInstall';
 import setOpenAtLogin from './setOpenAtLogin';
 import updateAttachment from './updateAttachment';
@@ -14,6 +15,7 @@ const actions = {
   updateConfig,
   setOpenAtLogin,
   updateAttachment,
+  openUrl,
 };
 
 export function getAction(actionName: keyof typeof actions) {

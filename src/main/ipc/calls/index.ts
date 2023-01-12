@@ -7,6 +7,7 @@ import getPicBedConfig from './getPicBedConfig';
 import getPicConfig from './getPicConfig';
 import getPlatform from './getPlatform';
 import getPost from './getPost';
+import { picPlugin } from './picPlugin';
 import picUpload from './picUpload';
 import savePicConfig from './savePicConfig';
 
@@ -22,6 +23,7 @@ const calls = {
   savePicConfig,
   picUpload,
   getAttachment,
+  ...picPlugin,
 };
 
 export const getCall = function getAction(callName: string) {

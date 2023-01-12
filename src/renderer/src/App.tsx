@@ -1,11 +1,11 @@
 import { ConfigProvider } from '@arco-design/web-react';
-import { Navigate, Route, Routes } from 'react-router-dom';
 import { isEmpty } from 'lodash-es';
+import { Navigate, Route, Routes } from 'react-router-dom';
 
 import FileMove from '@/components/file-move';
 import UploadModal from '@/components/upload-modal';
-import { useThemeStore } from '@/models/theme';
 import { useConfigStore } from '@/models/config';
+import { useThemeStore } from '@/models/theme';
 
 import Attachment from './pages/attachment';
 import Layout from './pages/layout';

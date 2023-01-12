@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
-import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { Link, useLocation } from 'react-router-dom';
 
 import { ReactComponent as IconDelete } from '@/assets/icons/slider-delete.svg';
 import { ReactComponent as IconFile } from '@/assets/icons/slider-file.svg';

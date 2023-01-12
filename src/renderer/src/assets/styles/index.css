@@ -1,4 +1,4 @@
-@import "tailwindcss/tailwind";
+@import 'tailwindcss/tailwind';
 
 @layer components {
   .app-region-drag {
