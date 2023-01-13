@@ -1,4 +1,4 @@
-import { Notification } from 'electron';
+import { dialog, Notification, shell } from 'electron';
 import { PicGo } from 'picgo';
 
 import { sendMessageToRenderer } from '../ipc/utils';
@@ -54,6 +54,26 @@ export const getPicBedConfig = (type: string) => {
   } else {
     return [];
   }
+};
+
+export const handleNPMError = () => {
+  const handler = (msg: string) => {
+    if (msg === 'NPM is not installed') {
+      dialog
+        .showMessageBox({
+          title: '发生错误',
+          message: '请安装Node.js并重启PicGo再继续操作',
+          buttons: ['Yes'],
+        })
+        .then((res) => {
+          if (res.response === 0) {
+            shell.openExternal('https://nodejs.org/');
+          }
+        });
+    }
+  };
+  picgo.once('failed', handler);
+  return () => picgo.off('failed', handler);
 };
 
 picgo.on('uploadProgress', (progress: any) => {

@@ -1,18 +1,26 @@
 // import './utils/sentry';
-import './commands/index';
-import './assets/styles/index.css';
+import '@/commands';
+import '@/assets/styles/index.css';
 import '@icon-park/react/styles/index.css';
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { HashRouter } from 'react-router-dom';
 
+import { initI18next } from '@/i18n';
+
 import App from './App';
 
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
-    <HashRouter>
-      <App />
-    </HashRouter>
-  </React.StrictMode>,
-);
+const init = async () => {
+  await initI18next();
+
+  ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+    <React.StrictMode>
+      <HashRouter>
+        <App />
+      </HashRouter>
+    </React.StrictMode>,
+  );
+};
+
+init();

@@ -1,4 +1,5 @@
 import './utils/sentry';
+import './utils/i18n';
 import './ipc/index';
 import './utils/openAtLogin';
 

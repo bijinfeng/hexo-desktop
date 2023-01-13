@@ -11,6 +11,9 @@ export default defineConfig({
     plugins: [externalizeDepsPlugin(), terser(), cleanup()],
   },
   preload: {
+    build: {
+      copyPublicDir: false,
+    },
     plugins: [externalizeDepsPlugin(), terser()],
   },
   renderer: {

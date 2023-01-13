@@ -1,19 +1,16 @@
 import { Checkbox, Radio, Space, Typography } from '@arco-design/web-react';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 
 import RadioCard from '@/components/radio-card';
 import ThemeIllus from '@/components/theme-illus';
-import { lngMaps } from '@/i18n';
 import { useConfigStore } from '@/models/config';
 import { useThemeStore } from '@/models/theme';
 
 import Card from '../card';
 
 const Basic: React.FC = () => {
-  const { i18n } = useTranslation();
   const { system, theme, updateTheme } = useThemeStore();
-  const { config, update } = useConfigStore();
+  const { config, languages, update, changeLanguage } = useConfigStore();
 
   const systemThemeChange = (bol: boolean) => {
     updateTheme(bol ? 'system' : theme);
@@ -21,11 +18,6 @@ const Basic: React.FC = () => {
 
   const handleCheck = (checked: boolean) => {
     update({ openAtLogin: checked });
-  };
-
-  const handleLangChange = (newLang: string) => {
-    i18n.changeLanguage(newLang);
-    update({ lang: newLang });
   };
 
   return (
@@ -38,10 +30,10 @@ const Basic: React.FC = () => {
       </div>
       <div>
         <Typography.Title heading={6}>语言</Typography.Title>
-        <Radio.Group value={config.lang} onChange={handleLangChange}>
-          {Object.keys(lngMaps).map((key) => (
-            <Radio key={key} value={key}>
-              {lngMaps[key].label}
+        <Radio.Group value={config.lang} onChange={changeLanguage}>
+          {languages.map((lng) => (
+            <Radio key={lng.value} value={lng.value}>
+              {lng.label}
             </Radio>
           ))}
         </Radio.Group>

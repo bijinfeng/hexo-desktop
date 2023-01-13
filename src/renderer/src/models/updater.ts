@@ -1,5 +1,5 @@
 import { Message } from '@arco-design/web-react';
-import create from 'zustand';
+import { create } from 'zustand';
 
 import { invokeCommand, sendCommand } from '@/commands';
 import { AppEventManager } from '@/event';

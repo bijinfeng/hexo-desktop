@@ -1,9 +1,5 @@
 import { setStore } from '../../utils/store';
 
-export interface Args {
-  payload: any[];
-}
-
-export default ({ payload }: Args) => {
+export default (payload: any[]) => {
   setStore('attachment', payload);
 };

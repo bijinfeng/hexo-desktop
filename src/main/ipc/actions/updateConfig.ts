@@ -1,9 +1,5 @@
-import { Config, setConfigStore } from '../../utils/store';
+import { setConfigStore } from '../../utils/store';
 
-export interface Args {
-  payload: Partial<Config>;
-}
-
-export default ({ payload }: Args) => {
+export default (payload: Partial<NOTES.Config>) => {
   setConfigStore(payload);
 };

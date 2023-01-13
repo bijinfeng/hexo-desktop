@@ -1,15 +1,11 @@
-import { getPicBeds } from '../../picgo';
 import getAppConfig from './getAppConfig';
 import getTheme from './getAppTheme';
 import getAppVersion from './getAppVersion';
 import getAttachment from './getAttachment';
-import getPicBedConfig from './getPicBedConfig';
-import getPicConfig from './getPicConfig';
 import getPlatform from './getPlatform';
 import getPost from './getPost';
-import { picPlugin } from './picPlugin';
-import picUpload from './picUpload';
-import savePicConfig from './savePicConfig';
+import * as I18n from './i18n';
+import * as pic from './pic';
 
 const calls = {
   getTheme,
@@ -17,13 +13,9 @@ const calls = {
   getPlatform,
   getAppVersion,
   getAppConfig,
-  getPicBedConfig,
-  getPicBeds,
-  getPicConfig,
-  savePicConfig,
-  picUpload,
   getAttachment,
-  ...picPlugin,
+  ...I18n,
+  ...pic,
 };
 
 export const getCall = function getAction(callName: string) {

@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import { v1 as uuid } from 'uuid';
-import create from 'zustand';
+import { create } from 'zustand';
 
 import { invokeCommand, sendCommand } from '@/commands';
 import type { FolderData, FolderItemData, Models, PostData } from '@/interface';

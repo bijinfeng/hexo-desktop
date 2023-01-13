@@ -1,3 +1,5 @@
+import logger from 'electron-log';
+
 import themeChanged from './changeAppTheme';
 import checkForUpdate from './checkForUpdate';
 import openUrl from './openUrl';
@@ -22,7 +24,7 @@ export function getAction(actionName: keyof typeof actions) {
   try {
     if (!actions[actionName]) throw new Error('Invalid action name.');
   } catch (e) {
-    console.error(e);
+    logger.error(e);
   }
   return actions[actionName];
 }

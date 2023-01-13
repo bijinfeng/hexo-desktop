@@ -1,9 +1,9 @@
 import { shell } from 'electron';
 
 export interface Args {
-  payload: { url: string };
+  url: string;
 }
 
-export default ({ payload }: Args) => {
-  shell.openExternal(payload.url);
+export default ({ url }: Args) => {
+  shell.openExternal(url);
 };

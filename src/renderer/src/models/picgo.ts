@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import { forEach, get as lodashGet, isError, orderBy, set as lodashSet } from 'lodash-es';
 import type { IConfig } from 'picgo';
 import { v1 as uuid } from 'uuid';
-import create from 'zustand';
+import { create } from 'zustand';
 
 import { invokeCommand, sendCommand } from '@/commands';
 import { AppEventManager } from '@/event';
@@ -108,9 +108,7 @@ export const usePicgoStore = create<PicgoStore>()((set, get) => {
       if (configs[type]) return configs[type];
 
       const [config, data] = await Promise.all([
-        invokeCommand<PICGO.IPicGoPluginConfig[]>('getPicBedConfig', {
-          type,
-        }),
+        invokeCommand<PICGO.IPicGoPluginConfig[]>('getPicBedConfig', type),
         getPicConfig().then((config) => lodashGet(config, `picBed.${type}`)),
       ]);
 
