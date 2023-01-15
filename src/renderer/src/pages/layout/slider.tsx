@@ -27,19 +27,19 @@ const Slider: React.FC = () => {
       },
       {
         key: 'favorites',
-        label: '收藏',
+        label: t('favorites'),
         icon: <IconStar />,
         router: '/collect',
       },
       {
         key: 'trash',
-        label: '回收站',
+        label: t('trash'),
         icon: <IconDelete />,
         router: '/trash',
       },
       {
         key: 'attachment',
-        label: '附件',
+        label: t('attachment'),
         icon: <IconImage />,
         router: '/attachment',
       },

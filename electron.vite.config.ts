@@ -6,6 +6,11 @@ import svgr from 'vite-plugin-svgr';
 
 export default defineConfig({
   main: {
+    resolve: {
+      alias: {
+        universal: resolve('src/universal'),
+      },
+    },
     build: {
       minify: true,
     },
@@ -22,6 +27,7 @@ export default defineConfig({
     resolve: {
       alias: {
         '@': resolve('src/renderer/src'),
+        universal: resolve('src/universal'),
       },
     },
     build: {

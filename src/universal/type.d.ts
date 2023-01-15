@@ -41,6 +41,48 @@ namespace PICGO {
     choices?: Array<Choice>;
     [propName: string]: any;
   }
+
+  export interface INPMSearchResultObject {
+    package: {
+      name: string;
+      scope: string;
+      version: string;
+      description: string;
+      keywords: string[];
+      author: {
+        name: string;
+      };
+      links: {
+        npm: string;
+        homepage: string;
+      };
+    };
+  }
+
+  export interface IPicGoPlugin {
+    name: string;
+    fullName: string;
+    author: string;
+    description: string;
+    logo: string;
+    version: string | number;
+    gui: boolean;
+    config:
+      | {
+          plugin: IPluginMenuConfig;
+          uploader: IPluginMenuConfig;
+          transformer: IPluginMenuConfig;
+          [index: string]: IPluginMenuConfig;
+        }
+      | {
+          [propName: string]: any;
+        };
+    enabled?: boolean;
+    homepage: string;
+    guiMenu?: any[];
+    ing: boolean;
+    hasInstall?: boolean;
+  }
 }
 
 namespace NOTES {

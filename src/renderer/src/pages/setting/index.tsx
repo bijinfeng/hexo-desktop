@@ -78,7 +78,7 @@ const Setting: React.FC = () => {
   return (
     <Portal visible>
       <Card
-        className="!rounded-tl-md flex !absolute top-[40px] left-[60px] w-[calc(100%-60px)] h-[calc(100%-40px)] z-[1001] flex-col !bg-bg-3"
+        className="setting-modal-wrapper !rounded-tl-md !bg-bg-3"
         title="设置"
         bordered={false}
         bodyStyle={{ padding: 0, flex: 1, overflow: 'hidden' }}

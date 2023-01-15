@@ -18,7 +18,6 @@ ipcMain.handle('fromRenderer', async (_event, args) => {
 
   const call = getCall(type);
   if (!call) return;
-
   return await call(payload, global.win);
 });
 

@@ -1,44 +1,34 @@
 import {
+  Button,
   Checkbox,
   Form,
   Grid,
   Input,
   Message,
-  Modal,
   Select,
   Switch,
 } from '@arco-design/web-react';
 import { get, isString } from 'lodash-es';
 import React, { useEffect, useState } from 'react';
 
-import { AppEventManager, EventType } from '@/event';
 import { usePicgoStore } from '@/models/picgo';
 
-export interface FormRef {
-  show: () => void;
+interface ConfigFormProps {
+  bed: PICGO.IPicBedType;
 }
 
-const ConfigForm: React.FC = () => {
+const ConfigForm: React.FC<ConfigFormProps> = ({ bed }) => {
   const [form] = Form.useForm();
-  const [visible, setVisible] = useState(false);
-  const [bed, setBed] = useState<PICGO.IPicBedType>();
   const [config, setConfig] = useState<PICGO.IPicGoPluginConfig[]>([]);
-  const { getPicBedConfig, savePicBedConfig } = usePicgoStore();
+  const { defaultPicBed, getPicBedConfig, savePicBedConfig, setDefaultPicBed } =
+    usePicgoStore();
 
   useEffect(() => {
-    const show = (bed: PICGO.IPicBedType) => {
-      setBed(bed);
-      getPicBedConfig(bed.type).then((res) => {
-        setConfig(res.config);
-        form.setFieldsValue(res.data);
-        setVisible(true);
-      });
-    };
-    AppEventManager.addListener(EventType.OPEN_BED_CONFIG_MODAL, show);
-    return () => {
-      AppEventManager.removeListener(EventType.OPEN_BED_CONFIG_MODAL, show);
-    };
-  }, []);
+    getPicBedConfig(bed.type).then((res) => {
+      setConfig(res.config);
+      form.setFieldsValue(res.data);
+    });
+  }, [bed]);
 
   const getChoiceKey = (choice: PICGO.Choice, key: 'name' | 'value') => {
     return isString(choice) ? choice : get(choice, key);
@@ -51,6 +41,11 @@ const ConfigForm: React.FC = () => {
         Message.success('保存成功');
       }
     });
+  };
+
+  const handleSetDefaultPicBed = () => {
+    setDefaultPicBed(bed.type);
+    Message.success('设置成功');
   };
 
   const renderContent = (item: PICGO.IPicGoPluginConfig) => {
@@ -101,29 +96,29 @@ const ConfigForm: React.FC = () => {
   };
 
   return (
-    <Modal
-      title={<div className="text-left">{bed?.name}</div>}
-      visible={visible}
-      onCancel={() => setVisible(false)}
-      onOk={handleOk}
-      afterClose={() => form.clearFields()}
-    >
-      <Form form={form} layout="vertical">
-        <Grid.Row gutter={24}>
-          {config.map((item, index) => (
-            <Grid.Col key={index} span={12}>
-              <Form.Item
-                field={item.name}
-                label={item.alias || item.name}
-                rules={[{ required: !!item.required }]}
-              >
-                {renderContent(item)}
-              </Form.Item>
-            </Grid.Col>
-          ))}
-        </Grid.Row>
-      </Form>
-    </Modal>
+    <Form form={form} layout="vertical">
+      <Grid.Row gutter={24}>
+        {config.map((item, index) => (
+          <Grid.Col key={index} span={12}>
+            <Form.Item
+              field={item.name}
+              label={item.alias || item.name}
+              rules={[{ required: !!item.required }]}
+            >
+              {renderContent(item)}
+            </Form.Item>
+          </Grid.Col>
+        ))}
+      </Grid.Row>
+      <div>
+        <Button type="primary" className="mr-4" onClick={handleOk}>
+          提交
+        </Button>
+        <Button disabled={bed.type === defaultPicBed} onClick={handleSetDefaultPicBed}>
+          设为默认图床
+        </Button>
+      </div>
+    </Form>
   );
 };
 

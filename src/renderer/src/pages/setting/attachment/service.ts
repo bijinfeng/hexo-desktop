@@ -1,42 +1,11 @@
 import axios from 'axios';
+import { handleStreamlinePluginName } from 'universal/utils';
 
 interface INPMSearchResult {
-  objects: INPMSearchResultObject[];
+  objects: PICGO.INPMSearchResultObject[];
 }
 
-interface INPMSearchResultObject {
-  package: {
-    name: string;
-    scope: string;
-    version: string;
-    description: string;
-    keywords: string[];
-    author: {
-      name: string;
-    };
-    links: {
-      npm: string;
-      homepage: string;
-    };
-  };
-}
-
-/**
- * streamline the full plugin name to a simple one
- * for example:
- * 1. picgo-plugin-xxx -> xxx
- * 2. @xxx/picgo-plugin-yyy -> yyy
- * @param name pluginFullName
- */
-export const handleStreamlinePluginName = (name: string) => {
-  if (/^@[^/]+\/picgo-plugin-/.test(name)) {
-    return name.replace(/^@[^/]+\/picgo-plugin-/, '');
-  } else {
-    return name.replace(/picgo-plugin-/, '');
-  }
-};
-
-export function handleSearchResult(item: INPMSearchResultObject) {
+function handleSearchResult(item: PICGO.INPMSearchResultObject): PICGO.IPicGoPlugin {
   const name = handleStreamlinePluginName(item.package.name);
   let gui = false;
   if (item.package.keywords && item.package.keywords.length > 0) {
@@ -52,7 +21,6 @@ export function handleSearchResult(item: INPMSearchResultObject) {
     logo: `https://cdn.jsdelivr.net/npm/${item.package.name}/logo.png`,
     config: {},
     homepage: item.package.links ? item.package.links.homepage : '',
-    // hasInstall: pluginNameList.value.some((plugin) => plugin === item.package.name),
     version: item.package.version,
     gui,
     ing: false, // installing or uninstalling
@@ -64,11 +32,9 @@ export const getSearchResult = (text: string) => {
     .get<INPMSearchResult>('https://registry.npmjs.com/-/v1/search?text=' + text)
     .then((res) => {
       return res.data.objects
-        .filter((item: INPMSearchResultObject) => {
+        .filter((item: PICGO.INPMSearchResultObject) => {
           return item.package.name.includes('picgo-plugin-');
         })
-        .map((item: INPMSearchResultObject) => {
-          return handleSearchResult(item);
-        });
+        .map((item: PICGO.INPMSearchResultObject) => handleSearchResult(item));
     });
 };

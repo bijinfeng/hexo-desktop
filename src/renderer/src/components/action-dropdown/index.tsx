@@ -12,12 +12,12 @@ export interface ActionDropdownProps extends Omit<DropdownProps, 'position'> {
 }
 
 const ActionDropdown: React.FC<ActionDropdownProps> = (props) => {
-  const { className, children, position = 'br', active, ...rest } = props;
+  const { className, children, position = 'br', active, triggerProps, ...rest } = props;
 
   return (
     <Dropdown
       trigger="click"
-      triggerProps={{ autoFixPosition: false, position }}
+      triggerProps={{ autoFixPosition: false, position, ...triggerProps }}
       {...rest}
     >
       <IconButton active={active} className={className}>

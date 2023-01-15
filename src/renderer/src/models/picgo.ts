@@ -1,5 +1,13 @@
+import { Message } from '@arco-design/web-react';
 import dayjs from 'dayjs';
-import { forEach, get as lodashGet, isError, orderBy, set as lodashSet } from 'lodash-es';
+import {
+  forEach,
+  get as lodashGet,
+  isBoolean,
+  isError,
+  orderBy,
+  set as lodashSet,
+} from 'lodash-es';
 import type { IConfig } from 'picgo';
 import { v1 as uuid } from 'uuid';
 import { create } from 'zustand';
@@ -22,6 +30,7 @@ interface PicgoStore {
   defaultPicBed: string;
   picBeds: PICGO.IPicBedType[];
   picBedConfigs: Record<string, BedConfig>;
+  pluginList: PICGO.IPicGoPlugin[];
   getPicConfig: () => Promise<IConfig>;
   savePicConfig: (data: Record<string, any>) => Promise<void>;
   getPicBedConfig: (type: string) => Promise<BedConfig>;
@@ -31,6 +40,8 @@ interface PicgoStore {
   addAttachment: (list: PICGO.IPicAttachment[]) => void;
   deleteAttachment: (ids: Array<string | number>) => void;
   searchAttachment: (search: SearchState, sort?: SorterResult) => PICGO.IPicAttachment[];
+  getPluginList: () => Promise<PICGO.IPicGoPlugin[]>;
+  importLocalPicPlugin: () => void;
 }
 
 export const usePicgoStore = create<PicgoStore>()((set, get) => {
@@ -65,14 +76,26 @@ export const usePicgoStore = create<PicgoStore>()((set, get) => {
     set({ attachments: res ?? [] });
   });
 
-  invokeCommand<PICGO.IPicBedType[]>('getPicBeds').then((_pligins) => {
-    set({ picBeds: _pligins });
-  });
+  const getPicBeds = () => {
+    invokeCommand<PICGO.IPicBedType[]>('getPicBeds').then((_pligins) => {
+      set({ picBeds: _pligins });
+    });
+  };
 
   getPicConfig().then((config) => {
     const defaultPicBed = config?.picBed?.uploader || config?.picBed?.current || 'smms';
     set({ defaultPicBed });
   });
+
+  const getPluginList = () => {
+    return invokeCommand<PICGO.IPicGoPlugin[]>('getPicPluginList').then((list) => {
+      set({ pluginList: list });
+      return list;
+    });
+  };
+
+  getPicBeds();
+  getPluginList();
 
   return {
     attachments: [],
@@ -80,8 +103,11 @@ export const usePicgoStore = create<PicgoStore>()((set, get) => {
     picBeds: [],
     picBedConfigs: {},
     picBedConfigDatas: {},
+    pluginList: [],
     getPicConfig,
     savePicConfig,
+    // 获取已安装插件列表
+    getPluginList,
     // 上传附件
     upload: async (file, onProgress) => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -157,6 +183,20 @@ export const usePicgoStore = create<PicgoStore>()((set, get) => {
       }
 
       return list;
+    },
+    // 导入本地插件
+    importLocalPicPlugin() {
+      invokeCommand<boolean | undefined>('importLocalPicPlugin').then((bol) => {
+        if (isBoolean(bol)) {
+          if (bol) {
+            getPicBeds(); // 更新图床列表
+            getPluginList(); // 更新插件列表
+            Message.success('插件导入成功');
+          } else {
+            Message.error('插件导入失败');
+          }
+        }
+      });
     },
   };
 });

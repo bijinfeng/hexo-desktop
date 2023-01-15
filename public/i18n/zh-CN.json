@@ -1,4 +1,6 @@
 {
-  "test": "测试",
-  "notes": "笔记"
+  "favorites": "收藏",
+  "notes": "笔记",
+  "trash": "回收站",
+  "attachment": "附件"
 }

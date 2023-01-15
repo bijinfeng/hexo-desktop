@@ -59,6 +59,17 @@
   .setting-sider {
     --color-menu-light-bg: --color-bg-3;
   }
+
+  .setting-modal-wrapper {
+    display: flex;
+    flex-direction: column;
+    position: fixed !important;
+    top: 40px;
+    left: 60px;
+    width: calc(100vw - 60px);
+    height: calc(100vh - 40px);
+    z-index: 1001;
+  }
 }
 
 body {

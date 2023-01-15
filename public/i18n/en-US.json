@@ -1,4 +1,6 @@
 {
-  "test": "test",
-  "notes": "Notes"
+  "favorites": "Favorites",
+  "notes": "Notes",
+  "trash": "Trash",
+  "attachment": "Attachment"
 }
