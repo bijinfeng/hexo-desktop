@@ -1,7 +1,7 @@
 import { Card, Image, Tag } from '@arco-design/web-react';
 import { IconLoading } from '@arco-design/web-react/icon';
-import { Power as IconPower, SettingTwo as IconConfig } from '@icon-park/react';
 import React, { useMemo, useState } from 'react';
+import { RiSettings4Line, RiShutDownLine } from 'react-icons/ri';
 
 import defaultLogo from '@/assets/roundLogo.png';
 import ActionDropdown, { ActionItem } from '@/components/action-dropdown';
@@ -9,16 +9,13 @@ import { confirm } from '@/components/confirm';
 import { usePicgoStore } from '@/models/picgo';
 import { openUrl } from '@/utils/open-url';
 
-import { installPlugin } from './utils';
-
 interface PluginCardProps {
   item: PICGO.IPicGoPlugin;
 }
 
-const PluginCardInner: React.FC<React.PropsWithChildren<PluginCardProps>> = ({
-  item,
-  children,
-}) => (
+type PluginCardInnerProps = React.PropsWithChildren<PluginCardProps>;
+
+const PluginCardInner: React.FC<PluginCardInnerProps> = ({ item, children }) => (
   <Card
     size="small"
     bodyStyle={{
@@ -63,15 +60,15 @@ const PluginCardInner: React.FC<React.PropsWithChildren<PluginCardProps>> = ({
 // 待安装插件 card
 export const PluginSearchCard: React.FC<PluginCardProps> = ({ item }) => {
   const [loading, setLoading] = useState<boolean>(false);
+  const installPlugin = usePicgoStore((state) => state.installPlugin);
   const hasInstall = usePicgoStore((state) => {
     return state.pluginList.find((it) => it.fullName === item.fullName);
   });
 
   const handleInstall = async () => {
     setLoading(true);
-    const res = await installPlugin(item.fullName);
+    await installPlugin(item.fullName);
     setLoading(false);
-    console.log(res);
   };
 
   const handleInstallPlugin = (item: PluginCardProps['item']) => {
@@ -106,26 +103,31 @@ export const PluginSearchCard: React.FC<PluginCardProps> = ({ item }) => {
 
 // 已安装插件 card
 export const PluginInstalledCard: React.FC<PluginCardProps> = ({ item }) => {
+  const { enablePlugin, disablePlugin, uninstallPlugin, updatePlugin } = usePicgoStore();
+
   const actions = useMemo<ActionItem[]>(() => {
-    console.log(item);
     return [
       item.enabled
         ? {
             key: 'inactive',
             title: '禁用插件',
+            onClick: () => disablePlugin(item),
           }
         : {
             key: 'active',
             title: '启用插件',
+            onClick: () => enablePlugin(item),
           },
 
       {
         key: 'uninstall',
         title: '卸载插件',
+        onClick: () => uninstallPlugin(item),
       },
       {
         key: 'update',
         title: '更新插件',
+        onClick: () => updatePlugin(item),
       },
       ...(item.gui
         ? [
@@ -141,7 +143,7 @@ export const PluginInstalledCard: React.FC<PluginCardProps> = ({ item }) => {
   return (
     <PluginCardInner item={item}>
       <ActionDropdown actions={actions} triggerProps={{ style: { zIndex: 1001 } }}>
-        {item.enabled ? <IconConfig /> : <IconPower />}
+        {item.enabled ? <RiSettings4Line /> : <RiShutDownLine />}
       </ActionDropdown>
     </PluginCardInner>
   );

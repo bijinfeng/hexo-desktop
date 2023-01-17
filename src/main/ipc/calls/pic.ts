@@ -6,7 +6,6 @@ import { handleStreamlinePluginName } from 'universal/utils';
 import picgo, { handleNPMError } from '../../picgo';
 import { getConfigPath } from '../../picgo/getConfigPath';
 import { getConfig, handleConfigWithFunction, IPicGoHelperType } from '../../picgo/utils';
-import { showNotification } from '../../utils/notification';
 
 const STORE_PATH = path.dirname(getConfigPath());
 
@@ -25,27 +24,12 @@ export const picUpload = (payload: string[]) => {
   return picgo.upload(payload);
 };
 
-export const picInstallPic = async ({ name: fullName }: { name: string }) => {
+// 安装插件
+export const installPicPlugin = async (fullName: string) => {
   const dispose = handleNPMError();
   const res = await picgo.pluginHandler.install([fullName]);
-
-  if (res.success) {
-    console.log(res);
-    // shortKeyHandler.registerPluginShortKey(res.body[0]);
-  } else {
-    showNotification({
-      title: '插件安装失败',
-      body: res.body as string,
-    });
-  }
-
   dispose();
-
-  return {
-    success: res.success,
-    body: fullName,
-    errMsg: res.success ? '' : res.body,
-  };
+  return res;
 };
 
 export const getPicPluginList = (): PICGO.IPicGoPlugin[] => {
@@ -115,9 +99,24 @@ export const importLocalPicPlugin = async (_, mainWindow: BrowserWindow) => {
   const filePaths = res.filePaths;
 
   if (filePaths.length > 0) {
-    const res = await picgo.pluginHandler.install(filePaths);
-    return res.success;
+    return await picgo.pluginHandler.install(filePaths);
   }
 
   return undefined;
+};
+
+// 卸载插件
+export const uninstallPicPlugin = async (fullName: string) => {
+  const dispose = handleNPMError();
+  const res = await picgo.pluginHandler.uninstall([fullName]);
+  dispose();
+  return res;
+};
+
+// 更新插件
+export const updatePicPlugin = async (fullName: string) => {
+  const dispose = handleNPMError();
+  const res = await picgo.pluginHandler.update([fullName]);
+  dispose();
+  return res;
 };

@@ -13,7 +13,7 @@ const goAwesomeList = () => openUrl('https://github.com/PicGo/Awesome-PicGo');
 
 const Plugin: React.FC = () => {
   const [searchText, setSearchText] = useState<string>();
-  const importLocalPicPlugin = usePicgoStore((state) => state.importLocalPicPlugin);
+  const importLocalPlugin = usePicgoStore((state) => state.importLocalPlugin);
   const pluginList = usePicgoStore((state) => state.pluginList);
   const {
     run,
@@ -69,7 +69,7 @@ const Plugin: React.FC = () => {
           allowClear
         />
         <Button onClick={goAwesomeList}>插件列表</Button>
-        <Button onClick={importLocalPicPlugin}>导入本地插件</Button>
+        <Button onClick={importLocalPlugin}>导入本地插件</Button>
       </div>
       <Spin className="w-full mt-4" loading={loading}>
         {searchText ? renderSearchList() : renderPluginList()}

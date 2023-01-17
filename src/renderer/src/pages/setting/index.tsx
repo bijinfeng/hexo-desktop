@@ -1,12 +1,12 @@
 import { Card, Layout, Menu, Portal } from '@arco-design/web-react';
 import { IconClose } from '@arco-design/web-react/icon';
-import {
-  Link as IconLink,
-  Refresh as IconRefresh,
-  SettingTwo as IconConfig,
-  Wifi as IconWifi,
-} from '@icon-park/react';
 import React, { useEffect, useRef, useState } from 'react';
+import {
+  RiArrowUpCircleLine,
+  RiLinksFill,
+  RiSendPlaneLine,
+  RiSettings4Line,
+} from 'react-icons/ri';
 
 import IconButtom from '@/components/icon-button';
 import { AppEventManager, EventType } from '@/event';
@@ -24,25 +24,25 @@ const menus = [
   {
     key: 'basic',
     label: '基本设置',
-    icon: <IconConfig />,
+    icon: <RiSettings4Line />,
     content: Basic,
   },
   {
     key: 'attachment',
     label: '附件设置',
-    icon: <IconLink />,
+    icon: <RiLinksFill />,
     content: Attachment,
   },
   {
     key: 'proxy',
     label: '代理设置',
-    icon: <IconWifi />,
+    icon: <RiSendPlaneLine />,
     content: Proxy,
   },
   {
     key: 'update',
     label: '软件更新',
-    icon: <IconRefresh />,
+    icon: <RiArrowUpCircleLine />,
     content: Update,
   },
 ];

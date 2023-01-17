@@ -1,64 +1,18 @@
-import 'remirror/styles/all.css';
+import Placeholder from '@tiptap/extension-placeholder';
+import Table from '@tiptap/extension-table';
+import TableCell from '@tiptap/extension-table-cell';
+import TableHeader from '@tiptap/extension-table-header';
+import TableRow from '@tiptap/extension-table-row';
+import TaskItem from '@tiptap/extension-task-item';
+import TaskList from '@tiptap/extension-task-list';
+import Underline from '@tiptap/extension-underline';
+import { EditorContent, useEditor } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
+import React, { useMemo, useRef } from 'react';
 
-import { FindExtension } from '@remirror/extension-find';
-import { EditorComponent, Remirror, RemirrorProps, useRemirror } from '@remirror/react';
-import cls from 'classnames';
-import { debounce } from 'lodash-es';
-import React, { useCallback, useRef } from 'react';
-import jsx from 'refractor/lang/jsx.js';
-import typescript from 'refractor/lang/typescript.js';
-import { ExtensionPriority } from 'remirror';
-import {
-  BlockquoteExtension,
-  BoldExtension,
-  BulletListExtension,
-  CalloutExtension,
-  CodeBlockExtension,
-  CodeExtension,
-  HardBreakExtension,
-  HeadingExtension,
-  ItalicExtension,
-  LinkExtension,
-  ListItemExtension,
-  MarkdownExtension,
-  OrderedListExtension,
-  StrikeExtension,
-  TableExtension,
-  TaskListExtension,
-  TrailingNodeExtension,
-  UnderlineExtension,
-} from 'remirror/extensions';
-
-import FindReplace from './components/find-replace';
-import Menu from './components/menu';
-import styles from './style.module.less';
-
-const extensions = () => [
-  new FindExtension(),
-  new LinkExtension({ autoLink: true }),
-  new BoldExtension(),
-  new CalloutExtension(),
-  new StrikeExtension(),
-  new ItalicExtension(),
-  new HeadingExtension(),
-  new LinkExtension(),
-  new BlockquoteExtension(),
-  new BulletListExtension({ enableSpine: true }),
-  new OrderedListExtension(),
-  new ListItemExtension({ priority: ExtensionPriority.High, enableCollapsible: true }),
-  new CodeExtension(),
-  new CodeBlockExtension({ supportedLanguages: [jsx, typescript] }),
-  new TrailingNodeExtension(),
-  new TableExtension(),
-  new TaskListExtension(),
-  new UnderlineExtension(),
-  new MarkdownExtension({ copyAsMarkdown: false }),
-  /**
-   * `HardBreakExtension` allows us to create a newline inside paragraphs.
-   * e.g. in a list item
-   */
-  new HardBreakExtension(),
-];
+import { MarkdownContext, MarkdownState } from './context';
+import FindReplace from './find-replace';
+import MenuBar from './menu-bar';
 
 export interface MarkdownEditorProps {
   value: string;
@@ -70,42 +24,59 @@ const MarkdownEditor: React.FC<MarkdownEditorProps> = (props) => {
   const { value, editable = true, onChange } = props;
   const contentRef = useRef<HTMLDivElement>(null);
 
-  const { manager, state } = useRemirror({
-    extensions,
+  const editor = useEditor({
+    editable,
+    extensions: [
+      StarterKit,
+      Underline,
+      TaskList,
+      TaskItem.configure({
+        nested: true,
+      }),
+      Table.configure({
+        resizable: true,
+      }),
+      TableRow,
+      TableHeader,
+      TableCell,
+      Placeholder.configure({
+        placeholder: 'Write something …',
+      }),
+    ],
     content: value,
-    stringHandler: 'markdown',
+    autofocus: true,
+    editorProps: {
+      attributes: {
+        class:
+          'min-h-full prose dark:prose-invert prose-sm sm:prose lg:prose-lg xl:prose-2xl p-5 focus:outline-none',
+      },
+    },
+    onUpdate({ editor }) {
+      onChange?.(editor.getHTML());
+    },
   });
 
-  const handleChange = useCallback(
-    debounce<Required<RemirrorProps>['onChange']>((parameter) => {
-      const markdownText = parameter.helpers.getMarkdown(parameter.state);
-      onChange?.(markdownText);
-    }, 300),
-    [],
-  );
+  if (!editor) return null;
+
+  const markdownState = useMemo<MarkdownState>(() => ({ editor }), [editor]);
 
   return (
-    <div className="flex flex-col flex-1 overflow-hidden">
-      <Remirror
-        editable={editable}
-        manager={manager}
-        initialContent={state}
-        onChange={handleChange}
-      >
-        {editable && <Menu />}
+    <MarkdownContext.Provider value={markdownState}>
+      <div className="flex flex-col flex-1 overflow-hidden">
+        {editable && <MenuBar />}
         <div
           ref={contentRef}
-          className={cls(
-            'flex-1 h-full relative overflow-auto remirror-theme border-t border-t-border',
-            styles.wrapper,
-          )}
+          className="flex-1 relative overflow-y-hidden border-t border-t-border"
         >
-          <EditorComponent />
+          <EditorContent
+            className="h-full overflow-y-auto markdown-editor-placeholder"
+            editor={editor}
+          />
           <FindReplace nodeRef={contentRef} />
         </div>
-      </Remirror>
-    </div>
+      </div>
+    </MarkdownContext.Provider>
   );
 };
 
-export default MarkdownEditor;
+export default React.memo(MarkdownEditor);

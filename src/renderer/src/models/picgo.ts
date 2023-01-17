@@ -41,7 +41,12 @@ interface PicgoStore {
   deleteAttachment: (ids: Array<string | number>) => void;
   searchAttachment: (search: SearchState, sort?: SorterResult) => PICGO.IPicAttachment[];
   getPluginList: () => Promise<PICGO.IPicGoPlugin[]>;
-  importLocalPicPlugin: () => void;
+  importLocalPlugin: () => void;
+  installPlugin: (name: string) => Promise<boolean>;
+  enablePlugin: (plugin: PICGO.IPicGoPlugin) => void;
+  disablePlugin: (plugin: PICGO.IPicGoPlugin) => void;
+  uninstallPlugin: (plugin: PICGO.IPicGoPlugin) => Promise<boolean>;
+  updatePlugin: (plugin: PICGO.IPicGoPlugin) => Promise<boolean>;
 }
 
 export const usePicgoStore = create<PicgoStore>()((set, get) => {
@@ -94,8 +99,12 @@ export const usePicgoStore = create<PicgoStore>()((set, get) => {
     });
   };
 
-  getPicBeds();
-  getPluginList();
+  const refresh = () => {
+    getPicBeds();
+    getPluginList();
+  };
+
+  refresh();
 
   return {
     attachments: [],
@@ -184,19 +193,60 @@ export const usePicgoStore = create<PicgoStore>()((set, get) => {
 
       return list;
     },
+    // 安装插件
+    installPlugin: async (name) => {
+      const res = await invokeCommand<PICGO.IPluginHandlerResult<boolean>>(
+        'installPicPlugin',
+        name,
+      );
+      refresh();
+      res.success && Message.success('安装成功');
+      return res.success;
+    },
     // 导入本地插件
-    importLocalPicPlugin() {
-      invokeCommand<boolean | undefined>('importLocalPicPlugin').then((bol) => {
-        if (isBoolean(bol)) {
-          if (bol) {
-            getPicBeds(); // 更新图床列表
-            getPluginList(); // 更新插件列表
-            Message.success('插件导入成功');
-          } else {
-            Message.error('插件导入失败');
-          }
+    importLocalPlugin: async () => {
+      const res = await invokeCommand<PICGO.IPluginHandlerResult<boolean> | undefined>(
+        'importLocalPicPlugin',
+      );
+
+      if (isBoolean(res?.success)) {
+        if (res?.success) {
+          refresh();
+          Message.success('插件导入成功');
+        } else {
+          Message.error('插件导入失败');
         }
-      });
+      }
+    },
+    // 启用插件
+    enablePlugin: async (plugin) => {
+      await savePicConfig({ [`picgoPlugins.${plugin.fullName}`]: true });
+      refresh();
+    },
+    // 禁用插件
+    disablePlugin: async (plugin) => {
+      await savePicConfig({ [`picgoPlugins.${plugin.fullName}`]: false });
+      refresh();
+    },
+    // 卸载插件
+    uninstallPlugin: async (plugin) => {
+      const res = await invokeCommand<PICGO.IPluginHandlerResult<boolean>>(
+        'uninstallPicPlugin',
+        plugin.fullName,
+      );
+      refresh();
+      res.success && Message.success('卸载成功');
+      return res.success;
+    },
+    // 更新插件
+    updatePlugin: async (plugin) => {
+      const res = await invokeCommand<PICGO.IPluginHandlerResult<boolean>>(
+        'updatePicPlugin',
+        plugin.fullName,
+      );
+      refresh();
+      res.success && Message.success('更新成功');
+      return res.success;
     },
   };
 });
