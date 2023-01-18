@@ -1,15 +1,26 @@
 import { Alert, Modal, Typography, Upload } from '@arco-design/web-react';
 import { UploadItem } from '@arco-design/web-react/es/Upload';
 import { isArray, isEmpty, isError } from 'lodash-es';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 import { AppEventManager, EventType } from '@/event';
 import { usePicgoStore } from '@/models/picgo';
 
+export interface UploadProps {
+  multiple?: boolean;
+  accept?: string;
+}
+
+export type UploadCallback = (attachments: PICGO.IPicAttachment[]) => void;
+
+const defaultUploadProps: UploadProps = { multiple: true };
+
 const UploadModal: React.FC = () => {
   const { upload, addAttachment, defaultPicBed, picBeds } = usePicgoStore();
+  const [uploadProps, setUploadProps] = useState(defaultUploadProps);
   const [fileList, setFileList] = useState<UploadItem[]>([]);
   const [visible, setVisible] = useState(false);
+  const callbackFunc = useRef<UploadCallback>();
 
   const defaultPicBedName = useMemo(
     () => picBeds.find((it) => it.type === defaultPicBed)?.name,
@@ -17,7 +28,11 @@ const UploadModal: React.FC = () => {
   );
 
   useEffect(() => {
-    const handleOpen = () => setVisible(true);
+    const handleOpen = (params: UploadProps = {}, callback?: UploadCallback) => {
+      setUploadProps((pre) => ({ ...pre, ...params }));
+      callbackFunc.current = callback;
+      setVisible(true);
+    };
 
     AppEventManager.on(EventType.OPEN_UPLOAD_MODAL, handleOpen);
 
@@ -39,6 +54,7 @@ const UploadModal: React.FC = () => {
     }, []);
 
     addAttachment(attachments);
+    callbackFunc.current?.(attachments);
     setVisible(false);
   };
 
@@ -65,9 +81,8 @@ const UploadModal: React.FC = () => {
       <Alert content={renderAlertContent()} />
       <div className="px-5 py-6">
         <Upload
+          {...uploadProps}
           drag
-          multiple
-          accept="image/*"
           fileList={fileList}
           onChange={setFileList}
           customRequest={(option) => {

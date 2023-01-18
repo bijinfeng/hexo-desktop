@@ -928,6 +928,11 @@
   resolved "https://registry.npmjs.org/@tiptap/extension-code/-/extension-code-2.0.0-beta.209.tgz#dda857528043c5aa4c451bb9f63731aa809182cb"
   integrity sha512-LCcfQMroYps6o9ASpVZqYbbdTkSwxTokjmkkKKmWZlZSJ/h+1kThOnRZgcPkfSeaaC30T+LSxAXXyf1dMgl5+Q==
 
+"@tiptap/extension-color@^2.0.0-beta.209":
+  version "2.0.0-beta.209"
+  resolved "https://registry.npmjs.org/@tiptap/extension-color/-/extension-color-2.0.0-beta.209.tgz#9db791f50a2919e68a88b1ff6be236c35c46d570"
+  integrity sha512-AJfVaudk7acdgHrmz0xYVufh+W7x5oaekb6WN49WIyi0+4/BVmIJMdSl38fYE8ZWezmTn33+9pTUFmy7cL9CZA==
+
 "@tiptap/extension-document@^2.0.0-beta.209":
   version "2.0.0-beta.209"
   resolved "https://registry.npmjs.org/@tiptap/extension-document/-/extension-document-2.0.0-beta.209.tgz#7bb4025737a5361c06d52e56406d7e0649387e88"
@@ -960,6 +965,11 @@
   resolved "https://registry.npmjs.org/@tiptap/extension-heading/-/extension-heading-2.0.0-beta.209.tgz#7ae7e3f1adac7eaad20dcb30effb4b25f53a453d"
   integrity sha512-eqq9if0XsPjLvivM5gNUqSHj5I4Zpiv66NPO+pM4ig0Wq2CjjxWzzgmdSLfTPGRfsZe9kPCOgO86AAB07am3fQ==
 
+"@tiptap/extension-highlight@^2.0.0-beta.209":
+  version "2.0.0-beta.209"
+  resolved "https://registry.npmjs.org/@tiptap/extension-highlight/-/extension-highlight-2.0.0-beta.209.tgz#f373884097c17daf92ce3aecdc6c3781a4904c31"
+  integrity sha512-uy0Zu1dU2VcozvqpECb7+mxiazxstlb6w7jQQx8n4PAwIfN2LGv1UIil+VKRkc9amjBVwz+knm9psXEeJfjiBw==
+
 "@tiptap/extension-history@^2.0.0-beta.209":
   version "2.0.0-beta.209"
   resolved "https://registry.npmjs.org/@tiptap/extension-history/-/extension-history-2.0.0-beta.209.tgz#4d082a92bd434232b3d3db6584b8dd499086f343"
@@ -969,6 +979,11 @@
   version "2.0.0-beta.209"
   resolved "https://registry.npmjs.org/@tiptap/extension-horizontal-rule/-/extension-horizontal-rule-2.0.0-beta.209.tgz#06d8c9ca43933e338fca31963332639d8dcbe7e8"
   integrity sha512-53RU9kDVb1jowJ3Frx8QW0E05uEOCpeG3HfUCMjz8anGtefxFtMS7xYZ9sC+niJeVmXC+mUSjFGageL4iRIdqA==
+
+"@tiptap/extension-image@^2.0.0-beta.209":
+  version "2.0.0-beta.209"
+  resolved "https://registry.npmjs.org/@tiptap/extension-image/-/extension-image-2.0.0-beta.209.tgz#8e8a9316d4f2a3168cd21c8faea52d569102dace"
+  integrity sha512-Erjs9/vRud5TYATt7gJ1cBPNp0LAxtQ4mYZ+6Avpu0FfOWDv9WHXGtV85vJnbqKkRBf031L3dfLnYZPhTkS2sQ==
 
 "@tiptap/extension-italic@^2.0.0-beta.209":
   version "2.0.0-beta.209"
@@ -1029,6 +1044,11 @@
   version "2.0.0-beta.209"
   resolved "https://registry.npmjs.org/@tiptap/extension-task-list/-/extension-task-list-2.0.0-beta.209.tgz#300469aeb71493a8d5c45c6710c0a37e3c89d367"
   integrity sha512-LlskBKQcWMEXw3gDhl0E1SRV2gqwthwQuqVFvJ207FKZpnPiREhlGYkBJtC2YtfsmbRQOKxcjNQCgKtgOXAlUg==
+
+"@tiptap/extension-text-style@^2.0.0-beta.209":
+  version "2.0.0-beta.209"
+  resolved "https://registry.npmjs.org/@tiptap/extension-text-style/-/extension-text-style-2.0.0-beta.209.tgz#b2342ef96adab3932f706dd48f80034183d8c603"
+  integrity sha512-KNIkY0/Cbun1UOCa+gVM6+0Fa6Nsugd7jy8+GfWnrshElxBZyrHgxvtjMMLTwT8P/lReN/8kwJUPFAlX8BqhFw==
 
 "@tiptap/extension-text@^2.0.0-beta.209":
   version "2.0.0-beta.209"

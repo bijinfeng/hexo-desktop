@@ -1,6 +1,7 @@
 import { Divider as ArcoDivider } from '@arco-design/web-react';
 import React from 'react';
 
+import CreateImageButton from './create-image-button';
 import CreateTableButton from './create-table-button';
 import RedoButton from './redo-button';
 import ToggleBlockquoteButton from './toggle-blockquote-button';
@@ -8,6 +9,7 @@ import ToggleBoldButton from './toggle-bold-button';
 import ToggleBulletListButton from './toggle-bullet-list-button';
 import ToggleCodeBlockButton from './toggle-code-block-button';
 import ToggleCodeButton from './toggle-code-button';
+import ToggleColorButton from './toggle-color-button';
 import ToggleHeadingButton from './toggle-heading-button';
 import ToggleItalicButton from './toggle-italic-button';
 import ToggleOrderedListButton from './toggle-ordered-list-button';
@@ -33,6 +35,7 @@ const MenuBar: React.FC = () => {
       <Divider />
       <ToggleBoldButton />
       <ToggleItalicButton />
+      <ToggleColorButton />
       <ToggleStrikeButton />
       <ToggleUnderlineButton />
       <ToggleBlockquoteButton />
@@ -43,6 +46,7 @@ const MenuBar: React.FC = () => {
       <Divider />
       <ToggleCodeBlockButton />
       <ToggleCodeButton />
+      <CreateImageButton />
       <CreateTableButton />
     </div>
   );

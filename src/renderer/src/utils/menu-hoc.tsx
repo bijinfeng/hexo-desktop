@@ -14,6 +14,7 @@ export interface DividerItem {
 export interface Action {
   key: string;
   title: React.ReactNode;
+  icon?: React.ReactNode;
   sort?: 'ascend' | 'descend';
   className?: string;
   children?: ActionItem[];
@@ -73,7 +74,10 @@ const menuHoc = <E extends DropProps>(
             key={drop.key}
             onClick={drop.onClick}
           >
-            {drop.title}
+            <div className="flex items-center gap-2">
+              {drop.icon}
+              {drop.title}
+            </div>
             {drop.sort === 'ascend' && <IconArrowUp />}
             {drop.sort === 'descend' && <IconArrowDown />}
           </MenuItem>

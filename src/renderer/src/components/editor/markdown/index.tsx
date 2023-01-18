@@ -1,3 +1,6 @@
+import { Color } from '@tiptap/extension-color';
+import Highlight from '@tiptap/extension-highlight';
+import Image from '@tiptap/extension-image';
 import Placeholder from '@tiptap/extension-placeholder';
 import Table from '@tiptap/extension-table';
 import TableCell from '@tiptap/extension-table-cell';
@@ -5,6 +8,7 @@ import TableHeader from '@tiptap/extension-table-header';
 import TableRow from '@tiptap/extension-table-row';
 import TaskItem from '@tiptap/extension-task-item';
 import TaskList from '@tiptap/extension-task-list';
+import TextStyle from '@tiptap/extension-text-style';
 import Underline from '@tiptap/extension-underline';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
@@ -42,6 +46,13 @@ const MarkdownEditor: React.FC<MarkdownEditorProps> = (props) => {
       Placeholder.configure({
         placeholder: 'Write something …',
       }),
+      Image.configure({
+        inline: true,
+        allowBase64: true,
+      }),
+      Color,
+      TextStyle,
+      Highlight,
     ],
     content: value,
     autofocus: true,
@@ -56,9 +67,9 @@ const MarkdownEditor: React.FC<MarkdownEditorProps> = (props) => {
     },
   });
 
-  if (!editor) return null;
+  const markdownState = useMemo<MarkdownState>(() => ({ editor: editor! }), [editor]);
 
-  const markdownState = useMemo<MarkdownState>(() => ({ editor }), [editor]);
+  if (!editor) return null;
 
   return (
     <MarkdownContext.Provider value={markdownState}>
