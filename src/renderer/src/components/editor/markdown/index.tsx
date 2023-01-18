@@ -1,9 +1,10 @@
+import './style/index.less';
+
 import { Color } from '@tiptap/extension-color';
 import Highlight from '@tiptap/extension-highlight';
 import Image from '@tiptap/extension-image';
 import Placeholder from '@tiptap/extension-placeholder';
 import Table from '@tiptap/extension-table';
-import TableCell from '@tiptap/extension-table-cell';
 import TableHeader from '@tiptap/extension-table-header';
 import TableRow from '@tiptap/extension-table-row';
 import TaskItem from '@tiptap/extension-task-item';
@@ -15,6 +16,7 @@ import StarterKit from '@tiptap/starter-kit';
 import React, { useMemo, useRef } from 'react';
 
 import { MarkdownContext, MarkdownState } from './context';
+import TableCell from './extensions/table-cell';
 import FindReplace from './find-replace';
 import MenuBar from './menu-bar';
 
@@ -58,8 +60,7 @@ const MarkdownEditor: React.FC<MarkdownEditorProps> = (props) => {
     autofocus: true,
     editorProps: {
       attributes: {
-        class:
-          'min-h-full prose dark:prose-invert prose-sm sm:prose lg:prose-lg xl:prose-2xl p-5 focus:outline-none',
+        class: 'min-h-full p-5',
       },
     },
     onUpdate({ editor }) {
