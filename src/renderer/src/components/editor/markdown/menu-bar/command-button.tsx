@@ -1,4 +1,4 @@
-import { Popover, Tooltip } from '@arco-design/web-react';
+import { Popover, PopoverProps, Tooltip } from '@arco-design/web-react';
 import React, { ReactNode } from 'react';
 import { RiArrowDownSLine } from 'react-icons/ri';
 
@@ -12,10 +12,20 @@ export interface CommandButtonProps {
   onClick?: () => void;
   children?: ReactNode;
   popover?: ReactNode;
+  popoverProps?: PopoverProps;
 }
 
 const CommandButton: React.FC<CommandButtonProps> = (props) => {
-  const { active = false, enabled, icon, label, children, popover, onClick } = props;
+  const {
+    active = false,
+    enabled,
+    icon,
+    label,
+    children,
+    popover,
+    popoverProps,
+    onClick,
+  } = props;
 
   const renderButton = () => {
     return (
@@ -41,7 +51,12 @@ const CommandButton: React.FC<CommandButtonProps> = (props) => {
   if (!popover) return renderButton();
 
   return (
-    <Popover position="bottom" triggerProps={{ showArrow: false }} content={popover}>
+    <Popover
+      position="bottom"
+      triggerProps={{ ...popoverProps?.triggerProps, showArrow: false }}
+      content={popover}
+      {...popoverProps}
+    >
       {renderButton()}
     </Popover>
   );

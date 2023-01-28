@@ -2,7 +2,7 @@ import { Dropdown, DropdownProps, TriggerProps } from '@arco-design/web-react';
 import React from 'react';
 
 import IconButton from '@/components/icon-button';
-import menuHoc from '@/utils/menu-hoc';
+import { menuHoc } from '@/components/menu';
 
 export interface ActionDropdownProps extends Omit<DropdownProps, 'position'> {
   children: React.ReactNode;
@@ -28,4 +28,4 @@ const ActionDropdown: React.FC<ActionDropdownProps> = (props) => {
 };
 
 export default menuHoc(ActionDropdown);
-export type { Action, ActionItem } from '@/utils/menu-hoc';
+export type { Action, ActionItem } from '@/components/menu';

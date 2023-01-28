@@ -3,6 +3,7 @@ import { ColumnProps } from '@arco-design/web-react/es/Table';
 import { IconArrowDown, IconArrowUp } from '@arco-design/web-react/icon';
 import dayjs from 'dayjs';
 import React, { useContext, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { usePicgoStore } from '@/models/picgo';
 import { formatFileSize } from '@/utils/format-file-size';
@@ -12,6 +13,7 @@ import AttachIcon from './attach-icon';
 import { AttchmentContext, SortDirection } from './context';
 
 const AttachmentTable: React.FC = () => {
+  const { t } = useTranslation();
   const { picBeds } = usePicgoStore();
   const { selectedKeys, data, sorter, setSorter, setSelectedKeys } =
     useContext(AttchmentContext);
@@ -41,7 +43,7 @@ const AttachmentTable: React.FC = () => {
 
     return [
       {
-        title: renderTitle('名称', 'fileName'),
+        title: renderTitle(t('name'), 'fileName'),
         dataIndex: 'fileName',
         headerCellStyle: { cursor: 'pointer' },
         onHeaderCell: getHeaderCellCallback('fileName'),
@@ -56,7 +58,7 @@ const AttachmentTable: React.FC = () => {
         ),
       },
       {
-        title: renderTitle('创建时间', 'date'),
+        title: renderTitle(t('create-time'), 'date'),
         dataIndex: 'date',
         headerCellStyle: { cursor: 'pointer' },
         onHeaderCell: getHeaderCellCallback('date'),
@@ -65,7 +67,7 @@ const AttachmentTable: React.FC = () => {
         ),
       },
       {
-        title: renderTitle('大小', 'size'),
+        title: renderTitle(t('file-size'), 'size'),
         dataIndex: 'size',
         headerCellStyle: { cursor: 'pointer' },
         onHeaderCell: getHeaderCellCallback('size'),
@@ -74,7 +76,7 @@ const AttachmentTable: React.FC = () => {
         ),
       },
       {
-        title: '图床',
+        title: t('image-hosting'),
         dataIndex: 'type',
         render: (_col, item) => (
           <Typography.Text>

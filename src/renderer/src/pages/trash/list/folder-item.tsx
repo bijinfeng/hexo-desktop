@@ -3,8 +3,8 @@ import React, { useMemo } from 'react';
 
 import FileItem from '@/components/file-item';
 import IconButton from '@/components/icon-button';
+import { ActionItem } from '@/components/menu';
 import { useModelStore } from '@/models/post';
-import { ActionItem } from '@/utils/menu-hoc';
 
 import type { ItemProps } from './index';
 

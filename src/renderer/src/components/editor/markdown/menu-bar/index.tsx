@@ -27,11 +27,6 @@ const MenuBar: React.FC = () => {
       <RedoButton />
       <Divider />
       <ToggleHeadingButton level={1} />
-      <ToggleHeadingButton level={2} />
-      <ToggleHeadingButton level={3} />
-      <ToggleHeadingButton level={4} />
-      <ToggleHeadingButton level={5} />
-      <ToggleHeadingButton level={6} />
       <Divider />
       <ToggleBoldButton />
       <ToggleItalicButton />

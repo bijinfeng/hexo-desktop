@@ -2,8 +2,8 @@ import React, { useCallback, useMemo, useState } from 'react';
 
 import FileItem from '@/components/file-item';
 import { fileMove } from '@/components/file-move';
+import { ActionItem } from '@/components/menu';
 import { useModelStore } from '@/models/post';
-import { ActionItem } from '@/utils/menu-hoc';
 
 import { deleteConfirm } from './delete-confirm';
 import type { ItemProps } from './index';

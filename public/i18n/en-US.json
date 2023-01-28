@@ -1,6 +1,18 @@
 {
+  "download": "Download",
+  "delete": "Delete",
   "favorites": "Favorites",
   "notes": "Notes",
   "trash": "Trash",
-  "attachment": "Attachment"
+  "attachment": "Attachment",
+  "basic-settings": "Basic Settings",
+  "attachment-settings": "Attachment Settings",
+  "settings": "Settings",
+  "x-in-total": "{{ total }} in total",
+  "name": "Name",
+  "create-time": "Creation time",
+  "file-size": "File Size",
+  "image-hosting": "Image Hosting",
+  "sort-by-x": "Sort by {{ type }}",
+  "search-for-notes": "Search for Notes"
 }

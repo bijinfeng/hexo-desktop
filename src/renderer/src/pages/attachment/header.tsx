@@ -6,6 +6,7 @@ import {
   IconList,
 } from '@arco-design/web-react/icon';
 import React, { useContext, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import ActionDropdown, { Action } from '@/components/action-dropdown';
 import IconButtom from '@/components/icon-button';
@@ -18,6 +19,7 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ isList, setIsList }) => {
+  const { t } = useTranslation();
   const { data, selectedKeys, sorter, setSorter, onChangeAll } =
     useContext(AttchmentContext);
   const checkAll = data?.length === selectedKeys?.length;
@@ -44,24 +46,24 @@ const Header: React.FC<HeaderProps> = ({ isList, setIsList }) => {
     return [
       {
         key: 'fileName',
-        title: '名称',
+        title: t('name'),
         sort: getSortDirection('fileName'),
         onClick: setSortDirection('fileName'),
       },
       {
         key: 'date',
-        title: '创建时间',
+        title: t('create-time'),
         sort: getSortDirection('date'),
         onClick: setSortDirection('date'),
       },
       {
         key: 'size',
-        title: '文件大小',
+        title: t('file-size'),
         sort: getSortDirection('size'),
         onClick: setSortDirection('size'),
       },
     ];
-  }, [sorter]);
+  }, [sorter, t]);
 
   const sortName = useMemo(
     () => actions.find((it) => it.key === sorter?.field)?.title,
@@ -71,12 +73,12 @@ const Header: React.FC<HeaderProps> = ({ isList, setIsList }) => {
   return (
     <div className="flex items-center justify-between mb-3 px-2">
       <Checkbox onChange={onChangeAll} indeterminate={indeterminate} checked={checkAll}>
-        共 {data.length} 项
+        {t('x-in-total', { total: data.length })}
       </Checkbox>
       <div className="inline-flex">
         <ActionDropdown actions={actions}>
           {sorter?.direction === 'ascend' ? <IconArrowUp /> : <IconArrowDown />}
-          <span className="ml-1 text-xs">按{sortName}排序</span>
+          <span className="ml-1 text-xs">{t('sort-by-x', { type: sortName })}</span>
         </ActionDropdown>
         <IconButtom className="ml-4" onClick={() => setIsList(!isList)}>
           {isList ? <IconApps fontSize={16} /> : <IconList fontSize={16} />}

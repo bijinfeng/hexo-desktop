@@ -1,6 +1,18 @@
 {
+  "download": "下载",
+  "delete": "删除",
   "favorites": "收藏",
   "notes": "笔记",
   "trash": "回收站",
-  "attachment": "附件"
+  "attachment": "附件",
+  "basic-settings": "基本设置",
+  "attachment-settings": "附件设置",
+  "settings": "设置",
+  "x-in-total": "共 {{ total }} 项",
+  "name": "名称",
+  "create-time": "创建时间",
+  "file-size": "文件大小",
+  "image-hosting": "图床",
+  "sort-by-x": "按{{ type }}排序",
+  "search-for-notes": "搜索笔记"
 }

@@ -1,6 +1,7 @@
 import { Card, Layout, Menu, Portal } from '@arco-design/web-react';
 import { IconClose } from '@arco-design/web-react/icon';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   RiArrowUpCircleLine,
   RiLinksFill,
@@ -20,38 +21,42 @@ const MenuItem = Menu.Item;
 const Sider = Layout.Sider;
 const Content = Layout.Content;
 
-const menus = [
-  {
-    key: 'basic',
-    label: '基本设置',
-    icon: <RiSettings4Line />,
-    content: Basic,
-  },
-  {
-    key: 'attachment',
-    label: '附件设置',
-    icon: <RiLinksFill />,
-    content: Attachment,
-  },
-  {
-    key: 'proxy',
-    label: '代理设置',
-    icon: <RiSendPlaneLine />,
-    content: Proxy,
-  },
-  {
-    key: 'update',
-    label: '软件更新',
-    icon: <RiArrowUpCircleLine />,
-    content: Update,
-  },
-];
-
 const Setting: React.FC = () => {
+  const { t } = useTranslation();
   const [visible, setVisible] = useState(false);
   const [selectedKey, setSelectKey] = useState<string>('basic');
   const containerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+
+  const menus = useMemo(
+    () => [
+      {
+        key: 'basic',
+        label: t('basic-settings'),
+        icon: <RiSettings4Line />,
+        content: Basic,
+      },
+      {
+        key: 'attachment',
+        label: t('attachment-settings'),
+        icon: <RiLinksFill />,
+        content: Attachment,
+      },
+      {
+        key: 'proxy',
+        label: '代理设置',
+        icon: <RiSendPlaneLine />,
+        content: Proxy,
+      },
+      {
+        key: 'update',
+        label: '软件更新',
+        icon: <RiArrowUpCircleLine />,
+        content: Update,
+      },
+    ],
+    [],
+  );
 
   useEffect(() => {
     const open = (key?: string) => {
@@ -79,7 +84,7 @@ const Setting: React.FC = () => {
     <Portal visible>
       <Card
         className="setting-modal-wrapper !rounded-tl-md !bg-bg-3"
-        title="设置"
+        title={t('settings')}
         bordered={false}
         bodyStyle={{ padding: 0, flex: 1, overflow: 'hidden' }}
         style={{ display: visible ? 'flex' : 'none' }}

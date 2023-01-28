@@ -1,12 +1,12 @@
 import { IconFindReplace, IconMore } from '@arco-design/web-react/icon';
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 
 import ActionDropdown, { ActionItem } from '@/components/action-dropdown';
 import Editors from '@/components/editor';
+import type { MarkdownEditorFunc } from '@/components/editor/markdown';
 import FileTag from '@/components/file-tag';
 import IconButton from '@/components/icon-button';
 import Illus from '@/components/illus';
-import { AppEventManager, EventType } from '@/event';
 import { useModelStore } from '@/models/post';
 
 interface EditorProps {
@@ -19,6 +19,7 @@ const Editor: React.FC<EditorProps> = ({ postId }) => {
   const post = useModelStore((state) => state.getPost(postId));
   const postTags = useModelStore((state) => state.getPostTags(postId));
   const [showTag, setShowTag] = useState<boolean>(false);
+  const markdownRef = useRef<MarkdownEditorFunc>(null);
 
   const editorActions = useMemo<ActionItem[]>(
     () => [
@@ -30,7 +31,7 @@ const Editor: React.FC<EditorProps> = ({ postId }) => {
 
   const renderTitleSuffix = () => (
     <>
-      <IconButton onClick={() => AppEventManager.emit(EventType.VISIBLE_FILE_SEARCH)}>
+      <IconButton onClick={() => markdownRef.current?.search()}>
         <IconFindReplace fontSize={22} />
       </IconButton>
       <ActionDropdown actions={editorActions}>
@@ -63,6 +64,7 @@ const Editor: React.FC<EditorProps> = ({ postId }) => {
       >
         {renderTags()}
         <Editors.Markdown
+          ref={markdownRef}
           value={post.content}
           onChange={(content) => updatePostContent(post.id, content)}
         />

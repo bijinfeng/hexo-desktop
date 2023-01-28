@@ -7,7 +7,7 @@ import React from 'react';
 import ContextMenu from '@/components/context-menu';
 import FileAction from '@/components/file-action';
 import FileName from '@/components/file-name';
-import { ActionItem } from '@/utils/menu-hoc';
+import { ActionItem } from '@/components/menu';
 
 export interface ItemData {
   title: string;
